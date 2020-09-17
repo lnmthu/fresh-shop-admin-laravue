@@ -16,7 +16,12 @@
         class="filter-item"
         @change="handleFilter"
       >
-        <el-option v-for="item in roles" :key="item" :label="item | uppercaseFirst" :value="item" />
+        <el-option
+          v-for="item in roles"
+          :key="item"
+          :label="item | uppercaseFirst"
+          :value="item"
+        />
       </el-select>
       <el-button
         v-waves
@@ -24,14 +29,18 @@
         type="primary"
         icon="el-icon-search"
         @click="handleFilter"
-      >{{ $t('table.search') }}</el-button>
+      >
+        {{ $t('table.search') }}
+      </el-button>
       <el-button
         class="filter-item"
         style="margin-left: 10px;"
         type="primary"
         icon="el-icon-plus"
         @click="handleCreate"
-      >{{ $t('table.add') }}</el-button>
+      >
+        {{ $t('table.add') }}
+      </el-button>
       <el-button
         v-waves
         :loading="downloading"
@@ -39,10 +48,19 @@
         type="primary"
         icon="el-icon-download"
         @click="handleDownload"
-      >{{ $t('table.export') }}</el-button>
+      >
+        {{ $t('table.export') }}
+      </el-button>
     </div>
 
-    <el-table v-loading="loading" :data="list" border fit highlight-current-row style="width: 100%">
+    <el-table
+      v-loading="loading"
+      :data="list"
+      border
+      fit
+      highlight-current-row
+      style="width: 100%"
+    >
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.index }}</span>
@@ -77,14 +95,16 @@
         <template slot-scope="scope">
           <router-link
             v-if="!scope.row.roles.includes('admin')"
-            :to="'/administrator/users/edit/'+scope.row.id"
+            :to="'/administrator/users/edit/' + scope.row.id"
           >
             <el-button
               v-permission="['manage user']"
               type="primary"
               size="small"
               icon="el-icon-edit"
-            >Edit</el-button>
+            >
+              Edit
+            </el-button>
           </router-link>
           <el-button
             v-if="!scope.row.roles.includes('admin')"
@@ -92,22 +112,26 @@
             type="warning"
             size="small"
             icon="el-icon-edit"
-            @click="handleEditPermissions(scope.row.id);"
-          >Permissions</el-button>
+            @click="handleEditPermissions(scope.row.id)"
+          >
+            Permissions
+          </el-button>
           <el-button
             v-if="scope.row.roles.includes('visitor')"
             v-permission="['manage user']"
             type="danger"
             size="small"
             icon="el-icon-delete"
-            @click="handleDelete(scope.row.id, scope.row.name);"
-          >Delete</el-button>
+            @click="handleDelete(scope.row.id, scope.row.name)"
+          >
+            Delete
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
 
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="query.page"
       :limit.sync="query.limit"
@@ -118,10 +142,18 @@
       :visible.sync="dialogPermissionVisible"
       :title="'Edit Permissions - ' + currentUser.name"
     >
-      <div v-if="currentUser.name" v-loading="dialogPermissionLoading" class="form-container">
+      <div
+        v-if="currentUser.name"
+        v-loading="dialogPermissionLoading"
+        class="form-container"
+      >
         <div class="permissions-container">
           <div class="block">
-            <el-form :model="currentUser" label-width="80px" label-position="top">
+            <el-form
+              :model="currentUser"
+              label-width="80px"
+              label-position="top"
+            >
               <el-form-item label="Menus">
                 <el-tree
                   ref="menuPermissions"
@@ -136,7 +168,11 @@
             </el-form>
           </div>
           <div class="block">
-            <el-form :model="currentUser" label-width="80px" label-position="top">
+            <el-form
+              :model="currentUser"
+              label-width="80px"
+              label-position="top"
+            >
               <el-form-item label="Permissions">
                 <el-tree
                   ref="otherPermissions"
@@ -153,11 +189,12 @@
           <div class="clear-left" />
         </div>
         <div style="text-align:right;">
-          <el-button
-            type="danger"
-            @click="dialogPermissionVisible=false"
-          >{{ $t('permission.cancel') }}</el-button>
-          <el-button type="primary" @click="confirmPermission">{{ $t('permission.confirm') }}</el-button>
+          <el-button type="danger" @click="dialogPermissionVisible = false">
+            {{ $t('permission.cancel') }}
+          </el-button>
+          <el-button type="primary" @click="confirmPermission">
+            {{ $t('permission.confirm') }}
+          </el-button>
         </div>
       </div>
     </el-dialog>
@@ -173,7 +210,11 @@
           style="max-width: 500px;"
         >
           <el-form-item :label="$t('user.role')" prop="role">
-            <el-select v-model="newUser.role" class="filter-item" placeholder="Please select role">
+            <el-select
+              v-model="newUser.role"
+              class="filter-item"
+              placeholder="Please select role"
+            >
               <el-option
                 v-for="item in nonAdminRoles"
                 :key="item"
@@ -194,13 +235,20 @@
           <el-form-item :label="$t('user.password')" prop="password">
             <el-input v-model="newUser.password" show-password />
           </el-form-item>
-          <el-form-item :label="$t('user.confirmPassword')" prop="confirmPassword">
+          <el-form-item
+            :label="$t('user.confirmPassword')"
+            prop="confirmPassword"
+          >
             <el-input v-model="newUser.confirmPassword" show-password />
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">{{ $t('table.cancel') }}</el-button>
-          <el-button type="primary" @click="createUser()">{{ $t('table.confirm') }}</el-button>
+          <el-button @click="dialogFormVisible = false">
+            {{ $t('table.cancel') }}
+          </el-button>
+          <el-button type="primary" @click="createUser()">
+            {{ $t('table.confirm') }}
+          </el-button>
         </div>
       </div>
     </el-dialog>
@@ -307,7 +355,7 @@ export default {
   computed: {
     normalizedMenuPermissions() {
       let tmp = [];
-      this.currentUser.permissions.role.forEach((permission) => {
+      this.currentUser.permissions.role.forEach(permission => {
         tmp.push({
           id: permission.id,
           name: permission.name,
@@ -322,8 +370,8 @@ export default {
       };
 
       tmp = this.menuPermissions.filter(
-        (permission) =>
-          !this.currentUser.permissions.role.find((p) => p.id === permission.id)
+        permission =>
+          !this.currentUser.permissions.role.find(p => p.id === permission.id)
       );
       const userPermissions = {
         id: 0, // Faked ID
@@ -336,7 +384,7 @@ export default {
     },
     normalizedOtherPermissions() {
       let tmp = [];
-      this.currentUser.permissions.role.forEach((permission) => {
+      this.currentUser.permissions.role.forEach(permission => {
         tmp.push({
           id: permission.id,
           name: permission.name,
@@ -351,8 +399,8 @@ export default {
       };
 
       tmp = this.otherPermissions.filter(
-        (permission) =>
-          !this.currentUser.permissions.role.find((p) => p.id === permission.id)
+        permission =>
+          !this.currentUser.permissions.role.find(p => p.id === permission.id)
       );
       const userPermissions = {
         id: 0,
@@ -427,14 +475,14 @@ export default {
         .then(() => {
           userResource
             .destroy(id)
-            .then((response) => {
+            .then(response => {
               this.$message({
                 type: 'success',
                 message: 'Delete completed',
               });
               this.handleFilter();
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             });
         })
@@ -449,7 +497,7 @@ export default {
       this.currentUserId = id;
       this.dialogPermissionLoading = true;
       this.dialogPermissionVisible = true;
-      const found = this.list.find((user) => user.id === id);
+      const found = this.list.find(user => user.id === id);
       const { data } = await userResource.permissions(id);
       this.currentUser = {
         id: found.id,
@@ -467,14 +515,14 @@ export default {
       });
     },
     createUser() {
-      this.$refs['userForm'].validate((valid) => {
+      this.$refs['userForm'].validate(valid => {
         if (valid) {
           this.newUser.roles = [this.newUser.role];
           this.userCreating = true;
           // console.log(this.newUser);
           userResource
             .store(this.newUser)
-            .then((response) => {
+            .then(response => {
               this.$message({
                 message:
                   'New user ' +
@@ -489,7 +537,7 @@ export default {
               this.dialogFormVisible = false;
               this.handleFilter();
             })
-            .catch((error) => {
+            .catch(error => {
               console.log(error);
             })
             .finally(() => {
@@ -513,7 +561,7 @@ export default {
     },
     handleDownload() {
       this.downloading = true;
-      import('@/vendor/Export2Excel').then((excel) => {
+      import('@/vendor/Export2Excel').then(excel => {
         const tHeader = ['id', 'user_id', 'name', 'email', 'role'];
         const filterVal = ['index', 'id', 'name', 'email', 'role'];
         const data = this.formatJson(filterVal, this.list);
@@ -526,16 +574,16 @@ export default {
       });
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map((v) => filterVal.map((j) => v[j]));
+      return jsonData.map(v => filterVal.map(j => v[j]));
     },
     permissionKeys(permissions) {
-      return permissions.map((permssion) => permssion.id);
+      return permissions.map(permssion => permssion.id);
     },
     classifyPermissions(permissions) {
       const all = [];
       const menu = [];
       const other = [];
-      permissions.forEach((permission) => {
+      permissions.forEach(permission => {
         const permissionName = permission.name;
         all.push(permission);
         if (permissionName.startsWith('view menu')) {
@@ -577,7 +625,7 @@ export default {
         .updatePermission(this.currentUserId, {
           permissions: checkedPermissions,
         })
-        .then((response) => {
+        .then(response => {
           this.$message({
             message: 'Permissions has been updated successfully',
             type: 'success',
