@@ -18,7 +18,7 @@ use \App\Laravue\Acl;
 |
 */
 
-Route::namespace('Api')->group(function() {
+Route::namespace('Api')->group(function () {
     Route::post('auth/login', 'AuthController@login');
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
@@ -33,12 +33,16 @@ Route::namespace('Api')->group(function() {
         Route::apiResource('roles', 'RoleController')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::apiResource('users', 'UserController')->middleware('permission:' . Acl::PERMISSION_USER_MANAGE);
         Route::apiResource('permissions', 'PermissionController')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::apiResource('categories', 'CategoryController')->middleware('permission:' . Acl::PERMISSION_CATEGORY_MANAGE);
+        Route::apiResource('products', 'ProductController')->middleware('permission:' . Acl::PERMISSION_PRODUCT_MANAGE);
 
         // Custom routes
         Route::put('users/{user}', 'UserController@update');
         Route::get('users/{user}/permissions', 'UserController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
-        Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' .Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+
+
     });
 });
 
