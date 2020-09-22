@@ -18,7 +18,7 @@ use \App\Laravue\Acl;
 |
 */
 
-Route::namespace('Api')->group(function() {
+Route::namespace('Api')->group(function () {
     Route::post('auth/login', 'AuthController@login');
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
@@ -37,10 +37,15 @@ Route::namespace('Api')->group(function() {
         // Custom routes
         Route::put('users/{user}', 'UserController@update');
         Route::get('users/{user}/permissions', 'UserController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
-        Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' .Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
     });
 });
+
+Route::get('orders-deleted/', 'Api\OrderController@getAllDeleted');
+Route::put('orders/{order}/status', 'Api\OrderController@processOrder');
+Route::put('transactions/{transaction}', 'Api\TransactionController@processTransaction');
+Route::apiResource('orders', 'Api\OrderController')->except(['update']);
 
 // Fake APIs
 Route::get('/table/list', function () {
@@ -62,21 +67,21 @@ Route::get('/table/list', function () {
     return response()->json(new JsonResponse(['items' => $data]));
 });
 
-Route::get('/orders', function () {
-    $rowsNumber = 8;
-    $data = [];
-    for ($rowIndex = 0; $rowIndex < $rowsNumber; $rowIndex++) {
-        $row = [
-            'order_no' => 'LARAVUE' . mt_rand(1000000, 9999999),
-            'price' => mt_rand(10000, 999999),
-            'status' => Faker::randomInArray(['success', 'pending']),
-        ];
+// Route::get('/orders', function () {
+//     $rowsNumber = 8;
+//     $data = [];
+//     for ($rowIndex = 0; $rowIndex < $rowsNumber; $rowIndex++) {
+//         $row = [
+//             'order_no' => 'LARAVUE' . mt_rand(1000000, 9999999),
+//             'price' => mt_rand(10000, 999999),
+//             'status' => Faker::randomInArray(['success', 'pending']),
+//         ];
 
-        $data[] = $row;
-    }
+//         $data[] = $row;
+//     }
 
-    return response()->json(new JsonResponse(['items' => $data]));
-});
+//     return response()->json(new JsonResponse(['items' => $data]));
+// });
 
 Route::get('/articles', function () {
     $rowsNumber = 10;

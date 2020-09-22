@@ -12,5 +12,10 @@ class CategorySeeder extends Seeder
     public function run()
     {
         //
+        $category = \App\Laravue\Models\Category::create([
+            'name' => 'Tech',
+            'description' => 'Technology',
+            'sort' => 1
+        ]);
     }
 }

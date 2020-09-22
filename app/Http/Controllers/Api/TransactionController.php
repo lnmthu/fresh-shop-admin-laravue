@@ -1,0 +1,24 @@
+<?php
+
+namespace App\Http\Controllers\Api;
+
+use App\Http\Controllers\Controller;
+use App\Repository\Transaction\TransactionRepositoryInterface;
+use Illuminate\Http\Request;
+
+class TransactionController extends Controller
+{
+    private $transactionRepository;
+
+    public function __construct(TransactionRepositoryInterface $transactionRepository)
+    {
+        $this->transactionRepository = $transactionRepository;
+    }
+
+    public function processTransaction($id, Request $request)
+    {
+        $this->transactionRepository->update($id, ['payment_status' => $request->status]);
+        $transaction = $this->transactionRepository->findById($id);
+        return response()->json(['status' => 'success']);
+    }
+}
