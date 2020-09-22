@@ -144,6 +144,39 @@
                 canceled
               </el-tag>
             </el-form-item>
+            <el-row>
+              <el-col :span="8">
+                <el-form-item
+                  label-width="80px"
+                  label="Sub Total:"
+                  class="postInfo-container-item"
+                >
+                  <el-input
+                    v-model="order.sub_total"
+                    filterable
+                    remote
+                    readonly
+                    placeholder="Buyer"
+                  />
+                </el-form-item>
+              </el-col>
+
+              <el-col :span="10">
+                <el-form-item
+                  label-width="130px"
+                  label="Total Price:"
+                  class="postInfo-container-item"
+                >
+                  <el-input
+                    v-model="order.total_price"
+                    filterable
+                    remote
+                    readonly
+                    placeholder="Buyer"
+                  />
+                </el-form-item>
+              </el-col>
+            </el-row>
             <el-form-item v-if="order.status == 3">
               <el-button
                 v-permission="['manage order']"
