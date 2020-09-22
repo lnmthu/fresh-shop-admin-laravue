@@ -103,6 +103,16 @@
           >
             Cancel
           </el-button>
+          <el-button
+            v-if="scope.row.status == 2 || scope.row.status == 1"
+            v-permission="['manage order']"
+            type="warning"
+            size="small"
+            icon="el-icon-edit"
+            @click="processOrder(scope.row.id, scope.row.order_code, 0)"
+          >
+            Restore Order
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -121,6 +131,7 @@
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import OrderResource from '@/api/order';
 import Resource from '@/api/resource';
+import permission from '@/directive/permission'; // Import permission directive
 
 const ordersResource = new OrderResource();
 const transactionResource = new Resource('transactions');
@@ -128,6 +139,7 @@ const transactionResource = new Resource('transactions');
 export default {
   name: 'OrderList',
   components: { Pagination },
+  directives: { permission }, // use permission directive
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -140,6 +152,7 @@ export default {
     },
     statusWordFilter(status) {
       const statusMap = {
+        0: 'restore',
         1: 'complete',
         2: 'cancel',
         3: 'confirm',

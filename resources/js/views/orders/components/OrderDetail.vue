@@ -38,6 +38,14 @@
         >
           Cancel
         </el-button>
+        <el-button
+          v-if="order.status == 2 || order.status == 1"
+          v-permission="['manage order']"
+          type="warning"
+          @click="processOrder(order.id, order.order_code, 0)"
+        >
+          Restore Order
+        </el-button>
       </sticky>
 
       <div class="createPost-main-container">
@@ -207,6 +215,7 @@ import MDinput from '@/components/MDinput';
 import Sticky from '@/components/Sticky';
 import OrderResource from '@/api/order';
 import Resource from '@/api/resource';
+import permission from '@/directive/permission'; // Import permission directive
 
 const ordersResource = new OrderResource();
 const transactionResource = new Resource('transactions');
@@ -217,6 +226,7 @@ export default {
     MDinput,
     Sticky,
   },
+  directives: { permission }, // use permission directive
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -229,6 +239,7 @@ export default {
     },
     statusWordFilter(status) {
       const statusMap = {
+        0: 'restore',
         1: 'complete',
         2: 'cancel',
         3: 'confirm',
