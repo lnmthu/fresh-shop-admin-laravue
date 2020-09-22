@@ -75,6 +75,7 @@
         <template slot-scope="scope">
           <el-button
             v-if="scope.row.status == 3"
+            v-permission="['manage order']"
             type="success"
             size="small"
             icon="el-icon-check"
@@ -84,6 +85,7 @@
           </el-button>
           <el-button
             v-if="scope.row.status == 0"
+            v-permission="['manage order']"
             type="primary"
             size="small"
             icon="el-icon-check"
@@ -93,6 +95,7 @@
           </el-button>
           <el-button
             v-if="scope.row.status != 2 && scope.row.status != 1"
+            v-permission="['manage order']"
             type="danger"
             size="small"
             icon="el-icon-edit"

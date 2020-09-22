@@ -39,13 +39,14 @@ Route::namespace('Api')->group(function () {
         Route::get('users/{user}/permissions', 'UserController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+
+        // Order routes
+        Route::get('orders-deleted/', 'OrderController@getAllDeleted')->middleware('permission:manage order');
+        Route::put('orders/{order}/status', 'OrderController@processOrder')->middleware('permission:manage order');
+        Route::put('transactions/{transaction}', 'TransactionController@processTransaction')->middleware('permission:manage order');
+        Route::apiResource('orders', 'OrderController')->except(['update'])->middleware('permission:manage order');;
     });
 });
-
-Route::get('orders-deleted/', 'Api\OrderController@getAllDeleted');
-Route::put('orders/{order}/status', 'Api\OrderController@processOrder');
-Route::put('transactions/{transaction}', 'Api\TransactionController@processTransaction');
-Route::apiResource('orders', 'Api\OrderController')->except(['update']);
 
 // Fake APIs
 Route::get('/table/list', function () {

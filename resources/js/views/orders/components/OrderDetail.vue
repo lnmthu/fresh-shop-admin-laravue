@@ -16,6 +16,7 @@
         </el-tag>
         <el-button
           v-if="order.status == 0"
+          v-permission="['manage order']"
           type="primary"
           @click="processOrder(order.id, order.order_code, 3)"
         >
@@ -23,6 +24,7 @@
         </el-button>
         <el-button
           v-if="order.status == 3"
+          v-permission="['manage order']"
           type="success"
           @click="processOrder(order.id, order.order_code, 1)"
         >
@@ -30,6 +32,7 @@
         </el-button>
         <el-button
           v-if="order.status != 2 && order.status != 1"
+          v-permission="['manage order']"
           type="danger"
           @click="processOrder(order.id, order.order_code, 2)"
         >
@@ -135,6 +138,7 @@
             </el-form-item>
             <el-form-item v-if="order.status == 3">
               <el-button
+                v-permission="['manage order']"
                 type="success"
                 @click="
                   transactionStatus(order.transaction.id, order.order_code, 1)
@@ -143,6 +147,7 @@
                 Complete transaction
               </el-button>
               <el-button
+                v-permission="['manage order']"
                 type="danger"
                 @click="
                   transactionStatus(order.transaction.id, order.order_code, 2)

@@ -8,6 +8,7 @@ const ordersRoutes = {
   name: 'Orders',
   meta: {
     icon: 'shopping',
+    permissions: ['view order', 'manage order'],
   },
   children: [
     {
