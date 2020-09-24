@@ -2,10 +2,10 @@
 
 namespace App\Providers;
 
-use App\Repository\Order\OrderRepository;
-use App\Repository\Order\OrderRepositoryInterface;
-use App\Repository\Transaction\TransactionRepository;
-use App\Repository\Transaction\TransactionRepositoryInterface;
+use App\Repositories\Order\OrderRepository;
+use App\Repositories\Order\OrderRepositoryInterface;
+use App\Repositories\Transaction\TransactionRepository;
+use App\Repositories\Transaction\TransactionRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider

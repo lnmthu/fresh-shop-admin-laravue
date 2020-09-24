@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Repository\Transaction\TransactionRepositoryInterface;
+use App\Repositories\Transaction\TransactionRepositoryInterface;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
@@ -20,5 +20,11 @@ class TransactionController extends Controller
         $this->transactionRepository->update($id, ['payment_status' => $request->status]);
         $transaction = $this->transactionRepository->findById($id);
         return response()->json(['status' => 'success']);
+    }
+
+    public function chargeCard(Request $request)
+    {
+        $data = $request->all();
+        $this->transactionRepository->chargeCard($data);
     }
 }

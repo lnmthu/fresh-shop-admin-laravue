@@ -177,26 +177,13 @@
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-form-item v-if="order.status == 3">
-              <el-button
-                v-permission="['manage order']"
-                type="success"
-                @click="
-                  transactionStatus(order.transaction.id, order.order_code, 1)
-                "
-              >
-                Complete transaction
-              </el-button>
-              <el-button
-                v-permission="['manage order']"
-                type="danger"
-                @click="
-                  transactionStatus(order.transaction.id, order.order_code, 2)
-                "
-              >
-                Cancel transaction
-              </el-button>
-            </el-form-item>
+            <router-link
+              v-if="order.transaction.payment_status == 0"
+              :to="'/orders/charge/' + order.id"
+              class="link-type"
+            >
+              <span>Pay this order</span>
+            </router-link>
           </el-col>
         </el-row>
       </div>
@@ -284,9 +271,7 @@ export default {
     order: {
       type: Object,
       default: () => {
-        return {
-          full_name: '',
-        };
+        return {};
       },
     },
   },
@@ -334,45 +319,6 @@ export default {
                   message: 'Order process changed',
                 });
               }
-              this.getOrder();
-            })
-            .catch(error => {
-              console.log(error);
-            });
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message:
-              'Abort ' +
-              this.$options.filters.statusWordFilter(status) +
-              ' order',
-          });
-        });
-    },
-    transactionStatus(id, order_code, status) {
-      this.data.status = status;
-      this.$confirm(
-        'This will permanently ' +
-          this.$options.filters.statusWordFilter(status) +
-          ' the transaction of order ' +
-          order_code +
-          '. Continue?',
-        this.$options.filters.statusWordFilter(status),
-        {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'warning',
-        }
-      )
-        .then(() => {
-          transactionResource
-            .update(id, this.data)
-            .then(response => {
-              this.$message({
-                type: 'success',
-                message: 'Transaction status processed',
-              });
               this.getOrder();
             })
             .catch(error => {

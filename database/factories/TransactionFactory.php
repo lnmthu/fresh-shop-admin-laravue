@@ -14,6 +14,5 @@ $factory->define(Transaction::class, function (Faker $faker) use ($factory) {
         'order_id' => $order->id,
         'total_price' => $order->total_price,
         'sub_total' => $order->sub_total,
-        'payment_code' => '#' . Str::random(5) . sha1(time()),
     ];
 });

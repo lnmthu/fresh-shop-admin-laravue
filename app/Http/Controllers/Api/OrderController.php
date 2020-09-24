@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Order\StoreOrderRequest;
 use App\Http\Resources\OrderResource;
 use App\Laravue\Models\User;
-use App\Repository\Order\OrderRepositoryInterface;
-use App\Repository\Transaction\TransactionRepositoryInterface;
+use App\Repositories\Order\OrderRepositoryInterface;
+use App\Repositories\Transaction\TransactionRepositoryInterface;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller

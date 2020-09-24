@@ -20,9 +20,19 @@ const ordersRoutes = {
     {
       path: 'show/:id(\\d+)',
       component: () => import('@/views/orders/Detail'),
-      name: 'Detail',
+      name: 'detail',
       meta: {
         title: 'Order Detail',
+        noCache: true,
+      },
+      hidden: true,
+    },
+    {
+      path: 'charge/:id(\\d+)',
+      component: () => import('@/views/orders/Charge'),
+      name: 'charge',
+      meta: {
+        title: 'Charge Order',
         noCache: true,
       },
       hidden: true,

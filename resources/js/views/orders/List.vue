@@ -54,7 +54,34 @@
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="Status" width="130">
+      <el-table-column
+        class-name="status-col"
+        label="Payment Status"
+        width="130"
+      >
+        <template slot-scope="{ row }">
+          <el-tag
+            v-if="row.transaction.payment_status == 0"
+            :type="row.transaction.payment_status | statusFilter"
+          >
+            pending
+          </el-tag>
+          <el-tag
+            v-if="row.transaction.payment_status == 1"
+            :type="row.transaction.payment_status | statusFilter"
+          >
+            completed
+          </el-tag>
+          <el-tag
+            v-if="row.transaction.payment_status == 2"
+            :type="row.transaction.payment_status | statusFilter"
+          >
+            canceled
+          </el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column class-name="status-col" label="Order Status" width="130">
         <template slot-scope="{ row }">
           <el-tag v-if="row.status == 0" :type="row.status | statusFilter">
             pending
