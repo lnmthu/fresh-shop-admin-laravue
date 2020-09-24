@@ -72,6 +72,11 @@ class User extends Authenticatable
         return [];
     }
 
+    public function blogItems()
+    {
+        return $this->hasMany(BlogItem::class);
+    }
+
     /**
      * Check if user has a permission
      * @param String

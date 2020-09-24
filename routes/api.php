@@ -19,6 +19,16 @@ use \App\Laravue\Acl;
 */
 
 Route::namespace('Api')->group(function() {
+    // Api Blogs resource routes
+    Route::apiResource('blog-categories', 'BlogCategoryController');
+    Route::apiResource('blog-items', 'BlogItemController');
+
+    // custom Blog routes
+    Route::get('trashed/blog-categories', 'BlogCategoryController@trashed');
+    Route::put('restore/blog-categories/{blog_category}', 'BlogCategoryController@restore');
+    Route::get('trashed/blog-items', 'BlogItemController@trashed');
+    Route::put('restore/blog-items/{blog_item}', 'BlogItemController@restore');
+
     Route::post('auth/login', 'AuthController@login');
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
