@@ -49,9 +49,9 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
             if (isset($data['image'])) {
                 $image = $data['image'];
                 $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-                Image::make($data['image'])->save(public_path('images/') . $name);
+                Image::make($data['image'])->resize(150, 120)->save($name);
                 $result
-                    ->addMedia(public_path('images/') . $name)
+                    ->addMedia($name)
                     ->toMediaCollection();
             }
 

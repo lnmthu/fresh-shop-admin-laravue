@@ -7,6 +7,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="Image">
+        <template slot-scope="scope">
+          <img :src="scope.row.image" alt="" srcset="">
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="Category">
         <template slot-scope="scope">
           <span>{{ scope.row.category.title }}</span>
@@ -126,6 +132,7 @@ export default {
       });
       this.total = meta.total;
       this.listLoading = false;
+      console.log(data);
     },
     handleDeactivateStatus(id, status) {
       blogItemResource
