@@ -73,9 +73,10 @@
           <Tinymce ref="editor" v-model="form.body" :height="400" />
         </el-form-item>
 
-        <el-form-item prop="image_uri" style="margin-bottom: 30px;">
-          <Upload v-model="form.image_uri" />
+        <el-form-item prop="image" style="margin-bottom: 30px;">
+          <Upload v-model="form.image" />
         </el-form-item>
+        <input type="file">
       </div>
     </el-form>
   </div>
@@ -104,6 +105,7 @@ const defaultForm = {
   body: '',
   user: '',
   sort: '',
+  image: '',
 };
 
 export default {
@@ -169,13 +171,13 @@ export default {
             message: 'Must be all numbers, greater than or equals 0',
             trigger: 'blur',
           },
-          {
-            // type: 'number',
-            min: 0,
-            // max: 10,
-            message: 'Sort must be at least 0',
-            trigger: 'blur',
-          },
+          // {
+          //   // type: 'number',
+          //   min: 0,
+          //   // max: 10,
+          //   message: 'Sort must be at least 0',
+          //   trigger: 'blur',
+          // },
         ],
       },
       blogCategoryList: {},

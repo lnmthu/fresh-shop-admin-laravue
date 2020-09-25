@@ -2,23 +2,37 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogItem\StoreBlogItemRequest;
 use App\Http\Requests\BlogItem\UpdateBlogItemRequest;
 use App\Http\Resources\BlogItemResource;
 use App\Laravue\Models\BlogItem;
+use App\Repositories\BlogItem\BlogItemRepositoryInterface;
 use Illuminate\Http\Request;
 
 class BlogItemController extends Controller
 {
+    private $blogItemRepository;
+
+    private $responseHelper;
+
+    public function __construct(BlogItemRepositoryInterface $blogItemRepository, ResponseHelper $responseHelper)
+    {
+        $this->blogItemRepository = $blogItemRepository;
+
+        $this->responseHelper = $responseHelper;
+    }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $blogItems = BlogItem::orderBy('sort', 'ASC')->paginate(15);
+        $params = $request->all();
+
+        $blogItems = $this->blogItemRepository->getAllPaginate($params);
 
         return BlogItemResource::collection($blogItems);
     }
@@ -43,9 +57,9 @@ class BlogItemController extends Controller
     {
         $data = $request->validated();
 
-        $blogCategory = BlogItem::create($data);
+        $blogItem = $this->blogItemRepository->create($data);
 
-        return new BlogItemResource($blogCategory);
+        return new BlogItemResource($blogItem);
     }
 
     /**
@@ -56,7 +70,7 @@ class BlogItemController extends Controller
      */
     public function show($id)
     {
-        $blogItem = BlogItem::find($id);
+        $blogItem = $this->blogItemRepository->findById($id);
 
         return new BlogItemResource($blogItem);
     }
@@ -79,13 +93,11 @@ class BlogItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBlogItemRequest $request, BlogItem $blogItem)
+    public function update(UpdateBlogItemRequest $request, $id)
     {
         $data = $request->validated();
-        // BlogItem::create($data);
-        // $blogCategory = BlogCategory::find($id)->update($data);
 
-        $blogItem->update($data);
+        $blogItem = $this->blogItemRepository->update($data, $id);
 
         return new BlogItemResource($blogItem);
     }
@@ -98,31 +110,36 @@ class BlogItemController extends Controller
      */
     public function destroy($id)
     {
-        $blogItem = BlogItem::withTrashed()->where('id', $id)->firstOrFail();
+        $blogItem = $this->blogItemRepository->delete($id);
 
-         if ($blogItem->trashed()) {
-             $blogItem->forceDelete();
-         } else {
-             $blogItem->delete();
-         }
-        // $blogItems = BlogItem::all();
-
-        return new BlogItemResource($blogItem);
+        return $this->responseHelper->successResponse(true, 'Blog Item has been trashed!', $blogItem);
     }
 
     public function trashed()
     {
-        $trashed = BlogItem::onlyTrashed()->get();
+        $trashed = $this->blogItemRepository->getAllTrash();
 
         return BlogItemResource::collection($trashed);
     }
 
     public function restore($id)
     {
-        $blogItem = BlogItem::withTrashed()->where('id', $id)->firstOrFail();
-
-        $blogItem->restore();
+        $blogItem = $this->blogItemRepository->restore($id);
 
         return new BlogItemResource($blogItem);
+    }
+
+    public function deactivate($id)
+    {
+        $blogItem = $this->blogItemRepository->update(['status' => 0], $id);
+
+        return $this->responseHelper->successResponse(true, 'Blog Item has been deactivated!', $blogItem);
+    }
+
+    public function activate($id)
+    {
+        $blogItem = $this->blogItemRepository->update(['status' => 1], $id);
+
+        return $this->responseHelper->successResponse(true, 'Blog Item has been activated!', $blogItem);
     }
 }

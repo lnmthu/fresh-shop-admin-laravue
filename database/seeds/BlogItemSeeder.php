@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use App\Laravue\Models\BlogItem;
 
 class BlogItemSeeder extends Seeder
 {
@@ -11,6 +12,6 @@ class BlogItemSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(BlogItem::class, 15)->create();
     }
 }
