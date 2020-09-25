@@ -6,12 +6,7 @@
         <PlatformDropdown v-model="postForm.platforms" />
         <SourceUrlDropdown v-model="postForm.source_uri" /> -->
         <div v-if="isEdit">
-          <el-button
-            v-loading="loading"
-            style="margin-left: 10px;"
-            type="success"
-            @click="updateData"
-          >
+          <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="updateData">
             Update
           </el-button>
           <el-button v-loading="loading" type="warning" @click="draftForm">
@@ -20,12 +15,7 @@
         </div>
 
         <div v-else>
-          <el-button
-            v-loading="loading"
-            style="margin-left: 10px;"
-            type="success"
-            @click="createData"
-          >
+          <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="createData">
             Create
           </el-button>
           <el-button v-loading="loading" type="warning" @click="draftForm">
@@ -38,12 +28,7 @@
         <el-row>
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput
-                v-model="form.title"
-                :maxlength="100"
-                name="name"
-                required
-              >
+              <MDinput v-model="form.title" :maxlength="100" name="name" required>
                 Title
               </MDinput>
             </el-form-item>
@@ -52,67 +37,33 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="Category" prop="blog_category_id">
-                    <el-select
-                      v-model="form.blog_category_id"
-                      class="filter-item"
-                      placeholder="Please select Category"
-                    >
-                      <el-option
-                        v-for="item in blogCategoryList"
-                        :key="item.id"
-                        :label="item.title | uppercaseFirst"
-                        :value="item.id"
-                      />
+                    <el-select v-model="form.blog_category_id" class="filter-item" placeholder="Please select Category">
+                      <el-option v-for="item in blogCategoryList" :key="item.id" :label="item.title | uppercaseFirst" :value="item.id" />
                     </el-select>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="10">
                   <el-form-item label="User" prop="user_id">
-                    <el-select
-                      v-model="form.user_id"
-                      class="filter-item"
-                      placeholder="Please select User"
-                    >
-                      <el-option
-                        v-for="item in userList"
-                        :key="item.id"
-                        :label="item.name | uppercaseFirst"
-                        :value="item.id"
-                      />
+                    <el-select v-model="form.user_id" class="filter-item" placeholder="Please select User">
+                      <el-option v-for="item in userList" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
                     </el-select>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="6">
-                  <el-form-item
-                    label-width="80px"
-                    label="Sort:"
-                    class="postInfo-container-item"
-                    prop="sort"
-                  >
+                  <el-form-item label-width="80px" label="Sort:" class="postInfo-container-item" prop="sort">
                     <el-input v-model="form.sort" />
                   </el-form-item>
                 </el-col>
               </el-row>
+              @/div>
             </div>
           </el-col>
         </el-row>
 
-        <el-form-item
-          style="margin-bottom: 40px;"
-          label-width="100px"
-          label="Description:"
-          prop="description"
-        >
-          <el-input
-            v-model="form.description"
-            :rows="1"
-            type="textarea"
-            class="article-textarea"
-            autosize
-            placeholder="Please enter the description"
-          />
+        <el-form-item style="margin-bottom: 40px;" label-width="100px" label="Description:" prop="description">
+          <el-input v-model="form.description" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the description" />
           <span v-show="contentShortLength" class="word-counter">
             {{ contentShortLength }} words
           </span>
@@ -125,7 +76,6 @@
         <el-form-item prop="image_uri" style="margin-bottom: 30px;">
           <Upload v-model="form.image" />
         </el-form-item>
-        <input type="file">
       </div>
     </el-form>
   </div>
@@ -278,21 +228,21 @@ export default {
     fetchData(id) {
       blogItemResource
         .get(id)
-        .then(response => {
+        .then((response) => {
           this.form = response.data;
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
     createData() {
-      this.$refs['postForm'].validate(valid => {
+      this.$refs['postForm'].validate((valid) => {
         if (valid) {
           this.loading = true;
           // console.log(this.newUser);
           blogItemResource
             .store(this.form)
-            .then(response => {
+            .then((response) => {
               this.$router.push({ name: 'BlogItemList' });
               this.$message({
                 message:
@@ -305,7 +255,7 @@ export default {
               this.dialogFormVisible = false;
               this.handleFilter();
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             })
             .finally(() => {
@@ -319,24 +269,23 @@ export default {
       });
     },
     updateData() {
-      this.$refs['postForm'].validate(valid => {
+      this.$refs['postForm'].validate((valid) => {
         if (valid) {
           this.loading = true;
           blogItemResource
             .update(this.form.id, this.form)
-            .then(response => {
-              // this.$router.push({ name: 'BlogItemList' });
-              // this.$message({
-              //   title: 'Success',
-              //   message: 'Blog item has been updated successfully',
-              //   type: 'success',
-              //   duration: 2000,
-              // });
-              // this.dialogFormVisible = false;
-              // this.handleFilter();
-              console.log(response);
+            .then((response) => {
+              this.$router.push({ name: 'BlogItemList' });
+              this.$message({
+                title: 'Success',
+                message: 'Blog item has been updated successfully',
+                type: 'success',
+                duration: 2000,
+              });
+              this.dialogFormVisible = false;
+              this.handleFilter();
             })
-            .catch(error => {
+            .catch((error) => {
               console.log(error);
             })
             .finally(() => {
@@ -366,11 +315,11 @@ export default {
       this.form.status = 'draft';
     },
     getRemoteUserList(query) {
-      userSearch(query).then(response => {
+      userSearch(query).then((response) => {
         if (!response.data.items) {
           return;
         }
-        this.userListOptions = response.data.items.map(v => v.name);
+        this.userListOptions = response.data.items.map((v) => v.name);
       });
     },
   },

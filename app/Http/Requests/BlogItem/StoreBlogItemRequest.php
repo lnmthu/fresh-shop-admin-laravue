@@ -30,6 +30,7 @@ class StoreBlogItemRequest extends FormRequest
             'user_id' => 'required',
             'blog_category_id' => 'required',
             'sort' => 'numeric|min:0',
+            'image' => 'min:0',
         ];
     }
 }
