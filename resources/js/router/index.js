@@ -13,15 +13,16 @@ Vue.use(Router);
 import Layout from '@/layout';
 
 /* Router for modules */
-import elementUiRoutes from './modules/element-ui';
-import componentRoutes from './modules/components';
-import chartsRoutes from './modules/charts';
-import tableRoutes from './modules/table';
+// import elementUiRoutes from './modules/element-ui';
+// import componentRoutes from './modules/components';
+// import chartsRoutes from './modules/charts';
+// import tableRoutes from './modules/table';
 import adminRoutes from './modules/admin';
-import nestedRoutes from './modules/nested';
+// import nestedRoutes from './modules/nested';
 import errorRoutes from './modules/error';
 import excelRoutes from './modules/excel';
-import permissionRoutes from './modules/permission';
+// import permissionRoutes from './modules/permission';
+import ordersRoutes from './modules/order';
 
 /**
  * Sub-menu only appear when children.length>=1
@@ -95,6 +96,7 @@ export const constantRoutes = [
   {
     path: '/documentation',
     component: Layout,
+    hidden: true,
     redirect: '/documentation/index',
     children: [
       {
@@ -122,6 +124,7 @@ export const constantRoutes = [
     path: '/guide',
     component: Layout,
     redirect: '/guide/index',
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -131,20 +134,22 @@ export const constantRoutes = [
       },
     ],
   },
-  elementUiRoutes,
+  // elementUiRoutes,
 ];
 
 export const asyncRoutes = [
-  permissionRoutes,
-  componentRoutes,
-  chartsRoutes,
-  nestedRoutes,
-  tableRoutes,
+  // permissionRoutes,
+  // componentRoutes,
+  // chartsRoutes,
+  // nestedRoutes,
+  // tableRoutes,
+  ordersRoutes,
   adminRoutes,
   {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
+    hidden: true,
     children: [
       {
         path: 'index',
@@ -157,6 +162,7 @@ export const asyncRoutes = [
   {
     path: '/clipboard',
     component: Layout,
+    hidden: true,
     redirect: 'noredirect',
     meta: { permissions: ['view menu clipboard'] },
     children: [
@@ -164,7 +170,11 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/clipboard/index'),
         name: 'ClipboardDemo',
-        meta: { title: 'clipboardDemo', icon: 'clipboard', roles: ['admin', 'manager', 'editor', 'user'] },
+        meta: {
+          title: 'clipboardDemo',
+          icon: 'clipboard',
+          roles: ['admin', 'manager', 'editor', 'user'],
+        },
       },
     ],
   },
@@ -230,12 +240,13 @@ export const asyncRoutes = [
   { path: '*', redirect: '/404', hidden: true },
 ];
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  base: process.env.MIX_LARAVUE_PATH,
-  routes: constantRoutes,
-});
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    base: process.env.MIX_LARAVUE_PATH,
+    routes: constantRoutes,
+  });
 
 const router = createRouter();
 

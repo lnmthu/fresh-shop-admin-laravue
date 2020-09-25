@@ -18,8 +18,9 @@ use \App\Laravue\Acl;
 |
 */
 
-Route::namespace('Api')->group(function() {
+Route::namespace('Api')->group(function () {
     Route::post('auth/login', 'AuthController@login');
+    Route::post('transactions/charge-card', 'TransactionController@chargeCard');
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
         Route::get('auth/user', 'AuthController@user');
@@ -37,8 +38,14 @@ Route::namespace('Api')->group(function() {
         // Custom routes
         Route::put('users/{user}', 'UserController@update');
         Route::get('users/{user}/permissions', 'UserController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
-        Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' .Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+
+        // Order routes
+        Route::get('orders-deleted/', 'OrderController@getAllDeleted')->middleware('permission:manage order');
+        Route::put('orders/{order}/status', 'OrderController@processOrder')->middleware('permission:manage order');
+        Route::put('transactions/{transaction}', 'TransactionController@processTransaction')->middleware('permission:manage order');
+        Route::apiResource('orders', 'OrderController')->except(['update'])->middleware('permission:manage order');;
     });
 });
 
@@ -62,21 +69,21 @@ Route::get('/table/list', function () {
     return response()->json(new JsonResponse(['items' => $data]));
 });
 
-Route::get('/orders', function () {
-    $rowsNumber = 8;
-    $data = [];
-    for ($rowIndex = 0; $rowIndex < $rowsNumber; $rowIndex++) {
-        $row = [
-            'order_no' => 'LARAVUE' . mt_rand(1000000, 9999999),
-            'price' => mt_rand(10000, 999999),
-            'status' => Faker::randomInArray(['success', 'pending']),
-        ];
+// Route::get('/orders', function () {
+//     $rowsNumber = 8;
+//     $data = [];
+//     for ($rowIndex = 0; $rowIndex < $rowsNumber; $rowIndex++) {
+//         $row = [
+//             'order_no' => 'LARAVUE' . mt_rand(1000000, 9999999),
+//             'price' => mt_rand(10000, 999999),
+//             'status' => Faker::randomInArray(['success', 'pending']),
+//         ];
 
-        $data[] = $row;
-    }
+//         $data[] = $row;
+//     }
 
-    return response()->json(new JsonResponse(['items' => $data]));
-});
+//     return response()->json(new JsonResponse(['items' => $data]));
+// });
 
 Route::get('/articles', function () {
     $rowsNumber = 10;
