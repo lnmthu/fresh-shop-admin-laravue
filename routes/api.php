@@ -33,8 +33,6 @@ Route::namespace('Api')->group(function () {
         Route::apiResource('roles', 'RoleController')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::apiResource('users', 'UserController')->middleware('permission:' . Acl::PERMISSION_USER_MANAGE);
         Route::apiResource('permissions', 'PermissionController')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
-        Route::apiResource('categories', 'CategoryController')->middleware('permission:' . Acl::PERMISSION_CATEGORY_MANAGE);
-        Route::apiResource('products', 'ProductController')->middleware('permission:' . Acl::PERMISSION_PRODUCT_MANAGE);
 
         // Custom routes
         Route::put('users/{user}', 'UserController@update');
@@ -150,3 +148,13 @@ Route::get('articles/{id}/pageviews', function ($id) {
 
     return response()->json(new JsonResponse(['pvData' => $data]));
 });
+// Tất cả API requests đến categories đều phải cần quyền "manage category"
+Route::apiResource('categories', 'CategoryController')->middleware('permission:manage category');
+// API để lấy dánh sách category sẽ phải cần quyền "view category" hoặc "manage category"
+Route::get('categories', 'CategoryController@index')->name('categories.index')->middleware('permission:view category|manage category');
+
+// Tất cả API requests đến products đều phải cần quyền "manage product"
+Route::apiResource('products', 'ProductController')->middleware('permission:manage product');
+// API để lấy dánh sách product sẽ phải cần quyền "view product" hoặc "manage product"
+Route::get('products', 'ProductController@index')->name('products.index')->middleware('permission:view product|manage products');
+

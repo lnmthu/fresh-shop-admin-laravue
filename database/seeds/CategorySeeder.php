@@ -13,8 +13,53 @@ class CategorySeeder extends Seeder
     {
         DB::table('categories')->insert([
             'name' => Str::random(10),
-            'email' => Str::random(10).'@gmail.com',
-            'password' => Hash::make('password'),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 2,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
         ]);
     }
 }

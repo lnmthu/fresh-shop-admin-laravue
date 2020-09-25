@@ -9,7 +9,7 @@
                 class="img-circle"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDkaQO69Fro8SZLTVZQ75JH2R0T-sn5yIA_lKGwvvgQ0R0BoQtUQ"
                 alt="user image"
-              />
+              >
               <span class="username text-muted">
                 <a href="#">Iron Man</a>
                 <a href="#" class="pull-right btn-box-tool">
@@ -51,7 +51,7 @@
                 class="img-circle"
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMMN-8f9CQQ3MKJpboBJIqaiJ2Wus2Tf4w_vx9STtalxrY3qGJ"
                 alt="user image"
-              />
+              >
               <span class="username text-muted">
                 <a href="#">Captain American</a>
                 <a href="#" class="pull-right btn-box-tool">
@@ -77,7 +77,7 @@
                 class="img-circle img-bordered-sm"
                 src="https://cdn3.iconfinder.com/data/icons/movies-3/32/daredevil-superhero-marvel-comics-mutant-avatar-512.png"
                 alt="User Image"
-              />
+              >
               <span class="username">
                 <a href="#">Daredevil</a>
                 <a href="#" class="pull-right btn-box-tool">
@@ -89,7 +89,7 @@
             <div class="user-images">
               <el-carousel :interval="6000" type="card" height="200px">
                 <el-carousel-item v-for="item in carouselImages" :key="item">
-                  <img :src="item" class="image" />
+                  <img :src="item" class="image">
                 </el-carousel-item>
               </el-carousel>
             </div>
