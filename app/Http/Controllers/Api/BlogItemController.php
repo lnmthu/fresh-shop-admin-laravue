@@ -8,6 +8,7 @@ use App\Http\Requests\BlogItem\UpdateBlogItemRequest;
 use App\Http\Resources\BlogItemResource;
 use App\Laravue\Models\BlogItem;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class BlogItemController extends Controller
 {
@@ -79,15 +80,23 @@ class BlogItemController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBlogItemRequest $request, BlogItem $blogItem)
+    public function update(Request $request, BlogItem $blogItem)
     {
-        $data = $request->validated();
-        // BlogItem::create($data);
-        // $blogCategory = BlogCategory::find($id)->update($data);
+        if ($request->get('image')) {
+            $image = $request->get('image');
+            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            Image::make($request->get('image'))->save(public_path('images/') . $name);
+            $blogItem
+                ->addMedia(public_path('images/') . $name)
+                ->toMediaCollection();
+        }
+        // $data = $request->validated();
+        // // BlogItem::create($data);
+        // // $blogCategory = BlogCategory::find($id)->update($data);
 
-        $blogItem->update($data);
+        // $blogItem->update($data);
 
-        return new BlogItemResource($blogItem);
+        // return new BlogItemResource($blogItem);
     }
 
     /**
@@ -100,11 +109,11 @@ class BlogItemController extends Controller
     {
         $blogItem = BlogItem::withTrashed()->where('id', $id)->firstOrFail();
 
-         if ($blogItem->trashed()) {
-             $blogItem->forceDelete();
-         } else {
-             $blogItem->delete();
-         }
+        if ($blogItem->trashed()) {
+            $blogItem->forceDelete();
+        } else {
+            $blogItem->delete();
+        }
         // $blogItems = BlogItem::all();
 
         return new BlogItemResource($blogItem);
