@@ -22,6 +22,7 @@ class BlogItemResource extends JsonResource
             'user' => new UserResource($this->user),
             'body' => $this->body,
             'sort' => $this->sort,
+            'status' => $this->status,
         ];
     }
 }

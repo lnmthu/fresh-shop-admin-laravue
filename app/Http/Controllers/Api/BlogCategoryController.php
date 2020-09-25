@@ -2,25 +2,42 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Helpers\ResponseHelper;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BlogCategory\StoreBlogCategoryRequest;
 use App\Http\Requests\BlogCategory\UpdateBlogCategoryRequest;
 use App\Http\Resources\BlogCategoryResource;
-use App\Laravue\Models\BlogCategory;
+use App\Repositories\BlogCategory\BlogCategoryRepositoryInterface;
 use Illuminate\Http\Request;
 
 class BlogCategoryController extends Controller
 {
+    private $blogCategoryRepository;
+
+    private $responseHelper;
+
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * BlogCategoryController constructor.
+     * @param BlogCategoryRepositoryInterface $blogCategoryRepository
+     * @param ResponseHelper $responseHelper
      */
-    public function index()
+    public function __construct(BlogCategoryRepositoryInterface $blogCategoryRepository, ResponseHelper $responseHelper)
     {
-        // $blogCategories = BlogCategory::all();
-        $blogCategories = BlogCategory::orderBy('sort', 'ASC')->paginate(15);
-// dd(BlogCategory::first()->blogItems()->get());
+        $this->blogCategoryRepository = $blogCategoryRepository;
+
+        $this->responseHelper = $responseHelper;
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function index(Request $request)
+    {
+        $params = $request->all();
+
+        $blogCategories = $this->blogCategoryRepository->getAllPaginate($params);
+
         return BlogCategoryResource::collection($blogCategories);
     }
 
@@ -35,38 +52,33 @@ class BlogCategoryController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreBlogCategoryRequest $request
+     * @return BlogCategoryResource
      */
     public function store(StoreBlogCategoryRequest $request)
     {
         $data = $request->validated();
 
-        $blogCategory = BlogCategory::create($data);
+        $blogCategory = $this->blogCategoryRepository->create($data);
 
         return new BlogCategoryResource($blogCategory);
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return BlogCategoryResource
      */
     public function show($id)
     {
-        // need to change to findorfail
-        // $blogCategory = BlogCategory::findOrFail($id);
-        $blogCategory = BlogCategory::findOrFail($id);
+        $blogCategory = $this->blogCategoryRepository->findById($id);
+
         return new BlogCategoryResource($blogCategory);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -77,54 +89,47 @@ class BlogCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBlogCategoryRequest $request, BlogCategory $blogCategory)
+    public function update(UpdateBlogCategoryRequest $request,  $id)
     {
         $data = $request->validated();
-        // BlogCategory::create($data);
-        // $blogCategory = BlogCategory::find($id)->update($data);
 
-        $blogCategory->update($data);
+        $blogCategory = $this->blogCategoryRepository->update($data, $id);
 
         return new BlogCategoryResource($blogCategory);
     }
 
     /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param $id
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-//        $blogCategory->delete();
-         $blogCategory = BlogCategory::withTrashed()->where('id', $id)->firstOrFail();
+        $blogCategory = $this->blogCategoryRepository->delete($id);
 
-         if ($blogCategory->trashed()) {
-             $blogCategory->forceDelete();
-         } else {
-             $blogCategory->delete();
-         }
-        // $blogCategories = BlogCategory::all();
-
-        return new BlogCategoryResource($blogCategory);
+        return $this->responseHelper->successResponse(true, 'Blog Category has been trashed!', $blogCategory);
     }
 
+    /**
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
     public function trashed()
     {
-        $trashed = BlogCategory::onlyTrashed()->get();
+        $trashed = $this->blogCategoryRepository->getAllTrash();
 
         return BlogCategoryResource::collection($trashed);
     }
 
+    /**
+     * @param $id
+     * @return BlogCategoryResource
+     */
     public function restore($id)
     {
-        $blogCategory = BlogCategory::withTrashed()->where('id', $id)->firstOrFail();
-
-        $blogCategory->restore();
+        $blogCategory = $this->blogCategoryRepository->restore($id);
 
         return new BlogCategoryResource($blogCategory);
     }

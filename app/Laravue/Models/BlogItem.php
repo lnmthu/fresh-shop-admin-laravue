@@ -11,6 +11,8 @@ class BlogItem extends Model implements HasMedia
 {
     use SoftDeletes, HasMediaTrait;
 
+    use HasMediaTrait;
+
     protected $fillable = [
         'title', 'description', 'body', 'sort', 'user_id', 'blog_category_id', 'status'
     ];

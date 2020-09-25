@@ -37,14 +37,29 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="350">
+      <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.status | statusFilter">
+            {{ scope.row.status | statusWordFilter }}
+          </el-tag>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="Actions" width="350" class-name="small-padding fixed-width">
         <template slot-scope="scope">
 
           <router-link :to="'/blogs/item/edit/'+scope.row.id">
-            <el-button type="primary" size="small" icon="el-icon-edit">
+            <el-button type="primary" size="small" icon="el-icon-edit" style="margin-right: 10px">
               Edit
             </el-button>
           </router-link>
+
+          <el-button v-if="scope.row.status!='1'" size="small" type="success" icon="el-icon-caret-top" @click="handleActiveStatus(scope.row.id,'1')">
+            Activate
+          </el-button>
+          <el-button v-if="scope.row.status!='0'" size="small" type="info" icon="el-icon-caret-bottom" @click="handleDeactivateStatus(scope.row.id,'0')">
+            Deactivate
+          </el-button>
 
           <el-button type="danger" size="small" icon="el-icon-delete" @click="handleDelete(scope.row.id, scope.row.title)">
             Trash
@@ -71,9 +86,15 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'info',
-        deleted: 'danger',
+        1: 'success',
+        0: 'info',
+      };
+      return statusMap[status];
+    },
+    statusWordFilter(status) {
+      const statusMap = {
+        1: 'Activate',
+        0: 'Deactivate',
       };
       return statusMap[status];
     },
@@ -87,6 +108,7 @@ export default {
         page: 1,
         limit: 20,
       },
+      statusOptions: ['Activate', 'Deactivate'],
     };
   },
   created() {
@@ -104,6 +126,34 @@ export default {
       });
       this.total = meta.total;
       this.listLoading = false;
+    },
+    handleDeactivateStatus(id, status) {
+      blogItemResource
+        .deactivate(id)
+        .then((response) => {
+          this.$message({
+            message: 'Deactivated Status',
+            type: 'success',
+          });
+          this.getList();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    handleActiveStatus(id) {
+      blogItemResource
+        .activate(id)
+        .then((response) => {
+          this.$message({
+            message: 'Activated Status',
+            type: 'success',
+          });
+          this.getList();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
     handleDelete(id, title) {
       this.$confirm(

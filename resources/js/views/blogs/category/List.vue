@@ -207,11 +207,19 @@ export default {
           blogCategoryResource
             .destroy(id)
             .then((response) => {
-              this.$message({
-                type: 'success',
-                message: 'Trash completed',
-              });
-              this.handleFilter();
+              if (response.data.data === false) {
+                this.$message({
+                  type: 'error',
+                  message: 'Cannot trash this category because it has some blogs',
+                });
+                this.handleFilter();
+              } else {
+                this.$message({
+                  type: 'success',
+                  message: 'Trash completed',
+                });
+                this.handleFilter();
+              }
             })
             .catch((error) => {
               console.log(error);

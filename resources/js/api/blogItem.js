@@ -18,6 +18,18 @@ class BlogItemResource extends Resource {
       method: 'put',
     });
   }
+  deactivate(id) {
+    return request({
+      url: '/deactivate/' + this.uri + '/' + id,
+      method: 'put',
+    });
+  }
+  activate(id) {
+    return request({
+      url: '/activate/' + this.uri + '/' + id,
+      method: 'put',
+    });
+  }
 }
 
 export { BlogItemResource as default };

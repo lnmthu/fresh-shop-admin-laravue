@@ -23,11 +23,16 @@ Route::namespace('Api')->group(function() {
     Route::apiResource('blog-categories', 'BlogCategoryController');
     Route::apiResource('blog-items', 'BlogItemController');
 
-    // custom Blog routes
+    // custom Blog Category routes
     Route::get('trashed/blog-categories', 'BlogCategoryController@trashed');
     Route::put('restore/blog-categories/{blog_category}', 'BlogCategoryController@restore');
+    // custom Blog Item routes
     Route::get('trashed/blog-items', 'BlogItemController@trashed');
     Route::put('restore/blog-items/{blog_item}', 'BlogItemController@restore');
+    Route::put('status/blog-items/{blog_item}', 'BlogItemController@updateStatus');
+
+    Route::put('deactivate/blog-items/{blog_item}', 'BlogItemController@deactivate');
+    Route::put('activate/blog-items/{blog_item}', 'BlogItemController@activate');
 
     Route::post('auth/login', 'AuthController@login');
     Route::group(['middleware' => 'auth:sanctum'], function () {

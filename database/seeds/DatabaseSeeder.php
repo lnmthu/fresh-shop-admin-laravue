@@ -4,6 +4,7 @@ use App\Laravue\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use App\Laravue\Models\Role;
+use App\Services\BlogItemService;
 
 class DatabaseSeeder extends Seeder
 {
@@ -51,5 +52,7 @@ class DatabaseSeeder extends Seeder
         $user->syncRoles($userRole);
         $visitor->syncRoles($visitorRole);
         $this->call(UsersTableSeeder::class);
+        $this->call(BlogCategorySeeder::class);
+        $this->call(BlogItemSeeder::class);
     }
 }
