@@ -37,7 +37,7 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label="Category" prop="blog_category_id">
-                    <el-select v-model="form.blog_category_id" class="filter-item" placeholder="Please select Category">
+                    <el-select v-model="form.category.id" class="filter-item" placeholder="Please select Category">
                       <el-option v-for="item in blogCategoryList" :key="item.id" :label="item.title | uppercaseFirst" :value="item.id" />
                     </el-select>
                   </el-form-item>
@@ -45,7 +45,7 @@
 
                 <el-col :span="10">
                   <el-form-item label="User" prop="user_id">
-                    <el-select v-model="form.user_id" class="filter-item" placeholder="Please select User">
+                    <el-select v-model="form.user.id" class="filter-item" placeholder="Please select User">
                       <el-option v-for="item in userList" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
                     </el-select>
                   </el-form-item>
@@ -57,7 +57,6 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              @/div>
             </div>
           </el-col>
         </el-row>
@@ -230,6 +229,7 @@ export default {
         .get(id)
         .then((response) => {
           this.form = response.data;
+          console.log(response.data);
         })
         .catch((err) => {
           console.log(err);
