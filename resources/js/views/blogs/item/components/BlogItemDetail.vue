@@ -10,7 +10,7 @@
             Update
           </el-button>
           <el-button v-loading="loading" type="warning" @click="draftForm">
-            Draft
+            Reset
           </el-button>
         </div>
 
@@ -19,7 +19,7 @@
             Create
           </el-button>
           <el-button v-loading="loading" type="warning" @click="draftForm">
-            Draft
+            Reset
           </el-button>
         </div>
       </sticky>
@@ -36,7 +36,7 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label="Category" prop="blog_category_id">
+                  <el-form-item label="Category" prop="category[id]">
                     <el-select v-model="form.category.id" class="filter-item" placeholder="Please select Category">
                       <el-option v-for="item in blogCategoryList" :key="item.id" :label="item.title | uppercaseFirst" :value="item.id" />
                     </el-select>
@@ -44,7 +44,7 @@
                 </el-col>
 
                 <el-col :span="10">
-                  <el-form-item label="User" prop="user_id">
+                  <el-form-item label="User" prop="user[id]">
                     <el-select v-model="form.user.id" class="filter-item" placeholder="Please select User">
                       <el-option v-for="item in userList" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
                     </el-select>
@@ -97,11 +97,11 @@ const userResource = new UserResource();
 const defaultForm = {
   title: '',
   description: '',
-  user_id: '',
-  blog_category_id: '',
-  category: '',
+  category: [],
+  user: [],
+  // blog_category_id: 'category: []',
+  // user_id: form.user.id,
   body: '',
-  user: '',
   sort: '',
   image: '',
 };
@@ -126,6 +126,7 @@ export default {
       form: Object.assign({}, defaultForm),
       loading: false,
       userListOptions: [],
+      // attributes: { title: form.title, description: form.description },
       rules: {
         title: [
           { required: true, message: 'Title is required', trigger: 'change' },
@@ -144,20 +145,24 @@ export default {
             trigger: 'change',
           },
         ],
-        user_id: [
-          {
-            required: true,
-            message: 'User is required',
-            trigger: 'blur',
-          },
-        ],
-        blog_category_id: [
-          {
-            required: true,
-            message: 'Category is required',
-            trigger: 'blur',
-          },
-        ],
+        user: {
+          id: [
+            {
+              required: true,
+              message: 'User is required',
+              trigger: 'blur',
+            },
+          ],
+        },
+        category: {
+          id: [
+            {
+              required: true,
+              message: 'Category is required',
+              trigger: 'blur',
+            },
+          ],
+        },
         sort: [
           {
             required: true,
@@ -169,17 +174,28 @@ export default {
             message: 'Must be all numbers, greater than or equals 0',
             trigger: 'blur',
           },
-          // {
-          //   // type: 'number',
-          //   min: 0,
-          //   // max: 10,
-          //   message: 'Sort must be at least 0',
-          //   trigger: 'blur',
-          // },
         ],
       },
       blogCategoryList: {},
       userList: {},
+      attributes: {
+        title: '',
+        desciption: '',
+        blog_category_id: '',
+        user_id: '',
+        body: '',
+        sort: '',
+        image: '',
+      },
+      // attributes: {
+      //   title: this.form.title,
+      //   desciption: this.form.description,
+      //   blog_category_id: this.form.category.id,
+      //   user_id: this.form.user.id,
+      //   body: this.form.body,
+      //   sort: this.form.sort,
+      //   image: this.form.image,
+      // },
       currentUserId: 0,
       currentUser: {
         name: 's',
@@ -239,9 +255,19 @@ export default {
       this.$refs['postForm'].validate((valid) => {
         if (valid) {
           this.loading = true;
-          // console.log(this.newUser);
+
+          this.attributes.title = this.form.title;
+          this.attributes.description = this.form.description;
+          this.attributes.blog_category_id = this.form.category.id;
+          this.attributes.user_id = this.form.user.id;
+          this.attributes.body = this.form.body;
+          this.attributes.sort = this.form.sort;
+          this.attributes.image = this.form.image;
+
+          console.log(this.form);
+          console.log(this.attributes);
           blogItemResource
-            .store(this.form)
+            .store(this.attributes)
             .then((response) => {
               this.$router.push({ name: 'BlogItemList' });
               this.$message({
@@ -272,8 +298,17 @@ export default {
       this.$refs['postForm'].validate((valid) => {
         if (valid) {
           this.loading = true;
+
+          this.attributes.title = this.form.title;
+          this.attributes.description = this.form.description;
+          this.attributes.blog_category_id = this.form.category.id;
+          this.attributes.user_id = this.form.user.id;
+          this.attributes.body = this.form.body;
+          this.attributes.sort = this.form.sort;
+          this.attributes.image = this.form.image;
+
           blogItemResource
-            .update(this.form.id, this.form)
+            .update(this.form.id, this.attributes)
             .then((response) => {
               this.$router.push({ name: 'BlogItemList' });
               this.$message({
@@ -299,20 +334,16 @@ export default {
       });
     },
     draftForm() {
-      if (this.form.content.length === 0 || this.form.title.length === 0) {
-        this.$message({
-          message: 'Please enter required title and content',
-          type: 'warning',
-        });
-        return;
-      }
-      this.$message({
-        message: 'Successfully saved',
-        type: 'success',
-        showClose: true,
-        duration: 1000,
-      });
-      this.form.status = 'draft';
+      console.log(this.form);
+      this.attributes = this.form.title;
+      console.log(this.attributes);
+
+      // this.form.category.id = '';
+      // this.form.user.id = '';
+      // this.form.description = '';
+      // this.form.sort = '';
+      // this.form.body = '';
+      // this.form.image = '';
     },
     getRemoteUserList(query) {
       userSearch(query).then((response) => {

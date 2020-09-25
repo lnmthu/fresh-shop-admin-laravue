@@ -21,17 +21,20 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
         parent::__construct($model);
     }
 
-    public function createBlogItem(array $newData)
+    public function create(array $data)
     {
-        try {
-            $newBlogItem = new BlogItem();
-            $newBlogItem->fill($newData);
-            $newBlogItem->save();
+        $model = $this->model->create($data);
 
-            return $newBlogItem;
-        } catch (\Exception $e) {
-            return $e->getMessage();
+        if (isset($data['image'])) {
+            $image = $data['image'];
+            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            Image::make($data['image'])->resize(150, 120)->save($name);
+            $model
+                ->addMedia($name)
+                ->toMediaCollection();
         }
+
+        return $model;
     }
 
     public function getAllPaginate(array $params)

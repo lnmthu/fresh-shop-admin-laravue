@@ -1,15 +1,16 @@
 <template>
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="ID">
+
+      <el-table-column align="center" label="Index" width="80">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.index }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Image">
+      <el-table-column align="center" label="ID">
         <template slot-scope="scope">
-          <img :src="scope.row.image" alt="" srcset="">
+          <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
 
@@ -40,6 +41,12 @@
       <el-table-column align="center" label="Position">
         <template slot-scope="scope">
           <span>{{ scope.row.sort }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="Image">
+        <template slot-scope="scope">
+          <img :v-if="scope.row.image" :src="scope.row.image" alt="" srcset="">
         </template>
       </el-table-column>
 

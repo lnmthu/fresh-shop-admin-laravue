@@ -16,6 +16,7 @@ const blogsRoutes = {
       path: 'category',
       component: () => import('@/views/blogs/index'), // Parent router-view
       name: 'BlogCategories',
+      redirect: 'noredirect',
       meta: { title: 'Blog Categories', icon: 'form' },
       children: [
         {
@@ -36,6 +37,7 @@ const blogsRoutes = {
       path: 'item',
       component: () => import('@/views/blogs/index'), // Parent router-view
       name: 'BlogItems',
+      redirect: 'noredirect',
       meta: { title: 'Blog Items', icon: 'form' },
       children: [
         {
