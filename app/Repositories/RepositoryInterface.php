@@ -6,7 +6,7 @@ interface RepositoryInterface
 {
     public function getAll();
 
-    public function paginate($limit = null, $columns = ('*'));
+    public function getAllPaginate(array $params);
 
     public function findById(int $id);
 

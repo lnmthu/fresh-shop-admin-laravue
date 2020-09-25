@@ -54,5 +54,9 @@ class DatabaseSeeder extends Seeder
         $this->call(UsersTableSeeder::class);
         $this->call(BlogCategorySeeder::class);
         $this->call(BlogItemSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(ProductSeeder::class);
+        $this->call(TransactionSeeder::class);
+        $this->call(OrderPermission::class);
     }
 }

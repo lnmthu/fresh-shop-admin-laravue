@@ -1,9 +1,18 @@
 import request from '@/utils/request';
+import Resource from '@/api/resource';
 
-export function fetchList(query) {
-  return request({
-    url: '/orders',
-    method: 'get',
-    params: query,
-  });
+class OrderResource extends Resource {
+  constructor() {
+    super('orders');
+  }
+
+  processOrder(id, resource) {
+    return request({
+      url: '/' + this.uri + '/' + id + '/status',
+      method: 'put',
+      data: resource,
+    });
+  }
 }
+
+export { OrderResource as default };

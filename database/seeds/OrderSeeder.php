@@ -12,5 +12,6 @@ class OrderSeeder extends Seeder
     public function run()
     {
         //
+        factory(\App\Laravue\Models\Order::class, 10)->create();
     }
 }

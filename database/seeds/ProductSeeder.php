@@ -12,5 +12,6 @@ class ProductSeeder extends Seeder
     public function run()
     {
         //
+        factory(\App\Laravue\Models\Product::class, 10)->create();
     }
 }

@@ -18,23 +18,11 @@ use \App\Laravue\Acl;
 |
 */
 
-Route::namespace('Api')->group(function() {
-    // Api Blogs resource routes
-    Route::apiResource('blog-categories', 'BlogCategoryController');
-    Route::apiResource('blog-items', 'BlogItemController');
-
-    // custom Blog Category routes
-    Route::get('trashed/blog-categories', 'BlogCategoryController@trashed');
-    Route::put('restore/blog-categories/{blog_category}', 'BlogCategoryController@restore');
-    // custom Blog Item routes
-    Route::get('trashed/blog-items', 'BlogItemController@trashed');
-    Route::put('restore/blog-items/{blog_item}', 'BlogItemController@restore');
-    Route::put('status/blog-items/{blog_item}', 'BlogItemController@updateStatus');
-
-    Route::put('deactivate/blog-items/{blog_item}', 'BlogItemController@deactivate');
-    Route::put('activate/blog-items/{blog_item}', 'BlogItemController@activate');
+Route::namespace('Api')->group(function () {
 
     Route::post('auth/login', 'AuthController@login');
+    Route::post('transactions/charge-card', 'TransactionController@chargeCard');
+    
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
         Route::get('auth/user', 'AuthController@user');
@@ -44,6 +32,20 @@ Route::namespace('Api')->group(function() {
             return new UserResource($request->user());
         });
 
+        // Api Blogs resource routes
+        Route::apiResource('blog-categories', 'BlogCategoryController');
+        Route::apiResource('blog-items', 'BlogItemController');
+
+        // custom Blog Category routes
+        Route::get('trashed/blog-categories', 'BlogCategoryController@trashed');
+        Route::put('restore/blog-categories/{blog_category}', 'BlogCategoryController@restore');
+        // custom Blog Item routes
+        Route::get('trashed/blog-items', 'BlogItemController@trashed');
+        Route::put('restore/blog-items/{blog_item}', 'BlogItemController@restore');
+
+        Route::put('deactivate/blog-items/{blog_item}', 'BlogItemController@deactivate');
+        Route::put('activate/blog-items/{blog_item}', 'BlogItemController@activate');
+
         // Api resource routes
         Route::apiResource('roles', 'RoleController')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::apiResource('users', 'UserController')->middleware('permission:' . Acl::PERMISSION_USER_MANAGE);
@@ -52,8 +54,14 @@ Route::namespace('Api')->group(function() {
         // Custom routes
         Route::put('users/{user}', 'UserController@update');
         Route::get('users/{user}/permissions', 'UserController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
-        Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' .Acl::PERMISSION_PERMISSION_MANAGE);
+        Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
+
+        // Order routes
+        Route::get('orders-deleted/', 'OrderController@getAllDeleted')->middleware('permission:manage order');
+        Route::put('orders/{order}/status', 'OrderController@processOrder')->middleware('permission:manage order');
+        Route::put('transactions/{transaction}', 'TransactionController@processTransaction')->middleware('permission:manage order');
+        Route::apiResource('orders', 'OrderController')->except(['update'])->middleware('permission:manage order');;
     });
 });
 
@@ -77,21 +85,21 @@ Route::get('/table/list', function () {
     return response()->json(new JsonResponse(['items' => $data]));
 });
 
-Route::get('/orders', function () {
-    $rowsNumber = 8;
-    $data = [];
-    for ($rowIndex = 0; $rowIndex < $rowsNumber; $rowIndex++) {
-        $row = [
-            'order_no' => 'LARAVUE' . mt_rand(1000000, 9999999),
-            'price' => mt_rand(10000, 999999),
-            'status' => Faker::randomInArray(['success', 'pending']),
-        ];
+// Route::get('/orders', function () {
+//     $rowsNumber = 8;
+//     $data = [];
+//     for ($rowIndex = 0; $rowIndex < $rowsNumber; $rowIndex++) {
+//         $row = [
+//             'order_no' => 'LARAVUE' . mt_rand(1000000, 9999999),
+//             'price' => mt_rand(10000, 999999),
+//             'status' => Faker::randomInArray(['success', 'pending']),
+//         ];
 
-        $data[] = $row;
-    }
+//         $data[] = $row;
+//     }
 
-    return response()->json(new JsonResponse(['items' => $data]));
-});
+//     return response()->json(new JsonResponse(['items' => $data]));
+// });
 
 Route::get('/articles', function () {
     $rowsNumber = 10;

@@ -3,10 +3,12 @@
 namespace App\Repositories;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class BaseRepository implements RepositoryInterface
 {
     protected $model;
+    const ITEM_PER_PAGE = 15;
 
     public function __construct(Model $model)
     {
@@ -18,11 +20,10 @@ class BaseRepository implements RepositoryInterface
         return $this->model->all();
     }
 
-    public function paginate($limit = null, $columns = ('*'))
+    public function getAllPaginate(array $params)
     {
-        $limit = is_null($limit) ? config('repository.pagination.limit', 15) : $limit;
-
-        return $this->model->paginate($limit, $columns);
+        $limit = Arr::get($params, 'limit', static::ITEM_PER_PAGE);
+        return $this->model->paginate($limit);
     }
 
     public function findById(int $id)
