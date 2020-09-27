@@ -170,7 +170,7 @@ export default {
       this.loading = false;
     },
     async getCategoryList() {
-      const { data } = await categoryResource.list({});
+      const { data } = await categoryResource.getListWithTrash();
       this.categoryList = data;
       console.log(data);
     },

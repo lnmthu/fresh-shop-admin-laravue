@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-table :data="list" border fit highlight-current-row>
+    <el-table :data="listPaginated" border fit highlight-current-row>
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -26,19 +26,21 @@
               v-if="scope.row.image_uri"
               :src="scope.row.image_uri"
               class="image"
-              style="width:500px"
+              style="width: 500px"
             />
           </h3>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Sort" width="110">
-        <template slot-scope="{row}">
+        <template slot-scope="{ row }">
           <el-tag :type="row.sort | Filter">{{ getSort(row.sort) }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="Status" width="110">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | Filter">{{ getStatus(row.status) }}</el-tag>
+        <template slot-scope="{ row }">
+          <el-tag :type="row.status | Filter">{{
+            getStatus(row.status)
+          }}</el-tag>
         </template>
       </el-table-column>
       <!--Edit and delete -->
@@ -49,7 +51,7 @@
         width="150"
       >
         <template slot-scope="scope">
-          <router-link :to="'/categories/edit/'+scope.row.id">
+          <router-link :to="'/categories/edit/' + scope.row.id">
             <el-button
               v-permission="['manage category']"
               type="primary"
@@ -62,18 +64,18 @@
             type="danger"
             size="small"
             icon="el-icon-delete"
-            @click="handleDelete(scope.row.id, scope.row.name);"
+            @click="handleDelete(scope.row.id, scope.row.name)"
           >Delete</el-button>
         </template>
       </el-table-column>
       <!--End Edit and delete -->
     </el-table>
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
-      @pagination="getList"
+      @pagination="getListPaginated"
     />
   </div>
 </template>
@@ -99,7 +101,8 @@ export default {
   }, // use permission directive
   data() {
     return {
-      list: [],
+      listPaginated: [],
+      listTrashed: [],
       total: 0,
       loading: true,
       listQuery: {
@@ -109,13 +112,14 @@ export default {
     };
   },
   created() {
-    this.getList();
+    this.getListPaginated();
+    this.getListTrashed();
   },
   methods: {
     checkPermission,
     getParentId($parentId) {
       let result = '';
-      this.list.forEach((element) => {
+      this.listTrashed.forEach((element) => {
         if (element.id === $parentId) {
           result = element.name;
         }
@@ -141,13 +145,16 @@ export default {
       return result;
     },
     // list
-    async getList() {
+    async getListPaginated() {
       this.loading = true;
       const { data, meta } = await categoryResource.list(this.listQuery);
-      console.log(data);
-      this.list = data;
+      this.listPaginated = data;
       this.total = meta.total;
       this.loading = false;
+    },
+    async getListTrashed() {
+      const { data } = await categoryResource.getListWithTrash();
+      this.listTrashed = data;
     },
     // delete
     handleDelete(id, name) {
@@ -168,7 +175,7 @@ export default {
                 type: 'success',
                 message: 'Delete completed',
               });
-              this.getList();
+              this.getListPaginated();
             })
             .catch((error) => {
               console.log(error);

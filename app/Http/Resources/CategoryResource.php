@@ -14,10 +14,6 @@ class CategoryResource extends JsonResource
      */
     public function toArray($request)
     {
-        $image_uri=null;
-        if ($this->getFirstMedia('images') != null) {
-            $image_uri=$this->getFirstMedia('images')->getUrl();
-        };
         return [
             'id' => $this->id,
             'name' => $this->name,
@@ -25,7 +21,7 @@ class CategoryResource extends JsonResource
             'description' => $this->description,
             'sort' => $this->sort,
             'status' => $this->status,
-            'image_uri' => $image_uri,
+            'image_uri' => $this->getFirstMediaUrl('images'),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

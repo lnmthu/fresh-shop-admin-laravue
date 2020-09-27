@@ -6,12 +6,6 @@ use Illuminate\Http\Request;
 interface CategoryRepositoryInterface
 {
     /**
-     * getCategory
-     * @param $request
-     * @return mixed
-     */
-    public function getCategory(Request $request);
-    /**
     * storeCategory
     * @param $request
     * @return mixed
@@ -20,13 +14,14 @@ interface CategoryRepositoryInterface
     /**
      * updateCategory
      * @param $request
+     * @param $id
      * @return bool|mixed
      */
-    public function updateCategory(Request $request,object $category);
+    public function updateCategory(Request $request,$id);
     /**
      * Delete
-     * @param object $model;
+     * @param $id;
      * @return bool
      */
-    public function deleteCategory(object $model);
+    public function deleteCategory($id);
 }

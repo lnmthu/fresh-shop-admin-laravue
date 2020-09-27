@@ -15,4 +15,11 @@ class Product extends Model implements HasMedia
     public function category(){
         return $this->belongsTo('App/Category','category_id','id');
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany('App\Laravue\Models\Order', 'order_items', 'product_id', 'order_id')
+            ->withPivot('qty', 'price', 'product_name', 'product_sku', 'product_description')
+            ->withTimestamps();
+    }
 }
