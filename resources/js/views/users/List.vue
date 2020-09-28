@@ -289,6 +289,7 @@ export default {
         limit: 15,
         keyword: '',
         role: '',
+        viewAllUser: 0,
       },
       roles: ['admin', 'manager', 'editor', 'user', 'visitor'],
       nonAdminRoles: ['editor', 'user', 'visitor'],
