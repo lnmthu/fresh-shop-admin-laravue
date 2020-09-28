@@ -14,8 +14,12 @@ class BlogItemResource extends JsonResource
      */
     public function toArray($request)
     {
-        if ($this->getFirstMedia() != null) {
-            $image = $this->getFirstMedia()->getUrl();
+        if ($this->getFirstMedia('blog') != null) {
+            if( $this->getFirstMedia('blog')->hasGeneratedConversion('blog')){
+                $image = $this->getFirstMedia('blog')->getUrl('blog');
+            }else{
+                $image = $this->getFirstMedia('blog')->getUrl();
+            }
         } else {
             $image = '';
         }

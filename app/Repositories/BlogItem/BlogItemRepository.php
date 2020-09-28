@@ -7,6 +7,7 @@ use App\Laravue\Models\BlogItem;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Arr;
 use Intervention\Image\Facades\Image;
+use Spatie\MediaLibrary\Models\Media;
 
 class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInterface
 {
@@ -23,18 +24,21 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
 
     public function create(array $data)
     {
-        $model = $this->model->create($data);
+        $blogItem = $this->model->create($data);
 
-        if (isset($data['image'])) {
+        $image = isset($data['image']);
+
+        if ($image) {
             $image = $data['image'];
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            Image::make($data['image'])->resize(150, 120)->save($name);
-            $model
+            // $path = public_path('images/');
+            Image::make($data['image'])->save($name);
+            $blogItem
                 ->addMedia($name)
-                ->toMediaCollection();
+                ->toMediaCollection('blog');
         }
 
-        return $model;
+        return $blogItem;
     }
 
     public function getAllPaginate(array $params)

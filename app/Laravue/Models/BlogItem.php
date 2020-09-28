@@ -4,6 +4,7 @@ namespace App\Laravue\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\Models\Media;
 use Spatie\MediaLibrary\HasMedia\HasMedia;
 use Spatie\MediaLibrary\HasMedia\HasMediaTrait;
 
@@ -26,4 +27,22 @@ class BlogItem extends Model implements HasMedia
     {
         return $this->belongsTo(User::class);
     }
+
+    public function registerMediaCollections()
+    {
+        $this->addMediaCollection('blog')
+            ->registerMediaConversions(function (Media $media) {
+                $this
+                    ->addMediaConversion('blog')
+                    ->width(150)
+                    ->height(120);
+            });
+    }
+
+    // public function registerMediaConversions()
+    // {
+    //     $this->addMediaConversion('blog')
+    //         ->width(368)
+    //         ->height(232);
+    // }
 }
