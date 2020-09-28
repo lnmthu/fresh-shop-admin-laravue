@@ -169,7 +169,6 @@ export default {
         .get(id)
         .then((response) => {
           this.postForm = response.data;
-          console.log(this.postForm);
           // Set tagsview title
           this.setTagsViewTitle();
         })

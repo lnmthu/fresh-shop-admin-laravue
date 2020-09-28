@@ -151,7 +151,6 @@ export default {
               type: 'success',
               duration: 5 * 1000,
             });
-            console.log(this.postForm);
             this.postForm = {
               name: '',
               parent_id: null,

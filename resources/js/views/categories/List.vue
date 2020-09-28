@@ -26,7 +26,6 @@
               v-if="scope.row.image_uri"
               :src="scope.row.image_uri"
               class="image"
-              style="width: 500px"
             />
           </h3>
         </template>

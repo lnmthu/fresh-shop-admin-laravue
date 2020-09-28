@@ -20,6 +20,7 @@
     ],
     "require": {
         "php": "^7.2.5",
+        "ext-exif": "^7.3",
         "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
