@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Laravue\Models\BlogCategory;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BlogCategoryResource extends JsonResource
@@ -18,6 +19,7 @@ class BlogCategoryResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
+            'child_count' => $this->blogItems->count(),
             'sort' => $this->sort,
         ];
     }

@@ -183,6 +183,7 @@ export default {
           blogItemResource
             .destroy(id)
             .then((response) => {
+              this.getList();
               this.$message({
                 type: 'success',
                 message: 'Trash completed',

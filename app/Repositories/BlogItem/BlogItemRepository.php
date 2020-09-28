@@ -45,22 +45,25 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
 
     public function update(array $data, $id)
     {
-        $result = $this->model->findOrFail($id);
+        $blogItem = $this->model->findOrFail($id);
 
-        if ($result) {
+        if ($blogItem) {
+            $oldImage =  $blogItem->getFirstMedia()->getPath();
 
             if (isset($data['image'])) {
                 $image = $data['image'];
                 $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
                 Image::make($data['image'])->resize(150, 120)->save($name);
-                $result
+                unlink($oldImage);
+                $blogItem->clearMediaCollection();
+                $blogItem
                     ->addMedia($name)
                     ->toMediaCollection();
             }
 
-            $result->update($data);
+            $blogItem->update($data);
 
-            return $result;
+            return $blogItem;
         }
 
         return false;

@@ -51,6 +51,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="Count blog items">
+        <template slot-scope="scope">
+          <span>{{ scope.row.child_count }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="Actions" width="350">
         <template slot-scope="{row}">
           <el-button type="primary" size="small" icon="el-icon-edit" @click="handleUpdate(row)">

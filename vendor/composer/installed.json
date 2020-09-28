@@ -4808,6 +4808,107 @@
         ]
     },
     {
+        "name": "spatie/pdf-to-image",
+        "version": "v2.x-dev",
+        "version_normalized": "2.9999999.9999999.9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/spatie/pdf-to-image.git",
+            "reference": "6718a89065c34dfadfbb2ca61eb1c3e6a956e503"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/spatie/pdf-to-image/zipball/6718a89065c34dfadfbb2ca61eb1c3e6a956e503",
+            "reference": "6718a89065c34dfadfbb2ca61eb1c3e6a956e503",
+            "shasum": ""
+        },
+        "require": {
+            "org_heigl/ghostscript": "^2.2",
+            "php": "^7.0"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^6.2",
+            "spatie/temporary-directory": "^1.1"
+        },
+        "time": "2017-06-20T05:58:45+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Spatie\\PdfToImage\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Freek Van der Herten",
+                "email": "freek@spatie.be",
+                "homepage": "https://spatie.be",
+                "role": "Developer"
+            }
+        ],
+        "description": "Convert a pdf to an image",
+        "homepage": "https://github.com/spatie/pdf-to-image",
+        "keywords": [
+            "convert",
+            "image",
+            "pdf",
+            "pdf-to-image",
+            "spatie"
+        ]
+    },
+    {
+        "name": "spatie/temporary-directory",
+        "version": "1.2.4",
+        "version_normalized": "1.2.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/spatie/temporary-directory.git",
+            "reference": "8efe8e61e0ca943d84341f10e51ef3a9606af932"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/spatie/temporary-directory/zipball/8efe8e61e0ca943d84341f10e51ef3a9606af932",
+            "reference": "8efe8e61e0ca943d84341f10e51ef3a9606af932",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^7.2"
+        },
+        "require-dev": {
+            "phpunit/phpunit": "^8.0"
+        },
+        "time": "2020-09-07T20:41:15+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Spatie\\TemporaryDirectory\\": "src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Alex Vanderbist",
+                "email": "alex@spatie.be",
+                "homepage": "https://spatie.be",
+                "role": "Developer"
+            }
+        ],
+        "description": "Easily create, use and destroy temporary directories",
+        "homepage": "https://github.com/spatie/temporary-directory",
+        "keywords": [
+            "spatie",
+            "temporary-directory"
+        ]
+    },
+    {
         "name": "stripe/stripe-php",
         "version": "v7.54.0",
         "version_normalized": "7.54.0.0",

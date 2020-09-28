@@ -33,6 +33,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="Image">
+        <template slot-scope="scope">
+          <img :v-if="scope.row.image" :src="scope.row.image" alt="" srcset="">
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="Actions" width="350">
         <template slot-scope="scope">
           <el-button type="success" size="small" icon="el-icon-caret-top" @click="handleRestore(scope.row.id, scope.row.title)">

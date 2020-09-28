@@ -36,20 +36,34 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
+                  <el-form-item label="Category" prop="blog_category_id">
+                    <el-select v-model="form.blog_category_id" class="filter-item" placeholder="Please select Category">
+                      <el-option v-for="item in blogCategoryList" :key="item.id" :label="item.title | uppercaseFirst" :value="item.id" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <!-- <el-col :span="8">
                   <el-form-item label="Category" prop="category[id]">
                     <el-select v-model="form.category.id" class="filter-item" placeholder="Please select Category">
                       <el-option v-for="item in blogCategoryList" :key="item.id" :label="item.title | uppercaseFirst" :value="item.id" />
                     </el-select>
                   </el-form-item>
-                </el-col>
+                </el-col> -->
 
                 <el-col :span="10">
+                  <el-form-item label="User" prop="user_id">
+                    <el-select v-model="form.user_id" class="filter-item" placeholder="Please select User">
+                      <el-option v-for="item in userList" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <!-- <el-col :span="10">
                   <el-form-item label="User" prop="user[id]">
                     <el-select v-model="form.user.id" class="filter-item" placeholder="Please select User">
                       <el-option v-for="item in userList" :key="item.id" :label="item.name | uppercaseFirst" :value="item.id" />
                     </el-select>
                   </el-form-item>
-                </el-col>
+                </el-col> -->
 
                 <el-col :span="6">
                   <el-form-item label-width="80px" label="Sort:" class="postInfo-container-item" prop="sort">
@@ -85,7 +99,6 @@ import Tinymce from '@/components/Tinymce';
 import Upload from '@/components/Upload/SingleImage';
 import MDinput from '@/components/MDinput';
 import Sticky from '@/components/Sticky'; // Sticky header
-import { userSearch } from '@/api/search';
 import UserResource from '@/api/user';
 import BlogItemResource from '@/api/blogItem';
 import BlogCategoryResource from '@/api/blogCategory';
@@ -99,8 +112,8 @@ const defaultForm = {
   description: '',
   category: [],
   user: [],
-  // blog_category_id: 'category: []',
-  // user_id: form.user.id,
+  blog_category_id: '',
+  user_id: '',
   body: '',
   sort: '',
   image: '',
@@ -125,8 +138,6 @@ export default {
       list: null,
       form: Object.assign({}, defaultForm),
       loading: false,
-      userListOptions: [],
-      // attributes: { title: form.title, description: form.description },
       rules: {
         title: [
           { required: true, message: 'Title is required', trigger: 'change' },
@@ -145,24 +156,38 @@ export default {
             trigger: 'change',
           },
         ],
-        user: {
-          id: [
-            {
-              required: true,
-              message: 'User is required',
-              trigger: 'blur',
-            },
-          ],
-        },
-        category: {
-          id: [
-            {
-              required: true,
-              message: 'Category is required',
-              trigger: 'blur',
-            },
-          ],
-        },
+        user_id: [
+          {
+            required: true,
+            message: 'User is required',
+            trigger: 'change',
+          },
+        ],
+        // user: {
+        //   id: [
+        //     {
+        //       required: true,
+        //       message: 'User is required',
+        //       trigger: 'blur',
+        //     },
+        //   ],
+        // },
+        blog_category_id: [
+          {
+            required: true,
+            message: 'Category is required',
+            trigger: 'change',
+          },
+        ],
+        // category: {
+        //   id: [
+        //     {
+        //       required: true,
+        //       message: 'Category is required',
+        //       trigger: 'blur',
+        //     },
+        //   ],
+        // },
         sort: [
           {
             required: true,
@@ -178,30 +203,15 @@ export default {
       },
       blogCategoryList: {},
       userList: {},
-      attributes: {
-        title: '',
-        desciption: '',
-        blog_category_id: '',
-        user_id: '',
-        body: '',
-        sort: '',
-        image: '',
-      },
       // attributes: {
-      //   title: this.form.title,
-      //   desciption: this.form.description,
-      //   blog_category_id: this.form.category.id,
-      //   user_id: this.form.user.id,
-      //   body: this.form.body,
-      //   sort: this.form.sort,
-      //   image: this.form.image,
+      //   title: '',
+      //   desciption: '',
+      //   blog_category_id: '',
+      //   user_id: '',
+      //   body: '',
+      //   sort: '',
+      //   image: '',
       // },
-      currentUserId: 0,
-      currentUser: {
-        name: 's',
-      },
-      tempUser: ['1', '2', '3'],
-      tempRoute: {},
     };
   },
   computed: {
@@ -216,36 +226,32 @@ export default {
     } else {
       this.form = Object.assign({}, defaultForm);
     }
-    this.getBlogCategoryList();
-    this.getUserList();
 
-    // Why need to make a copy of this.$route here?
-    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
-    this.tempRoute = Object.assign({}, this.$route);
+    // console.log(this.form.user_id);
+    // console.log(this.form.blog_category_id);
+    this.getBlogCategoryList();
+
+    this.getUserList();
   },
   methods: {
     async getBlogCategoryList() {
-      this.listLoading = true;
-      const { data } = await blogCategoryResource.list(this.listQuery);
+      const { data } = await blogCategoryResource.list();
       this.blogCategoryList = data;
       // console.log(this.blogCategoryList);
-
-      this.listLoading = false;
     },
     async getUserList() {
-      this.listLoading = true;
-      const { data } = await userResource.list(this.listQuery);
+      const { data } = await userResource.list();
       this.userList = data;
       // console.log(this.userList);
-
-      this.listLoading = false;
     },
     fetchData(id) {
       blogItemResource
         .get(id)
         .then((response) => {
           this.form = response.data;
-          console.log(response.data);
+          // console.log(this.form);
+          console.log(this.form.user_id);
+          console.log(this.form.blog_category_id);
         })
         .catch((err) => {
           console.log(err);
@@ -256,18 +262,18 @@ export default {
         if (valid) {
           this.loading = true;
 
-          this.attributes.title = this.form.title;
-          this.attributes.description = this.form.description;
-          this.attributes.blog_category_id = this.form.category.id;
-          this.attributes.user_id = this.form.user.id;
-          this.attributes.body = this.form.body;
-          this.attributes.sort = this.form.sort;
-          this.attributes.image = this.form.image;
+          // this.attributes.title = this.form.title;
+          // this.attributes.description = this.form.description;
+          // this.attributes.blog_category_id = this.form.category.id;
+          // this.attributes.user_id = this.form.user.id;
+          // this.attributes.body = this.form.body;
+          // this.attributes.sort = this.form.sort;
+          // this.attributes.image = this.form.image;
 
           console.log(this.form);
-          console.log(this.attributes);
+          // console.log(this.attributes);
           blogItemResource
-            .store(this.attributes)
+            .store(this.form)
             .then((response) => {
               this.$router.push({ name: 'BlogItemList' });
               this.$message({
@@ -299,16 +305,16 @@ export default {
         if (valid) {
           this.loading = true;
 
-          this.attributes.title = this.form.title;
-          this.attributes.description = this.form.description;
-          this.attributes.blog_category_id = this.form.category.id;
-          this.attributes.user_id = this.form.user.id;
-          this.attributes.body = this.form.body;
-          this.attributes.sort = this.form.sort;
-          this.attributes.image = this.form.image;
+          // this.attributes.title = this.form.title;
+          // this.attributes.description = this.form.description;
+          // this.attributes.blog_category_id = this.form.category.id;
+          // this.attributes.user_id = this.form.user.id;
+          // this.attributes.body = this.form.body;
+          // this.attributes.sort = this.form.sort;
+          // this.attributes.image = this.form.image;
 
           blogItemResource
-            .update(this.form.id, this.attributes)
+            .update(this.form.id, this.form)
             .then((response) => {
               this.$router.push({ name: 'BlogItemList' });
               this.$message({
@@ -334,24 +340,15 @@ export default {
       });
     },
     draftForm() {
-      console.log(this.form);
-      this.attributes = this.form.title;
-      console.log(this.attributes);
-
-      // this.form.category.id = '';
-      // this.form.user.id = '';
+      // console.log(this.form);
+      // this.attributes = this.form.title;
+      // console.log(this.attributes);
+      // this.form.category_id = '';
+      // this.form.user_id = '';
       // this.form.description = '';
       // this.form.sort = '';
       // this.form.body = '';
       // this.form.image = '';
-    },
-    getRemoteUserList(query) {
-      userSearch(query).then((response) => {
-        if (!response.data.items) {
-          return;
-        }
-        this.userListOptions = response.data.items.map((v) => v.name);
-      });
     },
   },
 };
