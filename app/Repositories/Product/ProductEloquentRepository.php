@@ -2,23 +2,19 @@
 
 namespace App\Repositories\Product;
 
-use App\Repositories\EloquentRepository;
+use App\Repositories\BaseRepository;
 use App\Repositories\Product\ProductRepositoryInterface;
 use Illuminate\Http\Request;
+use App\Laravue\Models\Product;
 
-class ProductEloquentRepository extends EloquentRepository implements ProductRepositoryInterface
+class ProductEloquentRepository extends BaseRepository implements ProductRepositoryInterface
 {
-    public function getModel()
+    protected $model;
+
+    public function __construct(Product $model)
     {
-        return \App\Laravue\Models\Product::class;
-    }
-    /**
-     * getCategory
-     * @param $request
-     * @return mixed
-     */
-    public function getProduct(Request $request){
-        return $this->getPaginate($request->limit ?? 10);
+        $this->model = $model;
+        parent::__construct($model);
     }
     /**
      * storeCategory
@@ -28,7 +24,7 @@ class ProductEloquentRepository extends EloquentRepository implements ProductRep
     public function storeProduct(Request $request)
     {
         $params = $request->all();
-        $product = $this->create([
+        $product = $this->store([
             'name' => $params['name'],
             'sku' => $params['sku'],
             'description' => $params['description'],
@@ -51,10 +47,10 @@ class ProductEloquentRepository extends EloquentRepository implements ProductRep
      * @param object $category
      * @return bool|mixed
      */
-    public function updateProduct(Request $request, object $product)
+    public function updateProduct(Request $request, $id)
     {
         $params = $request->all();
-        $product = $this->update($product, [
+        $product = $this->update($id, [
             'name' => $params['name'],
             'sku' => $params['sku'],
             'description' => $params['description'],
@@ -63,34 +59,35 @@ class ProductEloquentRepository extends EloquentRepository implements ProductRep
             'sort' => $params['sort'],
             'category_id' => $params['category_id'],
         ]);
-        $oldImage=$product->getFirstMedia('images')->getUrl();
-        if($oldImage){
+        $image = $request->get('image_uri');
+        $product = $this->findById($id);
+        $oldImage = $product->getFirstMediaUrl('images');
+        if ($oldImage && $oldImage !== $image) {
             unlink(public_path($oldImage));
             $product->clearMediaCollection('images');
         }
-        $image = $request->get('image_uri');
-        if ($image) {
+        if ($image && $image !== $oldImage) {
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($image)->save(public_path('images/') . $name);
             $product->addMedia(public_path('images/') . $name)->toMediaCollection('images');
         }
         return $product;
     }
-        /**
+    /**
      * Delete
      * @param object $model;
      * @return bool
      */
-    public function deleteProduct(object $product){
-        if($product){
-            $oldImage=$product->getFirstMedia('images')->getUrl();
-            if($oldImage){
+    public function deleteProduct($id)
+    {
+        $product = $this->findById($id);
+        $oldImage = $product->getFirstMediaUrl('images');
+        if ($oldImage) {
+            $product->clearMediaCollection('images');
+            if(file_exists(public_path($oldImage)))
                 unlink(public_path($oldImage));
-                $product->clearMediaCollection('images');
-            }
-            $this->delete($product);
-            return true;
         }
-        return false;
+        $product->delete();
+        return true;
     }
 }

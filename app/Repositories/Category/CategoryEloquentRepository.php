@@ -2,26 +2,20 @@
 
 namespace App\Repositories\Category;
 
-use App\Repositories\EloquentRepository;
+use App\Repositories\BaseRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
+use App\Laravue\Models\Category;
 
-class CategoryEloquentRepository extends EloquentRepository implements CategoryRepositoryInterface
+
+class CategoryEloquentRepository extends BaseRepository implements CategoryRepositoryInterface
 {
-    public function getModel()
+    protected $model;
+
+    public function __construct(Category $model)
     {
-        return \App\Laravue\Models\Category::class;
-    }
-    /**
-     * getCategory
-     * @param $request
-     * @return mixed
-     */
-    public function getCategory(Request $request)
-    {
-        $categories = $this->getPaginate($request->limit ?? 10);
-        return $categories;
+        $this->model = $model;
+        parent::__construct($model);
     }
     /**
      * storeCategory
@@ -31,7 +25,7 @@ class CategoryEloquentRepository extends EloquentRepository implements CategoryR
     public function storeCategory(Request $request)
     {
         $params = $request->all();
-        $category = $this->create([
+        $category = $this->store([
             'name' => $params['name'],
             'parent_id' => $params['parent_id'],
             'sort' => $params['sort'],
@@ -47,29 +41,29 @@ class CategoryEloquentRepository extends EloquentRepository implements CategoryR
         return $category;
     }
     /**
-     * Update
+     * updateCategory
      * @param $request
-     * @param object $category
+     * @param $id
      * @return bool|mixed
      */
-    public function updateCategory(Request $request, object $category)
+    public function updateCategory(Request $request, $id)
     {
         $params = $request->all();
-        $category = $this->update($category, [
+        $category = $this->update($id, [
             'name' => $params['name'],
             'parent_id' => $params['parent_id'],
             'sort' => $params['sort'],
             'status' => $params['status'],
             'description' => $params['description'],
         ]);
-        $oldImage=$category->getFirstMedia('images')->getUrl();
-        if($oldImage){
+        $image = $request->get('image_uri');
+        $category = $this->findById($id);
+        $oldImage = $category->getFirstMediaUrl('images');
+        if ($oldImage && $oldImage !== $image) {
             unlink(public_path($oldImage));
             $category->clearMediaCollection('images');
         }
-        $image = $request->get('image_uri');
-        if ($image) {
-            $category->clearMediaCollection('images');
+        if ($image && $image !== $oldImage) {
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($image)->save(public_path('images/') . $name);
             $category->addMedia(public_path('images/') . $name)->toMediaCollection('images');
@@ -77,20 +71,20 @@ class CategoryEloquentRepository extends EloquentRepository implements CategoryR
         return $category;
     }
     /**
-     * Delete
-     * @param object $model;
+     * deleteCategory
+     * @param $id;
      * @return bool
      */
-    public function deleteCategory(object $category){
-        if($category){
-            $oldImage=$category->getFirstMedia('images')->getUrl();
-            if($oldImage){
+    public function deleteCategory($id)
+    {
+        $category = $this->findById($id);
+        $oldImage = $category->getFirstMediaUrl('images');
+        if ($oldImage) {
+            $category->clearMediaCollection('images');
+            if(file_exists(public_path($oldImage)))
                 unlink(public_path($oldImage));
-                $category->clearMediaCollection('images');
-            }
-            $this->delete($category);
-            return true;
         }
-        return false;
+        $category->delete();
+        return true;
     }
 }

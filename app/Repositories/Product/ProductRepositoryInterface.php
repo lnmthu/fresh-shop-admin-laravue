@@ -6,12 +6,6 @@ use Illuminate\Http\Request;
 interface ProductRepositoryInterface
 {
     /**
-     * getCategory
-     * @param $request
-     * @return mixed
-     */
-    public function getProduct(Request $request);
-    /**
      * storeCategory
      * @param $request
      * @return mixed
@@ -20,13 +14,14 @@ interface ProductRepositoryInterface
     /**
      * updateCategory
      * @param $request
+     * @param $id
      * @return bool|mixed
      */
-    public function updateProduct(Request $request,object $category);
+    public function updateProduct(Request $request,$id);
         /**
-     * Delete
-     * @param object $model;
+     * deleteProduct
+     * @param $id;
      * @return bool
      */
-    public function deleteProduct(object $product);
+    public function deleteProduct($id);
 }

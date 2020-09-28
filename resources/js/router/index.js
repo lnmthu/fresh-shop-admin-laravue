@@ -23,7 +23,12 @@ import productRoutes from './modules/product';
 // import nestedRoutes from './modules/nested';
 // import errorRoutes from './modules/error';
 // import excelRoutes from './modules/excel';
+import permissionRoutes from './modules/permission';
+// import nestedRoutes from './modules/nested';
+import errorRoutes from './modules/error';
+import excelRoutes from './modules/excel';
 // import permissionRoutes from './modules/permission';
+import ordersRoutes from './modules/order';
 
 /**
  * Sub-menu only appear when children.length>=1
@@ -94,54 +99,57 @@ export const constantRoutes = [
       },
     ],
   },
-  // {
-  //   path: '/documentation',
-  //   component: Layout,
-  //   redirect: '/documentation/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/documentation/index'),
-  //       name: 'Documentation',
-  //       meta: { title: 'documentation', icon: 'documentation', noCache: true },
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: '/profile',
-  //   component: Layout,
-  //   redirect: '/profile/edit',
-  //   children: [
-  //     {
-  //       path: 'edit',
-  //       component: () => import('@/views/users/SelfProfile'),
-  //       name: 'SelfProfile',
-  //       meta: { title: 'userProfile', icon: 'user', noCache: true },
-  //     },
-  //   ],
-  // },
-  // {
-  //   path: '/guide',
-  //   component: Layout,
-  //   redirect: '/guide/index',
-  //   children: [
-  //     {
-  //       path: 'index',
-  //       component: () => import('@/views/guide/index'),
-  //       name: 'Guide',
-  //       meta: { title: 'guide', icon: 'guide', noCache: true },
-  //     },
-  //   ],
-  // },
+  {
+    path: '/documentation',
+    component: Layout,
+    hidden: true,
+    redirect: '/documentation/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/documentation/index'),
+        name: 'Documentation',
+        meta: { title: 'documentation', icon: 'documentation', noCache: true },
+      },
+    ],
+  },
+  {
+    path: '/profile',
+    component: Layout,
+    redirect: '/profile/edit',
+    children: [
+      {
+        path: 'edit',
+        component: () => import('@/views/users/SelfProfile'),
+        name: 'SelfProfile',
+        meta: { title: 'userProfile', icon: 'user', noCache: true },
+      },
+    ],
+  },
+  {
+    path: '/guide',
+    component: Layout,
+    redirect: '/guide/index',
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/guide/index'),
+        name: 'Guide',
+        meta: { title: 'guide', icon: 'guide', noCache: true },
+      },
+    ],
+  },
   // elementUiRoutes,
 ];
 
 export const asyncRoutes = [
-  // permissionRoutes,
+  permissionRoutes,
   // componentRoutes,
   // chartsRoutes,
   // nestedRoutes,
   // tableRoutes,
+  ordersRoutes,
   adminRoutes,
   categoryRoutes,
   productRoutes,
@@ -172,8 +180,8 @@ export const asyncRoutes = [
   //     },
   //   ],
   // },
-  // errorRoutes,
-  // excelRoutes,
+  errorRoutes,
+  excelRoutes,
   // {
   //   path: '/zip',
   //   component: Layout,
@@ -234,12 +242,13 @@ export const asyncRoutes = [
   { path: '*', redirect: '/404', hidden: true },
 ];
 
-const createRouter = () => new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  base: process.env.MIX_LARAVUE_PATH,
-  routes: constantRoutes,
-});
+const createRouter = () =>
+  new Router({
+    // mode: 'history', // require service support
+    scrollBehavior: () => ({ y: 0 }),
+    base: process.env.MIX_LARAVUE_PATH,
+    routes: constantRoutes,
+  });
 
 const router = createRouter();
 

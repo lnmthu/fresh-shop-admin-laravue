@@ -20,6 +20,7 @@ use \App\Laravue\Acl;
 
 Route::namespace('Api')->group(function () {
     Route::post('auth/login', 'AuthController@login');
+    Route::post('transactions/charge-card', 'TransactionController@chargeCard');
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
         Route::get('auth/user', 'AuthController@user');
@@ -40,7 +41,20 @@ Route::namespace('Api')->group(function () {
         Route::put('users/{user}/permissions', 'UserController@updatePermissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::get('roles/{role}/permissions', 'RoleController@permissions')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
 
+        // Order routes
+        Route::get('orders-deleted/', 'OrderController@getAllDeleted')->middleware('permission:manage order');
+        Route::put('orders/{order}/status', 'OrderController@processOrder')->middleware('permission:manage order');
+        Route::put('transactions/{transaction}', 'TransactionController@processTransaction')->middleware('permission:manage order');
+        Route::apiResource('orders', 'OrderController')->except(['update'])->middleware('permission:manage order');
 
+        // Category routes
+        Route::apiResource('categories', 'CategoryController')->middleware('permission:manage category');
+        Route::get('categories', 'CategoryController@index')->middleware('permission:view category|manage category');
+        Route::get('categories-with-trash', 'CategoryController@getListWithTrash')->middleware('permission:view category|manage category');
+
+        // Product routes
+        Route::apiResource('products', 'ProductController')->middleware('permission:manage product');
+        Route::get('products', 'ProductController@index')->name('products.index')->middleware('permission:view product|manage products');
     });
 });
 
@@ -64,21 +78,21 @@ Route::get('/table/list', function () {
     return response()->json(new JsonResponse(['items' => $data]));
 });
 
-Route::get('/orders', function () {
-    $rowsNumber = 8;
-    $data = [];
-    for ($rowIndex = 0; $rowIndex < $rowsNumber; $rowIndex++) {
-        $row = [
-            'order_no' => 'LARAVUE' . mt_rand(1000000, 9999999),
-            'price' => mt_rand(10000, 999999),
-            'status' => Faker::randomInArray(['success', 'pending']),
-        ];
+// Route::get('/orders', function () {
+//     $rowsNumber = 8;
+//     $data = [];
+//     for ($rowIndex = 0; $rowIndex < $rowsNumber; $rowIndex++) {
+//         $row = [
+//             'order_no' => 'LARAVUE' . mt_rand(1000000, 9999999),
+//             'price' => mt_rand(10000, 999999),
+//             'status' => Faker::randomInArray(['success', 'pending']),
+//         ];
 
-        $data[] = $row;
-    }
+//         $data[] = $row;
+//     }
 
-    return response()->json(new JsonResponse(['items' => $data]));
-});
+//     return response()->json(new JsonResponse(['items' => $data]));
+// });
 
 Route::get('/articles', function () {
     $rowsNumber = 10;
@@ -148,13 +162,3 @@ Route::get('articles/{id}/pageviews', function ($id) {
 
     return response()->json(new JsonResponse(['pvData' => $data]));
 });
-// Tất cả API requests đến categories đều phải cần quyền "manage category"
-Route::apiResource('categories', 'CategoryController')->middleware('permission:manage category');
-// API để lấy dánh sách category sẽ phải cần quyền "view category" hoặc "manage category"
-Route::get('categories', 'CategoryController@index')->name('categories.index')->middleware('permission:view category|manage category');
-
-// Tất cả API requests đến products đều phải cần quyền "manage product"
-Route::apiResource('products', 'ProductController')->middleware('permission:manage product');
-// API để lấy dánh sách product sẽ phải cần quyền "view product" hoặc "manage product"
-Route::get('products', 'ProductController@index')->name('products.index')->middleware('permission:view product|manage products');
-

@@ -169,7 +169,6 @@ export default {
         .get(id)
         .then((response) => {
           this.postForm = response.data;
-          console.log(this.postForm);
           // Set tagsview title
           this.setTagsViewTitle();
         })
@@ -186,11 +185,11 @@ export default {
     },
     // list
     async getProductList() {
-      const { data } = await productResource.list({});
+      const { data } = await productResource.list();
       this.productList = data;
     },
     async getCategoryList() {
-      const { data } = await categoryResource.list({});
+      const { data } = await categoryResource.list();
       this.categoryList = data;
     },
     // create and edit submit

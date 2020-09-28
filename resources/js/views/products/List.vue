@@ -41,7 +41,6 @@
               v-if="scope.row.image_uri"
               :src="scope.row.image_uri"
               class="image"
-              style="width:500px"
             />
           </h3>
         </template>
@@ -166,13 +165,11 @@ export default {
       const { data, meta } = await productResource.list(this.listQuery);
       this.productList = data;
       this.total = meta.total;
-      console.log(this.total);
       this.loading = false;
     },
     async getCategoryList() {
-      const { data } = await categoryResource.list({});
+      const { data } = await categoryResource.getListWithTrash();
       this.categoryList = data;
-      console.log(data);
     },
     // delete
     handleDelete(id, name) {
