@@ -26,6 +26,8 @@ export default {
     dragSelect: 'Drag Select',
     dragKanban: 'Drag Kanban',
     charts: 'Charts',
+    orders: 'Orders',
+    orderlist: 'List Order',
     keyboardChart: 'Keyboard Chart',
     lineChart: 'Line Chart',
     mixChart: 'Mix Chart',

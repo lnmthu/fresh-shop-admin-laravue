@@ -197,6 +197,7 @@ export const asyncRoutes = [
         meta: { title: 'exportZip' },
       },
     ],
+    hidden: true,
   },
   {
     path: '/pdf',
@@ -211,6 +212,7 @@ export const asyncRoutes = [
         meta: { title: 'pdf' },
       },
     ],
+    hidden: true,
   },
   {
     path: '/pdf/download',
@@ -229,6 +231,7 @@ export const asyncRoutes = [
         meta: { title: 'i18n', icon: 'international' },
       },
     ],
+    hidden: true,
   },
   {
     path: '/external-link',
@@ -239,6 +242,7 @@ export const asyncRoutes = [
         meta: { title: 'externalLink', icon: 'link' },
       },
     ],
+    hidden: true,
   },
   { path: '*', redirect: '/404', hidden: true },
 ];

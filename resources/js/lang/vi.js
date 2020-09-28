@@ -18,6 +18,8 @@ export default {
     markdown: 'Markdown',
     jsonEditor: 'Soạn thảo JSON',
     dndList: 'Danh sách Dnd',
+    orders: 'Đơn hàng',
+    orderlist: 'Danh sách đơn hàng',
     splitPane: 'SplitPane',
     avatarUpload: 'Tải hình đại diện',
     dropzone: 'Dropzone',
