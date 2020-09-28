@@ -9,7 +9,7 @@ const blogsRoutes = {
   meta: {
     title: 'Blogs',
     icon: 'form',
-    permissions: ['view menu blogs'],
+    permissions: ['view menu blog category'],
   },
   children: [
     {
