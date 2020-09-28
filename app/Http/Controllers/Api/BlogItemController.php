@@ -115,9 +115,11 @@ class BlogItemController extends Controller
         return $this->responseHelper->successResponse(true, 'Blog Item has been trashed!', $blogItem);
     }
 
-    public function trashed()
+    public function trashed(Request $request)
     {
-        $trashed = $this->blogItemRepository->getAllTrash();
+        $params = $request->all();
+
+        $trashed = $this->blogItemRepository->getAllTrash($params);
 
         return BlogItemResource::collection($trashed);
     }

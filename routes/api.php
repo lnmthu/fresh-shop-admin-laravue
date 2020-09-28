@@ -19,7 +19,20 @@ use \App\Laravue\Acl;
 */
 
 Route::namespace('Api')->group(function () {
+        // Api Blogs resource routes
+        Route::apiResource('blog-categories', 'BlogCategoryController');
+        Route::apiResource('blog-items', 'BlogItemController');
 
+        // custom Blog Category routes
+        Route::get('trashed/blog-categories', 'BlogCategoryController@trashed');
+        Route::put('restore/blog-categories/{blog_category}', 'BlogCategoryController@restore');
+
+        // custom Blog Item routes
+        Route::get('trashed/blog-items', 'BlogItemController@trashed');
+        Route::put('restore/blog-items/{blog_item}', 'BlogItemController@restore');
+
+        Route::put('deactivate/blog-items/{blog_item}', 'BlogItemController@deactivate');
+        Route::put('activate/blog-items/{blog_item}', 'BlogItemController@activate');
     Route::post('auth/login', 'AuthController@login');
     Route::post('transactions/charge-card', 'TransactionController@chargeCard');
 
@@ -49,20 +62,7 @@ Route::namespace('Api')->group(function () {
         Route::put('transactions/{transaction}', 'TransactionController@processTransaction')->middleware('permission:manage order');
         Route::apiResource('orders', 'OrderController')->except(['update'])->middleware('permission:manage order');;
 
-        // Api Blogs resource routes
-        Route::apiResource('blog-categories', 'BlogCategoryController');
-        Route::apiResource('blog-items', 'BlogItemController');
 
-        // custom Blog Category routes
-        Route::get('trashed/blog-categories', 'BlogCategoryController@trashed');
-        Route::put('restore/blog-categories/{blog_category}', 'BlogCategoryController@restore');
-        
-        // custom Blog Item routes
-        Route::get('trashed/blog-items', 'BlogItemController@trashed');
-        Route::put('restore/blog-items/{blog_item}', 'BlogItemController@restore');
-
-        Route::put('deactivate/blog-items/{blog_item}', 'BlogItemController@deactivate');
-        Route::put('activate/blog-items/{blog_item}', 'BlogItemController@activate');
     });
 });
 

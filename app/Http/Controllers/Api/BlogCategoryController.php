@@ -116,9 +116,11 @@ class BlogCategoryController extends Controller
     /**
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
-    public function trashed()
+    public function trashed(Request $request)
     {
-        $trashed = $this->blogCategoryRepository->getAllTrash();
+        $params = $request->all();
+
+        $trashed = $this->blogCategoryRepository->getAllTrash($params);
 
         return BlogCategoryResource::collection($trashed);
     }

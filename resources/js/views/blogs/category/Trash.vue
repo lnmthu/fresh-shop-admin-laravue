@@ -134,14 +134,14 @@ export default {
   },
   methods: {
     async getList() {
-      // const { limit, page } = this.query;
+      const { limit, page } = this.query;
       this.loading = true;
-      const { data } = await blogCategoryResource.trash(this.query);
+      const { data, meta } = await blogCategoryResource.trash(this.query);
       this.list = data;
-      // this.list.forEach((element, index) => {
-      //   element['index'] = (page - 1) * limit + index + 1;
-      // });
-      // this.total = meta.total;
+      this.list.forEach((element, index) => {
+        element['index'] = (page - 1) * limit + index + 1;
+      });
+      this.total = meta.total;
       this.loading = false;
     },
     handleFilter() {

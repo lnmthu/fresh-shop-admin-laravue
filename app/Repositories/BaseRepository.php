@@ -69,9 +69,11 @@ class BaseRepository implements RepositoryInterface
         return $result;
     }
 
-    public function getAllTrash()
+    public function getAllTrash(array $params)
     {
-        $result = $this->model->onlyTrashed()->get();
+        $limit = Arr::get($params, 'limit', static::ITEM_PER_PAGE);
+        // return $this->model->paginate($limit);
+        $result = $this->model->onlyTrashed()->paginate($limit);
 
         return $result;
     }

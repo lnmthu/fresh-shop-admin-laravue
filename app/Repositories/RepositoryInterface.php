@@ -16,7 +16,7 @@ interface RepositoryInterface
 
     public function delete($id);
 
-    public function getAllTrash();
+    public function getAllTrash(array $params);
 
     public function restore($id);
 }
