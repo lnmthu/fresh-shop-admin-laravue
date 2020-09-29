@@ -45,7 +45,7 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
             'source' => $attributes['token'],
             'description' => $attributes['description'],
         ]);
-        $this->update($attributes['id'], ['payment_code' => $payment->id, 'payment_status' => 1]);
+        $this->update(['payment_code' => $payment->id, 'payment_status' => 1], $attributes['id']);
         return response()->json($payment);
     }
 }

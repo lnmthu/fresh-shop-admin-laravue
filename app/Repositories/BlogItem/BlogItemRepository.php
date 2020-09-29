@@ -29,12 +29,12 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
         $image = isset($data['image']);
 
         if ($image) {
+            $path = public_path('images/');
             $image = $data['image'];
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            // $path = public_path('images/');
-            Image::make($data['image'])->save($name);
+            Image::make($data['image'])->save($path . $name);
             $blogItem
-                ->addMedia($name)
+                ->addMedia($path . $name)
                 ->toMediaCollection('blog');
         }
 
@@ -49,20 +49,30 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
 
     public function update(array $data, $id)
     {
-        $blogItem = $this->model->findOrFail($id);
+        $blogItem = $this->findById($id);
+        $newImage = $data['image'];
 
         if ($blogItem) {
-            $oldImage =  $blogItem->getFirstMedia()->getPath();
+            $path = public_path('images/');
+            $oldImage = $blogItem->getFirstMedia('blog');
 
-            if (isset($data['image'])) {
-                $image = $data['image'];
-                $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-                Image::make($data['image'])->resize(150, 120)->save($name);
-                unlink($oldImage);
-                $blogItem->clearMediaCollection();
+            if ($oldImage && $oldImage->getUrl('blog') == $newImage) {
+                return $blogItem;
+            } else if ($oldImage) {
+                $name = time() . '.' . explode('/', explode(':', substr($newImage, 0, strpos($newImage, ';')))[1])[1];
+                Image::make($data['image'])->resize(150, 120)->save($path . $name);
+                unlink($oldImage->getPath('blog'));
+                $blogItem->clearMediaCollection('blog');
                 $blogItem
-                    ->addMedia($name)
-                    ->toMediaCollection();
+                    ->addMedia($path . $name)
+                    ->toMediaCollection('blog');
+            } else if ($newImage) {
+                $name = time() . '.' . explode('/', explode(':', substr($newImage, 0, strpos($newImage, ';')))[1])[1];
+                Image::make($data['image'])->resize(150, 120)->save($path . $name);
+                $blogItem->clearMediaCollection('blog');
+                $blogItem
+                    ->addMedia($path . $name)
+                    ->toMediaCollection('blog');
             }
 
             $blogItem->update($data);
