@@ -19,8 +19,10 @@ use \App\Laravue\Acl;
 */
 
 Route::namespace('Api')->group(function () {
+
     Route::post('auth/login', 'AuthController@login');
     Route::post('transactions/charge-card', 'TransactionController@chargeCard');
+
     Route::group(['middleware' => 'auth:sanctum'], function () {
         // Auth routes
         Route::get('auth/user', 'AuthController@user');
@@ -30,7 +32,7 @@ Route::namespace('Api')->group(function () {
             return new UserResource($request->user());
         });
 
-        // Api resource routes
+        // Api resource routes//
         Route::apiResource('roles', 'RoleController')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
         Route::apiResource('users', 'UserController')->middleware('permission:' . Acl::PERMISSION_USER_MANAGE);
         Route::apiResource('permissions', 'PermissionController')->middleware('permission:' . Acl::PERMISSION_PERMISSION_MANAGE);
@@ -45,7 +47,22 @@ Route::namespace('Api')->group(function () {
         Route::get('orders-deleted/', 'OrderController@getAllDeleted')->middleware('permission:manage order');
         Route::put('orders/{order}/status', 'OrderController@processOrder')->middleware('permission:manage order');
         Route::put('transactions/{transaction}', 'TransactionController@processTransaction')->middleware('permission:manage order');
-        Route::apiResource('orders', 'OrderController')->except(['update'])->middleware('permission:manage order');
+        Route::apiResource('orders', 'OrderController')->except(['update'])->middleware('permission:manage order');;
+
+         // Api Blogs resource routes
+         Route::apiResource('blog-categories', 'BlogCategoryController');
+         Route::apiResource('blog-items', 'BlogItemController');
+
+         // custom Blog Category routes
+         Route::get('trashed/blog-categories', 'BlogCategoryController@trashed');
+         Route::put('restore/blog-categories/{blog_category}', 'BlogCategoryController@restore');
+
+         // custom Blog Item routes
+         Route::get('trashed/blog-items', 'BlogItemController@trashed');
+         Route::put('restore/blog-items/{blog_item}', 'BlogItemController@restore');
+
+         Route::put('deactivate/blog-items/{blog_item}', 'BlogItemController@deactivate');
+         Route::put('activate/blog-items/{blog_item}', 'BlogItemController@activate');
 
         // Category routes
         Route::apiResource('categories', 'CategoryController')->middleware('permission:manage category');

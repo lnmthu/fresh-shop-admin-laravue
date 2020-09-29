@@ -17,7 +17,7 @@ class TransactionController extends Controller
 
     public function processTransaction($id, Request $request)
     {
-        $this->transactionRepository->update($id, ['payment_status' => $request->status]);
+        $this->transactionRepository->update(['payment_status' => $request->status], $id);
         $transaction = $this->transactionRepository->findById($id);
         return response()->json(['status' => 'success']);
     }

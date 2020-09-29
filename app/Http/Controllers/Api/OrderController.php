@@ -28,12 +28,6 @@ class OrderController extends Controller
         return OrderResource::collection($orders);
     }
 
-    public function getAllDeleted()
-    {
-        $orders = $this->orderRepository->getAllDeleted();
-        return OrderResource::collection($orders);
-    }
-
     public function show($id)
     {
         $order = $this->orderRepository->findById($id);
@@ -43,14 +37,14 @@ class OrderController extends Controller
     public function store(StoreOrderRequest $request)
     {
         $data = $request->validated();
-        $order = $this->orderRepository->store($data);
-        $payment = $this->transactionRepository->store($order->toArray());
+        $order = $this->orderRepository->create($data);
+        $payment = $this->transactionRepository->create($order->toArray());
         return new OrderResource($order);
     }
 
     public function processOrder($id, Request $request)
     {
-        $this->orderRepository->update($id, ['status' => $request->status]);
+        $this->orderRepository->update(['status' => $request->status], $id);
         $order = $this->orderRepository->findById($id);
         return new OrderResource($order);
     }

@@ -19,6 +19,7 @@ class BaseRepository implements RepositoryInterface
     {
         return $this->model->all();
     }
+
     public function getAllWithTrash()
     {
         return $this->model->withTrashed()->get();
@@ -35,23 +36,64 @@ class BaseRepository implements RepositoryInterface
         return $this->model->paginate($limit);
     }
 
-    public function findById($id)
+    public function findById(int $id)
     {
         return $this->model->findOrFail($id);
     }
 
-    public function store(array $attributes)
+    public function create(array $data)
     {
-        return $this->model->create($attributes);
+        return $this->model->create($data);
     }
 
-    public function update($id, array $attributes)
+    public function update(array $data, $id)
     {
-        return $this->findById($id)->update($attributes);
+        $result = $this->findById($id);
+
+        if ($result) {
+
+            $result->update($data);
+
+            return $result;
+        }
+
+        return false;
     }
 
     public function delete($id)
     {
-        return $this->findById($id)->delete();
+        $result = $this->model->withTrashed()->findOrFail($id);
+
+        if ($result->trashed()) {
+
+            $result->forceDelete();
+
+            return $result;
+        } else {
+
+            $result->delete();
+
+            return $result;
+        }
+
+        return $result;
+    }
+
+    public function getAllTrash(array $params)
+    {
+        $limit = Arr::get($params, 'limit', static::ITEM_PER_PAGE);
+        // return $this->model->paginate($limit);
+        $result = $this->model->onlyTrashed()->paginate($limit);
+
+        return $result;
+    }
+
+    public function restore($id)
+    {
+        $result =  $this->model->withTrashed()->findOrFail($id);
+
+        $result->restore();
+
+        return $result;
     }
 }

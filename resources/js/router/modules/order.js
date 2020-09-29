@@ -7,20 +7,21 @@ const ordersRoutes = {
   redirect: 'noredirect',
   name: 'Orders',
   meta: {
+    title: 'orders',
     icon: 'shopping',
     permissions: ['view order', 'manage order'],
   },
   children: [
     {
       path: 'index', // When clicking on this menu, it will redirect to /#/foo/index
-      name: 'orders',
+      name: 'OrderList',
       component: () => import('@/views/orders/List'),
-      meta: { title: 'Orders' }, // Show `foo` on the sidebar
+      meta: { title: 'orderlist' }, // Show `foo` on the sidebar
     },
     {
       path: 'show/:id(\\d+)',
       component: () => import('@/views/orders/Detail'),
-      name: 'detail',
+      name: 'OrderDetail',
       meta: {
         title: 'Order Detail',
         noCache: true,
@@ -30,7 +31,7 @@ const ordersRoutes = {
     {
       path: 'charge/:id(\\d+)',
       component: () => import('@/views/orders/Charge'),
-      name: 'charge',
+      name: 'OrderCharge',
       meta: {
         title: 'Charge Order',
         noCache: true,

@@ -2,6 +2,7 @@ import Layout from '@/layout';
 
 const permissionRoutes = {
   path: '/permission',
+  hidden: true,
   component: Layout,
   redirect: '/permission/index',
   alwaysShow: true, // will always show the root menu

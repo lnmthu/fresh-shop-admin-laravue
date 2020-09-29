@@ -17,7 +17,7 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
         parent::__construct($model);
     }
 
-    public function store(array $attributes)
+    public function create(array $attributes)
     {
         $attributes['code'] = '#GOSHOPP-' . Str::random(5) . sha1(time());
         $products = [4];

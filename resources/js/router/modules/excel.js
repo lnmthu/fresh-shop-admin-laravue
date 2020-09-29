@@ -37,6 +37,7 @@ const excelRoutes = {
       meta: { title: 'uploadExcel' },
     },
   ],
+  hidden: true,
 };
 
 export default excelRoutes;
