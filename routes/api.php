@@ -64,6 +64,14 @@ Route::namespace('Api')->group(function () {
          Route::put('deactivate/blog-items/{blog_item}', 'BlogItemController@deactivate');
          Route::put('activate/blog-items/{blog_item}', 'BlogItemController@activate');
 
+        // Category routes
+        Route::apiResource('categories', 'CategoryController')->middleware('permission:manage category');
+        Route::get('categories', 'CategoryController@index')->middleware('permission:view category|manage category');
+        Route::get('categories-with-trash', 'CategoryController@getListWithTrash')->middleware('permission:view category|manage category');
+
+        // Product routes
+        Route::apiResource('products', 'ProductController')->middleware('permission:manage product');
+        Route::get('products', 'ProductController@index')->name('products.index')->middleware('permission:view product|manage products');
     });
 });
 

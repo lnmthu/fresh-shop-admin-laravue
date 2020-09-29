@@ -20,6 +20,16 @@ class BaseRepository implements RepositoryInterface
         return $this->model->all();
     }
 
+    public function getAllWithTrash()
+    {
+        return $this->model->withTrashed()->get();
+    }
+
+    public function getAllDeleted()
+    {
+        return $this->model->onlyTrashed()->get();
+    }
+
     public function getAllPaginate(array $params)
     {
         $limit = Arr::get($params, 'limit', static::ITEM_PER_PAGE);

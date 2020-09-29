@@ -18,6 +18,12 @@ import Layout from '@/layout';
 // import chartsRoutes from './modules/charts';
 // import tableRoutes from './modules/table';
 import adminRoutes from './modules/admin';
+import categoryRoutes from './modules/category';
+import productRoutes from './modules/product';
+// import nestedRoutes from './modules/nested';
+// import errorRoutes from './modules/error';
+// import excelRoutes from './modules/excel';
+import permissionRoutes from './modules/permission';
 // import nestedRoutes from './modules/nested';
 import errorRoutes from './modules/error';
 import excelRoutes from './modules/excel';
@@ -71,12 +77,12 @@ export const constantRoutes = [
     component: () => import('@/views/login/AuthRedirect'),
     hidden: true,
   },
-  {
-    path: '/404',
-    redirect: { name: 'Page404' },
-    component: () => import('@/views/error-page/404'),
-    hidden: true,
-  },
+  // {
+  //   path: '/404',
+  //   redirect: { name: 'Page404' },
+  //   component: () => import('@/views/error-page/404'),
+  //   hidden: true,
+  // },
   {
     path: '/401',
     component: () => import('@/views/error-page/401'),
@@ -140,14 +146,16 @@ export const constantRoutes = [
 ];
 
 export const asyncRoutes = [
-  // permissionRoutes,
+  permissionRoutes,
   // componentRoutes,
   // chartsRoutes,
   // nestedRoutes,
   // tableRoutes,
+  categoryRoutes,
+  productRoutes,
   ordersRoutes,
-  adminRoutes,
   blogsRoutes,
+  adminRoutes,
   {
     path: '/theme',
     component: Layout,

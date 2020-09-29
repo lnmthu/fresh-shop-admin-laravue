@@ -58,5 +58,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
         $this->call(TransactionSeeder::class);
         $this->call(OrderPermission::class);
+        $this->call(CategoryPermission::class);
+        $this->call(ProductPermission::class);
     }
 }

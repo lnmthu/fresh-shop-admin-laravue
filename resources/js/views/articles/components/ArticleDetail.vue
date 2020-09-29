@@ -221,7 +221,6 @@ export default {
           // Just for test
           this.postForm.title += `   Article Id:${this.postForm.id}`;
           this.postForm.content_short += `   Article Id:${this.postForm.id}`;
-
           // Set tagsview title
           this.setTagsViewTitle();
         })

@@ -13,8 +13,8 @@
         class="btn btn-primary shadow-sm"
         type="submit"
         value="Pay"
-        v-on:click.prevent="purchase"
-      />
+        @click.prevent="purchase"
+      >
     </form>
   </div>
 </template>

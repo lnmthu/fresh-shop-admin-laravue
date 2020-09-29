@@ -21,7 +21,8 @@ class CreateProductsTable extends Migration
             $table->decimal('price', 18, 2);
             $table->unsignedInteger('qty');
             $table->foreignId('category_id')->constrained();
-            $table->integer('sort')->default(0);
+            $table->integer('sort')->default(1);
+            $table->integer('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
