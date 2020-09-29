@@ -49,13 +49,13 @@ class CategoryEloquentRepository extends BaseRepository implements CategoryRepos
     public function updateCategory(Request $request, $id)
     {
         $params = $request->all();
-        $category = $this->update($id, [
+        $category = $this->update([
             'name' => $params['name'],
             'parent_id' => $params['parent_id'],
             'sort' => $params['sort'],
             'status' => $params['status'],
             'description' => $params['description'],
-        ]);
+        ], $id);
         $image = $request->get('image_uri');
         $category = $this->findById($id);
         $oldImage = $category->getFirstMediaUrl('images');
