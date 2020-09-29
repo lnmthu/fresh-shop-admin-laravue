@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
  * @package App\Laravue
  */
 final class Acl
-{
+{ 
     const ROLE_ADMIN = 'admin';
     const ROLE_MANAGER = 'manager';
     const ROLE_EDITOR = 'editor';

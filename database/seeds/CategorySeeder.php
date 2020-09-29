@@ -11,11 +11,55 @@ class CategorySeeder extends Seeder
      */
     public function run()
     {
-        //
-        $category = \App\Laravue\Models\Category::create([
-            'name' => 'Tech',
-            'description' => 'Technology',
-            'sort' => 1
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 2,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
+        ]);
+        DB::table('categories')->insert([
+            'name' => Str::random(10),
+            'description' => Str::random(100),
+            'status' => 1,
         ]);
     }
 }

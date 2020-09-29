@@ -19,6 +19,10 @@ class BaseRepository implements RepositoryInterface
     {
         return $this->model->all();
     }
+    public function getAllWithTrash()
+    {
+        return $this->model->withTrashed()->get();
+    }
 
     public function getAllDeleted()
     {
@@ -33,7 +37,7 @@ class BaseRepository implements RepositoryInterface
 
     public function findById($id)
     {
-        return $this->model->find($id);
+        return $this->model->findOrFail($id);
     }
 
     public function store(array $attributes)

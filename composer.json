@@ -20,12 +20,15 @@
     ],
     "require": {
         "php": "^7.2.5",
-        "fideloper/proxy": "^4.2",
+        "ext-exif": "^7.3",
+        "fideloper/proxy": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^6.3",
+        "intervention/image": "^2.5",
         "laravel/framework": "^7.0",
         "laravel/sanctum": "^2.1",
         "laravel/tinker": "^2.0",
+        "spatie/laravel-medialibrary": "^7.0.0",
         "spatie/laravel-permission": "^3.0",
         "stripe/stripe-php": "^7.54"
     },
@@ -43,7 +46,8 @@
     },
     "extra": {
         "laravel": {
-            "dont-discover": []
+            "dont-discover": [       
+                 ]
         }
     },
     "autoload": {
