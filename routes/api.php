@@ -19,7 +19,6 @@ use \App\Laravue\Acl;
 */
 
 Route::namespace('Api')->group(function () {
-
     Route::post('auth/login', 'AuthController@login');
     Route::post('transactions/charge-card', 'TransactionController@chargeCard');
 

@@ -48,7 +48,7 @@
 
       <el-table-column min-width="300px" label="Order Code">
         <template slot-scope="{ row }">
-          <router-link :to="'show/' + row.id" class="link-type">
+          <router-link :to="'show/' + row.unique_id" class="link-type">
             <span>{{ row.order_code }}</span>
           </router-link>
         </template>
@@ -61,19 +61,19 @@
       >
         <template slot-scope="{ row }">
           <el-tag
-            v-if="row.transaction.payment_status == 0"
+            v-if="row.transaction.payment_status == status.PENDING"
             :type="row.transaction.payment_status | statusFilter"
           >
             pending
           </el-tag>
           <el-tag
-            v-if="row.transaction.payment_status == 1"
+            v-if="row.transaction.payment_status == status.COMPLETED"
             :type="row.transaction.payment_status | statusFilter"
           >
             completed
           </el-tag>
           <el-tag
-            v-if="row.transaction.payment_status == 2"
+            v-if="row.transaction.payment_status == status.CANCELED"
             :type="row.transaction.payment_status | statusFilter"
           >
             canceled
@@ -83,16 +83,28 @@
 
       <el-table-column class-name="status-col" label="Order Status" width="130">
         <template slot-scope="{ row }">
-          <el-tag v-if="row.status == 0" :type="row.status | statusFilter">
+          <el-tag
+            v-if="row.status == status.PENDING"
+            :type="row.status | statusFilter"
+          >
             pending
           </el-tag>
-          <el-tag v-if="row.status == 1" :type="row.status | statusFilter">
+          <el-tag
+            v-if="row.status == status.COMPLETED"
+            :type="row.status | statusFilter"
+          >
             completed
           </el-tag>
-          <el-tag v-if="row.status == 2" :type="row.status | statusFilter">
+          <el-tag
+            v-if="row.status == status.CANCELED"
+            :type="row.status | statusFilter"
+          >
             canceled
           </el-tag>
-          <el-tag v-if="row.status == 3" :type="row.status | statusFilter">
+          <el-tag
+            v-if="row.status == status.CONFIRMED"
+            :type="row.status | statusFilter"
+          >
             confirmed
           </el-tag>
         </template>
@@ -101,42 +113,72 @@
       <el-table-column align="center" label="Actions" width="240">
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.status == 3"
+            v-if="scope.row.status == status.CONFIRMED"
             v-permission="['manage order']"
             type="success"
             size="small"
             icon="el-icon-check"
-            @click="processOrder(scope.row.id, scope.row.order_code, 1)"
+            @click="
+              processOrder(
+                scope.row.unique_id,
+                scope.row.order_code,
+                status.COMPLETED
+              )
+            "
           >
             Complete
           </el-button>
           <el-button
-            v-if="scope.row.status == 0"
+            v-if="scope.row.status == status.PENDING"
             v-permission="['manage order']"
             type="primary"
             size="small"
             icon="el-icon-check"
-            @click="processOrder(scope.row.id, scope.row.order_code, 3)"
+            @click="
+              processOrder(
+                scope.row.unique_id,
+                scope.row.order_code,
+                status.CONFIRMED
+              )
+            "
           >
             Confirm
           </el-button>
           <el-button
-            v-if="scope.row.status != 2 && scope.row.status != 1"
+            v-if="
+              scope.row.status != status.CANCELED &&
+                scope.row.status != status.COMPLETED
+            "
             v-permission="['manage order']"
             type="danger"
             size="small"
             icon="el-icon-edit"
-            @click="processOrder(scope.row.id, scope.row.order_code, 2)"
+            @click="
+              processOrder(
+                scope.row.unique_id,
+                scope.row.order_code,
+                status.CANCELED
+              )
+            "
           >
             Cancel
           </el-button>
           <el-button
-            v-if="scope.row.status == 2 || scope.row.status == 1"
+            v-if="
+              scope.row.status == status.CANCELED ||
+                scope.row.status == status.COMPLETED
+            "
             v-permission="['manage order']"
             type="warning"
             size="small"
             icon="el-icon-edit"
-            @click="processOrder(scope.row.id, scope.row.order_code, 0)"
+            @click="
+              processOrder(
+                scope.row.unique_id,
+                scope.row.order_code,
+                status.PENDING
+              )
+            "
           >
             Restore Order
           </el-button>
@@ -157,36 +199,15 @@
 <script>
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import OrderResource from '@/api/order';
-import Resource from '@/api/resource';
 import permission from '@/directive/permission'; // Import permission directive
+import { STATUS } from '@/constants/order-status';
 
 const ordersResource = new OrderResource();
-const transactionResource = new Resource('transactions');
 
 export default {
   name: 'OrderList',
   components: { Pagination },
   directives: { permission }, // use permission directive
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        0: 'info',
-        1: 'success',
-        2: 'danger',
-        3: 'primary',
-      };
-      return statusMap[status];
-    },
-    statusWordFilter(status) {
-      const statusMap = {
-        0: 'restore',
-        1: 'complete',
-        2: 'cancel',
-        3: 'confirm',
-      };
-      return statusMap[status];
-    },
-  },
   data() {
     return {
       list: null,
@@ -202,6 +223,7 @@ export default {
       transaction: {
         status: '',
       },
+      status: STATUS,
     };
   },
   created() {
@@ -238,19 +260,6 @@ export default {
           ordersResource
             .processOrder(id, this.data)
             .then(response => {
-              if (status !== 3) {
-                transactionResource.update(id, this.data).then(response => {
-                  this.$message({
-                    type: 'success',
-                    message: 'Order process changed',
-                  });
-                });
-              } else {
-                this.$message({
-                  type: 'success',
-                  message: 'Order process changed',
-                });
-              }
               this.getList();
             })
             .catch(error => {

@@ -20,6 +20,7 @@ class OrderRepository extends BaseRepository implements OrderRepositoryInterface
     public function create(array $attributes)
     {
         $attributes['code'] = '#GOSHOPP-' . Str::random(5) . sha1(time());
+        $attributes['unique_id'] = $this->generateUniqueId();
         $products = [4];
         $products = Product::whereIn('id', $products)->get();
 

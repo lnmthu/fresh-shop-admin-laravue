@@ -25,6 +25,7 @@ class TransactionController extends Controller
     public function chargeCard(Request $request)
     {
         $data = $request->all();
+        $data['stripe_secret'] = config('app.stripe_secret');
         $this->transactionRepository->chargeCard($data);
     }
 }

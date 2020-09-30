@@ -38,7 +38,7 @@ class BaseRepository implements RepositoryInterface
 
     public function findById(int $id)
     {
-        return $this->model->findOrFail($id);
+        return $this->model->where('unique_id', $id)->firstOrFail();
     }
 
     public function create(array $data)
@@ -62,7 +62,7 @@ class BaseRepository implements RepositoryInterface
 
     public function delete($id)
     {
-        $result = $this->model->withTrashed()->findOrFail($id);
+        $result = $this->model->withTrashed()->where('unique_id', $id)->firstOrFail();
 
         if ($result->trashed()) {
 
@@ -90,10 +90,18 @@ class BaseRepository implements RepositoryInterface
 
     public function restore($id)
     {
-        $result =  $this->model->withTrashed()->findOrFail($id);
+        $result =  $this->model->withTrashed()->where('unique_id', $id)->firstOrFail();
 
         $result->restore();
 
         return $result;
+    }
+
+    public function generateUniqueId()
+    {
+        do {
+            $unique_id = mt_rand(10000000, 99999999);
+        } while ($this->model->where('unique_id', $unique_id)->exists());
+        return $unique_id;
     }
 }
