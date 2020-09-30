@@ -80,6 +80,8 @@ export default {
     productList: 'List Product',
     productCreate: 'Create Product',
     productEdit: 'Edit Product',
+    categoryTrash: 'Trash Category',
+    productTrash: 'Trash Product',
   },
   navbar: {
     logOut: 'Log Out',

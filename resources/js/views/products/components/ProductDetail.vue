@@ -204,6 +204,7 @@ export default {
               duration: 5 * 1000,
             });
             this.getProductList();
+            this.loading = false;
           })
           .catch((error) => {
             console.log(error);
@@ -233,6 +234,7 @@ export default {
               image_uri: '',
             };
             this.getProductList();
+            this.loading = false;
           })
           .catch((error) => {
             console.log(error);

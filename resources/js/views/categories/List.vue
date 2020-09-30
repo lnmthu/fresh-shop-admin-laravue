@@ -30,12 +30,12 @@
           </h3>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Sort" width="110">
+      <el-table-column align="center" label="Sort" width="100">
         <template slot-scope="{ row }">
           <el-tag :type="row.sort | Filter">{{ getSort(row.sort) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110">
+      <el-table-column class-name="status-col" label="Status" width="100">
         <template slot-scope="{ row }">
           <el-tag :type="row.status | Filter">{{
             getStatus(row.status)
@@ -47,7 +47,7 @@
         v-if="checkPermission(['manage category'])"
         align="center"
         label="Actions"
-        width="150"
+        width="220"
       >
         <template slot-scope="scope">
           <router-link :to="'/categories/edit/' + scope.row.id">
@@ -158,7 +158,7 @@ export default {
     // delete
     handleDelete(id, name) {
       this.$confirm(
-        'This will permanently delete category ' + name + '. Continue?',
+        'This will momentarily delete category ' + name + '. Continue?',
         'Warning',
         {
           confirmButtonText: 'OK',

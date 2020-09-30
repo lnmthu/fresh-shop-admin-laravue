@@ -174,7 +174,7 @@ export default {
     // delete
     handleDelete(id, name) {
       this.$confirm(
-        'This will permanently delete product ' + name + '. Continue?',
+        'This will momentarily delete product ' + name + '. Continue?',
         'Warning',
         {
           confirmButtonText: 'OK',

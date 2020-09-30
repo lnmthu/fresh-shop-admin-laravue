@@ -4,7 +4,6 @@ namespace App\Repositories\Product;
 
 use App\Repositories\BaseRepository;
 use App\Repositories\Product\ProductRepositoryInterface;
-use Illuminate\Http\Request;
 use App\Laravue\Models\Product;
 
 class ProductEloquentRepository extends BaseRepository implements ProductRepositoryInterface
@@ -16,24 +15,11 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
         $this->model = $model;
         parent::__construct($model);
     }
-    /**
-     * storeCategory
-     * @param $request
-     * @return mixed
-     */
-    public function storeProduct(Request $request)
+
+    public function create(array $data)
     {
-        $params = $request->all();
-        $product = $this->store([
-            'name' => $params['name'],
-            'sku' => $params['sku'],
-            'description' => $params['description'],
-            'price' => $params['price'],
-            'qty' => $params['qty'],
-            'sort' => $params['sort'],
-            'category_id' => $params['category_id'],
-        ]);
-        $image = $request->get('image_uri');
+        $product = $this->model->create($data);
+        $image = $data['image_uri'];
         if ($image) {
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($image)->save(public_path('images/') . $name);
@@ -41,53 +27,42 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
         }
         return $product;
     }
-    /**
-     * Update
-     * @param $request
-     * @param object $category
-     * @return bool|mixed
-     */
-    public function updateProduct(Request $request, $id)
+
+    public function update(array $data, $id)
     {
-        $params = $request->all();
-        $product = $this->update([
-            'name' => $params['name'],
-            'sku' => $params['sku'],
-            'description' => $params['description'],
-            'price' => $params['price'],
-            'qty' => $params['qty'],
-            'sort' => $params['sort'],
-            'category_id' => $params['category_id'],
-        ], $id);
-        $image = $request->get('image_uri');
         $product = $this->findById($id);
-        $oldImage = $product->getFirstMediaUrl('images');
-        if ($oldImage && $oldImage !== $image) {
-            unlink(public_path($oldImage));
+        $image = $data['image_uri'];
+        $oldImage = $product->getFirstMedia('images');
+        if ($oldImage && $oldImage->getUrl('thumb') === $image){
+            $product->update($data);
+            return $product;
+        }
+        if ($oldImage) {
+            unlink(public_path($oldImage->getUrl('thumb')));
             $product->clearMediaCollection('images');
         }
-        if ($image && $image !== $oldImage) {
+        if ($image) {
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($image)->save(public_path('images/') . $name);
             $product->addMedia(public_path('images/') . $name)->toMediaCollection('images');
         }
+        $product->update($data);
         return $product;
     }
-    /**
-     * Delete
-     * @param object $model;
-     * @return bool
-     */
-    public function deleteProduct($id)
+    public function delete($id)
     {
-        $product = $this->findById($id);
-        $oldImage = $product->getFirstMediaUrl('images');
-        if ($oldImage) {
-            $product->clearMediaCollection('images');
-            if (file_exists(public_path($oldImage)))
-                unlink(public_path($oldImage));
+        $product = $this->model->withTrashed()->findOrFail($id);
+        if ($product->trashed()) {
+            $oldImage = $product->getFirstMediaUrl('images');
+            if ($oldImage) {
+                $product->clearMediaCollection('images');
+                if (file_exists(public_path($oldImage)))
+                    unlink(public_path($oldImage));
+            }
+            $product->forceDelete();
+            return $product;
         }
         $product->delete();
-        return true;
+        return $product;
     }
 }
