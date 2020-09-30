@@ -23,4 +23,7 @@ interface RepositoryInterface
     public function getAllTrash(array $params);
 
     public function restore($id);
+
+    public function generateUniqueId();
+
 }

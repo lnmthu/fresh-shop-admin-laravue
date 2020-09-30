@@ -107,6 +107,7 @@ const productResource = new ProductResource();
 
 const defaultForm = {
   id: undefined,
+  unique_id: undefined,
   category_id: null,
   name: '',
   sku: '',
@@ -150,8 +151,8 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id;
-      this.fetchData(id);
+      const unique_id = this.$route.params && this.$route.params.id;
+      this.fetchData(unique_id);
     } else {
       this.postForm = Object.assign({}, defaultForm);
     }
@@ -164,9 +165,9 @@ export default {
   },
   methods: {
     // edit form
-    fetchData(id) {
+    fetchData(unique_id) {
       productResource
-        .get(id)
+        .get(unique_id)
         .then((response) => {
           this.postForm = response.data;
           // Set tagsview title
@@ -179,7 +180,7 @@ export default {
     setTagsViewTitle() {
       const title = 'productEdit';
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.postForm.id}`,
+        title: `${title}-${this.postForm.unique_id}`,
       });
       this.$store.dispatch('updateVisitedView', route);
     },
@@ -194,9 +195,9 @@ export default {
     },
     // create and edit submit
     submitForm() {
-      if (this.postForm.id !== undefined) {
+      if (this.postForm.unique_id !== undefined) {
         productResource
-          .update(this.postForm.id, this.postForm)
+          .update(this.postForm.unique_id, this.postForm)
           .then((response) => {
             this.$message({
               type: 'success',
@@ -223,6 +224,7 @@ export default {
             });
             this.postForm = {
               id: undefined,
+              unique_id: undefined,
               category_id: null,
               name: '',
               sku: '',

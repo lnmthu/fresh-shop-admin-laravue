@@ -37,6 +37,7 @@ class CategoryController extends Controller
     }
     /**
      * Display a listing of the only trash resource.
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function getListOnlyTrash(Request $request)
@@ -54,6 +55,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $data = $request->all();
+        $data['unique_id'] = $this->categoryEloquentRepository->generateUniqueId();
         $category = $this->categoryEloquentRepository->create($data);
         return new CategoryResource($category);
     }
@@ -61,12 +63,12 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Laravue\Models\Category  $category
+     * @param  $unique_id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($unique_id)
     {
-        $category = $this->categoryEloquentRepository->findById($id);
+        $category = $this->categoryEloquentRepository->findById($unique_id);
         return new CategoryResource($category);
     }
 
@@ -74,13 +76,13 @@ class CategoryController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\CategoryRequest  $request
-     * @param  \App\Laravue\Models\Category  $category
+     * @param  $unique_id
      * @return \Illuminate\Http\Response
      */
-    public function update(CategoryRequest $request, $id)
+    public function update(CategoryRequest $request, $unique_id)
     {
         $data = $request->all();
-        $category = $this->categoryEloquentRepository->update($data, $id);
+        $category = $this->categoryEloquentRepository->update($data, $unique_id);
         if (!$category) {
             return response()->json(['error' => 'Category not found'], 404);
         }
@@ -90,12 +92,12 @@ class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Laravue\Models\Category  $category
+     * @param  $unique_id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($unique_id)
     {
-        $result = $this->categoryEloquentRepository->delete($id);
+        $result = $this->categoryEloquentRepository->delete($unique_id);
         if (!$result)
             return response()->json(['error' => 'Category not found'], 404);
         return response()->json(null, 204);
@@ -103,12 +105,12 @@ class CategoryController extends Controller
     /**
      * Restore the specified resource from storage.
      *
-     * @param  \App\Laravue\Models\Category  $category
+     * @param  $unique_id
      * @return \Illuminate\Http\Response
      */
-    public function restore($id)
+    public function restore($unique_id)
     {
-        $category = $this->categoryEloquentRepository->restore($id);
+        $category = $this->categoryEloquentRepository->restore($unique_id);
         if (!$category)
             return response()->json(['error' => 'Category not found'], 404);
         return new CategoryResource($category);

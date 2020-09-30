@@ -7,8 +7,13 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="Unique_ID" width="90">
+        <template slot-scope="scope">
+          <span>{{ scope.row.unique_id }}</span>
+        </template>
+      </el-table-column>
 
-      <el-table-column align="center" label="Name" width="150">
+      <el-table-column align="center" label="Name" width="140">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
@@ -63,7 +68,7 @@
         width="200"
       >
         <template slot-scope="scope">
-          <router-link :to="'/products/edit/'+scope.row.id">
+          <router-link :to="'/products/edit/'+scope.row.unique_id">
             <el-button
               v-permission="['manage product']"
               type="primary"
@@ -76,7 +81,7 @@
             type="danger"
             size="small"
             icon="el-icon-delete"
-            @click="handleDelete(scope.row.id, scope.row.name);"
+            @click="handleDelete(scope.row.unique_id, scope.row.name);"
           >Delete</el-button>
         </template>
       </el-table-column>
@@ -172,7 +177,7 @@ export default {
       this.categoryList = data;
     },
     // delete
-    handleDelete(id, name) {
+    handleDelete(unique_id, name) {
       this.$confirm(
         'This will momentarily delete product ' + name + '. Continue?',
         'Warning',
@@ -184,7 +189,7 @@ export default {
       )
         .then(() => {
           productResource
-            .destroy(id)
+            .destroy(unique_id)
             .then((response) => {
               this.$message({
                 type: 'success',

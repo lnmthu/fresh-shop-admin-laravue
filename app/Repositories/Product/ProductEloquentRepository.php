@@ -51,7 +51,7 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
     }
     public function delete($id)
     {
-        $product = $this->model->withTrashed()->findOrFail($id);
+        $product = $this->model->withTrashed()->where('unique_id', $id)->firstOrFail();;
         if ($product->trashed()) {
             $oldImage = $product->getFirstMediaUrl('images');
             if ($oldImage) {

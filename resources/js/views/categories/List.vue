@@ -6,7 +6,12 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Parent_Name" width="150">
+      <el-table-column align="center" label="Unique_ID" width="90">
+        <template slot-scope="scope">
+          <span>{{ scope.row.unique_id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Parent_Name" width="140">
         <template slot-scope="scope">
           <span>{{ getParentId(scope.row.parent_id) }}</span>
         </template>
@@ -50,7 +55,7 @@
         width="220"
       >
         <template slot-scope="scope">
-          <router-link :to="'/categories/edit/' + scope.row.id">
+          <router-link :to="'/categories/edit/' + scope.row.unique_id">
             <el-button
               v-permission="['manage category']"
               type="primary"
@@ -63,7 +68,7 @@
             type="danger"
             size="small"
             icon="el-icon-delete"
-            @click="handleDelete(scope.row.id, scope.row.name)"
+            @click="handleDelete(scope.row.unique_id, scope.row.name)"
           >Delete</el-button>
         </template>
       </el-table-column>
@@ -154,9 +159,10 @@ export default {
     async getListTrashed() {
       const { data } = await categoryResource.getListWithTrash();
       this.listTrashed = data;
+      console.log(this.listTrashed);
     },
     // delete
-    handleDelete(id, name) {
+    handleDelete(unique_id, name) {
       this.$confirm(
         'This will momentarily delete category ' + name + '. Continue?',
         'Warning',
@@ -168,7 +174,7 @@ export default {
       )
         .then(() => {
           categoryResource
-            .destroy(id)
+            .destroy(unique_id)
             .then((response) => {
               this.$message({
                 type: 'success',

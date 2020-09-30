@@ -19,9 +19,9 @@ class CategoryResource extends Resource {
       params: query,
     });
   }
-  restore(id, resource) {
+  restore(unique_id, resource) {
     return request({
-      url: '/' + this.uri + '/restore/' + id,
+      url: '/' + this.uri + '/restore/' + unique_id,
       method: 'put',
       data: resource,
     });

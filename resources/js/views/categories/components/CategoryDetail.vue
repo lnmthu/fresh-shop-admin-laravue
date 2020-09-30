@@ -50,6 +50,7 @@ const categoryResource = new CategoryResource();
 const defaultForm = {
   id: undefined,
   name: '',
+  unique_id: undefined,
   parent_id: null,
   description: '',
   status: 1, // public
@@ -88,8 +89,8 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id;
-      this.fetchData(id);
+      const unique_id = this.$route.params && this.$route.params.id;
+      this.fetchData(unique_id);
     } else {
       this.postForm = Object.assign({}, defaultForm);
     }
@@ -100,9 +101,9 @@ export default {
     this.getList();
   },
   methods: {
-    fetchData(id) {
+    fetchData(unique_id) {
       categoryResource
-        .get(id)
+        .get(unique_id)
         .then((response) => {
           this.postForm = response.data;
           // Set tagsview title
@@ -115,7 +116,7 @@ export default {
     setTagsViewTitle() {
       const title = 'categoryEdit';
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.postForm.id}`,
+        title: `${title}-${this.postForm.unique_id}`,
       });
       this.$store.dispatch('updateVisitedView', route);
     },
@@ -125,9 +126,9 @@ export default {
     },
     // create and edit
     submitForm() {
-      if (this.postForm.id !== undefined) {
+      if (this.postForm.unique_id !== undefined) {
         categoryResource
-          .update(this.postForm.id, this.postForm)
+          .update(this.postForm.unique_id, this.postForm)
           .then((response) => {
             this.$message({
               type: 'success',
@@ -159,6 +160,7 @@ export default {
               sort: 1,
               status: 1,
               image_uri: '',
+              unique_id: undefined,
             };
             this.getList();
             this.loading = false;

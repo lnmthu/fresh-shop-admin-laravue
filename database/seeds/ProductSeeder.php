@@ -19,6 +19,7 @@ class ProductSeeder extends Seeder
             'qty' => 10,
             'category_id' => 1,
             'status' => 1,
+            'unique_id' => rand(1000000,5000000),
 
         ]);
         DB::table('products')->insert([
@@ -28,6 +29,7 @@ class ProductSeeder extends Seeder
             'price' => 110000,
             'qty' => 11,
             'category_id' => 1,
+            'unique_id' => rand(1000000,5000000),
             'status' => 1,
         ]);
         DB::table('products')->insert([
@@ -38,6 +40,8 @@ class ProductSeeder extends Seeder
             'qty' => 20,
             'category_id' => 2,
             'status' => 2,
+            'unique_id' => rand(1000000,5000000),
+
         ]);
         DB::table('products')->insert([
             'name' => Str::random(10),
@@ -47,6 +51,8 @@ class ProductSeeder extends Seeder
             'qty' => 22,
             'category_id' => 2,
             'status' => 2,
+            'unique_id' => rand(1000000,5000000),
+
 
         ]);
         DB::table('products')->insert([
@@ -57,6 +63,8 @@ class ProductSeeder extends Seeder
             'qty' => 30,
             'category_id' => 1,
             'status' => 1,
+            'unique_id' => rand(1000000,5000000),
+
 
         ]);
         DB::table('products')->insert([
@@ -67,6 +75,8 @@ class ProductSeeder extends Seeder
             'qty' => 33,
             'category_id' => 3,
             'status' => 2,
+            'unique_id' => rand(1000000,5000000),
+
         ]);
     }
 }

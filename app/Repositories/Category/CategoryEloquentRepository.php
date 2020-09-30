@@ -52,7 +52,7 @@ class CategoryEloquentRepository extends BaseRepository implements CategoryRepos
     }
     public function delete($id)
     {
-        $category = $this->model->withTrashed()->findOrFail($id);
+        $category = $this->model->withTrashed()->where('unique_id', $id)->firstOrFail();;
         if ($category->trashed()) {
             $oldImage = $category->getFirstMediaUrl('images');
             if ($oldImage) {

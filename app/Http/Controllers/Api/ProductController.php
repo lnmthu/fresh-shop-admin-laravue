@@ -47,6 +47,7 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
         $data = $request->all();
+        $data['unique_id'] = $this->productEloquentRepository->generateUniqueId();
         $product = $this->productEloquentRepository->create($data);
         return new ProductResource($product);
     }
@@ -54,12 +55,12 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  $id
+     * @param  $unique_id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($unique_id)
     {
-        $product = $this->productEloquentRepository->findById($id);
+        $product = $this->productEloquentRepository->findById($unique_id);
         return new ProductResource($product);
     }
 
@@ -67,13 +68,13 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\ProductRequest  $request
-     * @param  $id
+     * @param  $unique_id
      * @return \Illuminate\Http\Response
      */
-    public function update(ProductRequest $request, $id)
+    public function update(ProductRequest $request, $unique_id)
     {
         $data = $request->all();
-        $product = $this->productEloquentRepository->update($data, $id);
+        $product = $this->productEloquentRepository->update($data, $unique_id);
         if (!$product) {
             return response()->json(['error' => 'Category not found'], 404);
         }
@@ -83,12 +84,12 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  $id
+     * @param  $unique_id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($unique_id)
     {
-        $result = $this->productEloquentRepository->delete($id);
+        $result = $this->productEloquentRepository->delete($unique_id);
         if (!$result)
             return response()->json(['error' => 'Product not found'], 404);
         return response()->json(null, 204);
@@ -96,12 +97,12 @@ class ProductController extends Controller
     /**
      * Restore the specified resource from storage.
      *
-     * @param   $id
+     * @param   $unique_id
      * @return \Illuminate\Http\Response
      */
-    public function restore($id)
+    public function restore($unique_id)
     {
-        $product = $this->productEloquentRepository->restore($id);
+        $product = $this->productEloquentRepository->restore($unique_id);
         if (!$product)
             return response()->json(['error' => 'Product not found'], 404);
         return new ProductResource($product);

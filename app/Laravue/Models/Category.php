@@ -13,7 +13,7 @@ class Category extends Model implements HasMedia
 {
     use SoftDeletes, HasMediaTrait;
     protected $table="categories";
-    protected $fillable=["id","name","parent_id","description","sort","status"];
+    protected $fillable=["id","unique_id","name","parent_id","description","sort","status"];
     public function product(){
         return $this->hasMany('App/Product','category_id','id');
     }
