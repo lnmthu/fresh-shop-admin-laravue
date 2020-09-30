@@ -2,47 +2,71 @@
   <div class="createPost-container">
     <el-form ref="order" :model="order" class="form-container">
       <sticky :class-name="'sub-navbar ' + order.status">
-        <el-tag v-if="order.status == 0" :type="order.status | statusFilter">
+        <el-tag
+          v-if="order.status == status.PENDING"
+          :type="order.status | statusFilter"
+        >
           pending
         </el-tag>
-        <el-tag v-if="order.status == 1" :type="order.status | statusFilter">
+        <el-tag
+          v-if="order.status == status.COMPLETED"
+          :type="order.status | statusFilter"
+        >
           completed
         </el-tag>
-        <el-tag v-if="order.status == 2" :type="order.status | statusFilter">
+        <el-tag
+          v-if="order.status == status.CANCELED"
+          :type="order.status | statusFilter"
+        >
           canceled
         </el-tag>
-        <el-tag v-if="order.status == 3" :type="order.status | statusFilter">
+        <el-tag
+          v-if="order.status == status.CONFIRMED"
+          :type="order.status | statusFilter"
+        >
           confirmed
         </el-tag>
         <el-button
-          v-if="order.status == 0"
+          v-if="order.status == status.PENDING"
           v-permission="['manage order']"
           type="primary"
-          @click="processOrder(order.unique_id, order.order_code, 3)"
+          @click="
+            processOrder(order.unique_id, order.order_code, status.CONFIRMED)
+          "
         >
           Confirm
         </el-button>
         <el-button
-          v-if="order.status == 3"
+          v-if="order.status == status.CONFIRMED"
           v-permission="['manage order']"
           type="success"
-          @click="processOrder(order.unique_id, order.order_code, 1)"
+          @click="
+            processOrder(order.unique_id, order.order_code, status.COMPLETED)
+          "
         >
           Complete
         </el-button>
         <el-button
-          v-if="order.status != 2 && order.status != 1"
+          v-if="
+            order.status != status.CANCELED && order.status != status.COMPLETED
+          "
           v-permission="['manage order']"
           type="danger"
-          @click="processOrder(order.unique_id, order.order_code, 2)"
+          @click="
+            processOrder(order.unique_id, order.order_code, status.CANCELED)
+          "
         >
           Cancel
         </el-button>
         <el-button
-          v-if="order.status == 2 || order.status == 1"
+          v-if="
+            order.status == status.CANCELED || order.status == status.COMPLETED
+          "
           v-permission="['manage order']"
           type="warning"
-          @click="processOrder(order.unique_id, order.order_code, 0)"
+          @click="
+            processOrder(order.unique_id, order.order_code, status.PENDING)
+          "
         >
           Restore Order
         </el-button>
@@ -126,19 +150,19 @@
                 Transaction Code
               </MDinput>
               <el-tag
-                v-if="order.transaction.payment_status == 0"
+                v-if="order.transaction.payment_status == status.PENDING"
                 :type="order.transaction.payment_status | statusFilter"
               >
                 pending
               </el-tag>
               <el-tag
-                v-if="order.transaction.payment_status == 1"
+                v-if="order.transaction.payment_status == status.COMPLETED"
                 :type="order.transaction.payment_status | statusFilter"
               >
                 completed
               </el-tag>
               <el-tag
-                v-if="order.transaction.payment_status == 2"
+                v-if="order.transaction.payment_status == status.CANCELED"
                 :type="order.transaction.payment_status | statusFilter"
               >
                 canceled
@@ -178,7 +202,7 @@
               </el-col>
             </el-row>
             <router-link
-              v-if="order.transaction.payment_status == 0"
+              v-if="order.transaction.payment_status == status.PENDING"
               :to="'/orders/charge/' + order.unique_id"
               class="link-type"
             >
@@ -235,6 +259,7 @@ import MDinput from '@/components/MDinput';
 import Sticky from '@/components/Sticky';
 import OrderResource from '@/api/order';
 import permission from '@/directive/permission'; // Import permission directive
+import { STATUS } from '@/constants/order-status';
 
 const ordersResource = new OrderResource();
 
@@ -245,26 +270,6 @@ export default {
     Sticky,
   },
   directives: { permission }, // use permission directive
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        0: 'info',
-        1: 'success',
-        2: 'danger',
-        3: 'primary',
-      };
-      return statusMap[status];
-    },
-    statusWordFilter(status) {
-      const statusMap = {
-        0: 'restore',
-        1: 'complete',
-        2: 'cancel',
-        3: 'confirm',
-      };
-      return statusMap[status];
-    },
-  },
   props: {
     order: {
       type: Object,
@@ -278,6 +283,7 @@ export default {
       data: {
         status: '',
       },
+      status: STATUS,
     };
   },
   methods: {

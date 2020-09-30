@@ -14,7 +14,7 @@
         type="submit"
         value="Pay"
         @click.prevent="purchase"
-      >
+      />
     </form>
   </div>
 </template>
@@ -30,10 +30,9 @@ const orderResource = new OrderResource();
 export default {
   data() {
     return {
-      spk:
-        'pk_test_51HU4o2HNCxgLnTLGUTQMrhYaWprTarTwOPsEJ8fHJNRi2cWCWa1lhU9ApVaTCLsS9xNgQdKh8aKEdfMJfW0FwDbP00OfuUUe0v',
-      stripe: undefined,
-      card: undefined,
+      spk: process.env.MIX_STRIPE_KEY,
+      stripe: '',
+      card: '',
       msg: 'Pay amount: ',
       payAmount: 1000,
       lockSubmit: false,
@@ -100,7 +99,11 @@ export default {
           self.lockSubmit = false;
         })
         .catch(error => {
-          console.log(error);
+          this.$message({
+            type: 'error',
+            message: error.response.data.message,
+          });
+          self.lockSubmit = false;
         });
     },
   },

@@ -23,28 +23,26 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
         return $transaction;
     }
 
-    public function cancelTransaction($id)
-    {
-        return $this->update($id, ['payment_status' => 2]);
-    }
+    // public function cancelTransaction($id)
+    // {
+    //     return $this->update($id, ['payment_status' => 2]);
+    // }
 
-    public function confirmTransaction($id)
-    {
-        return $this->update($id, ['payment_status' => 1]);
-    }
+    // public function confirmTransaction($id)
+    // {
+    //     return $this->update($id, ['payment_status' => 1]);
+    // }
 
     public function chargeCard(array $attributes)
     {
-        $stripe = new \Stripe\StripeClient(
-            'sk_test_51HU4o2HNCxgLnTLG9H3Mzu5ghTziCTAlmblpI8ICVOW5xON2vpVrQCfcUcNGgjSZXUdqAmWJfWGs0WN299Wxhdgz00ApLrN3P2'
-        );
+        $stripe = new \Stripe\StripeClient($attributes['stripe_secret']);
         $payment = $stripe->charges->create([
             'amount' => $attributes['amount'] * 100,
             'currency' => 'usd',
             'source' => $attributes['token'],
             'description' => $attributes['description'],
         ]);
-        $this->update(['payment_code' => $payment->id, 'payment_status' => 1], $attributes['id']);
+        $this->update(['payment_code' => $payment->id, 'payment_status' => Transaction::STATUS_COMPLETED], $attributes['id']);
         return response()->json($payment);
     }
 }
