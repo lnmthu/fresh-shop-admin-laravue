@@ -23,15 +23,26 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $params = $request->all();
-        $categories=$this->categoryEloquentRepository->getAllPaginate($params);
+        $categories = $this->categoryEloquentRepository->getAllPaginate($params);
         return CategoryResource::collection($categories);
     }
     /**
-     * Display a listing of the resource.
+     * Display a listing of the with trash resource.
      * @return \Illuminate\Http\Response
      */
-    public function getListWithTrash(){
-        $categories=$this->categoryEloquentRepository->getAllWithTrash();
+    public function getListWithTrash()
+    {
+        $categories = $this->categoryEloquentRepository->getAllWithTrash();
+        return CategoryResource::collection($categories);
+    }
+    /**
+     * Display a listing of the only trash resource.
+     * @return \Illuminate\Http\Response
+     */
+    public function getListOnlyTrash(Request $request)
+    {
+        $params = $request->all();
+        $categories = $this->categoryEloquentRepository->getAllTrash($params);
         return CategoryResource::collection($categories);
     }
     /**
@@ -42,7 +53,8 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $category = $this->categoryEloquentRepository->storeCategory($request);
+        $data = $request->all();
+        $category = $this->categoryEloquentRepository->create($data);
         return new CategoryResource($category);
     }
 
@@ -67,10 +79,11 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, $id)
     {
-        $category=$this->categoryEloquentRepository->updateCategory($request,$id);
+        $data = $request->all();
+        $category = $this->categoryEloquentRepository->update($data, $id);
         if (!$category) {
             return response()->json(['error' => 'Category not found'], 404);
-        } 
+        }
         return new CategoryResource($category);
     }
 
@@ -82,9 +95,22 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $result=$this->categoryEloquentRepository->deleteCategory($id);
-        if(!$result)
+        $result = $this->categoryEloquentRepository->delete($id);
+        if (!$result)
             return response()->json(['error' => 'Category not found'], 404);
         return response()->json(null, 204);
+    }
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param  \App\Laravue\Models\Category  $category
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $category = $this->categoryEloquentRepository->restore($id);
+        if (!$category)
+            return response()->json(['error' => 'Category not found'], 404);
+        return new CategoryResource($category);
     }
 }

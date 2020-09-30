@@ -4,7 +4,6 @@ namespace App\Repositories\Category;
 
 use App\Repositories\BaseRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
-use Illuminate\Http\Request;
 use App\Laravue\Models\Category;
 
 
@@ -17,22 +16,11 @@ class CategoryEloquentRepository extends BaseRepository implements CategoryRepos
         $this->model = $model;
         parent::__construct($model);
     }
-    /**
-     * storeCategory
-     * @param $request
-     * @return mixed
-     */
-    public function storeCategory(Request $request)
+    
+    public function create(array $data)
     {
-        $params = $request->all();
-        $category = $this->store([
-            'name' => $params['name'],
-            'parent_id' => $params['parent_id'],
-            'sort' => $params['sort'],
-            'status' => $params['status'],
-            'description' => $params['description'],
-        ]);
-        $image = $request->get('image_uri');
+        $category = $this->model->create($data);
+        $image = $data['image_uri'];
         if ($image) {
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($image)->save(public_path('images/') . $name);
@@ -40,51 +28,42 @@ class CategoryEloquentRepository extends BaseRepository implements CategoryRepos
         }
         return $category;
     }
-    /**
-     * updateCategory
-     * @param $request
-     * @param $id
-     * @return bool|mixed
-     */
-    public function updateCategory(Request $request, $id)
+
+    public function update(array $data, $id)
     {
-        $params = $request->all();
-        $category = $this->update([
-            'name' => $params['name'],
-            'parent_id' => $params['parent_id'],
-            'sort' => $params['sort'],
-            'status' => $params['status'],
-            'description' => $params['description'],
-        ], $id);
-        $image = $request->get('image_uri');
         $category = $this->findById($id);
-        $oldImage = $category->getFirstMediaUrl('images');
-        if ($oldImage && $oldImage !== $image) {
-            unlink(public_path($oldImage));
+        $image = $data['image_uri'];
+        $oldImage = $category->getFirstMedia('images');
+        if ($oldImage && $oldImage->getUrl('thumb') === $image){
+            $category->update($data);
+            return $category;
+        }
+        if ($oldImage) {
+            unlink(public_path($oldImage->getUrl('thumb')));
             $category->clearMediaCollection('images');
         }
-        if ($image && $image !== $oldImage) {
+        if ($image) {
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($image)->save(public_path('images/') . $name);
             $category->addMedia(public_path('images/') . $name)->toMediaCollection('images');
         }
+        $category->update($data);
         return $category;
     }
-    /**
-     * deleteCategory
-     * @param $id;
-     * @return bool
-     */
-    public function deleteCategory($id)
+    public function delete($id)
     {
-        $category = $this->findById($id);
-        $oldImage = $category->getFirstMediaUrl('images');
-        if ($oldImage) {
-            $category->clearMediaCollection('images');
-            if(file_exists(public_path($oldImage)))
-                unlink(public_path($oldImage));
+        $category = $this->model->withTrashed()->findOrFail($id);
+        if ($category->trashed()) {
+            $oldImage = $category->getFirstMediaUrl('images');
+            if ($oldImage) {
+                $category->clearMediaCollection('images');
+                if (file_exists(public_path($oldImage)))
+                    unlink(public_path($oldImage));
+            }
+            $category->forceDelete();
+            return $category;
         }
         $category->delete();
-        return true;
+        return $category;
     }
 }

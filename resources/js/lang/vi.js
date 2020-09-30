@@ -82,6 +82,8 @@ export default {
     productList: 'Danh sách sản phẩm',
     productCreate: 'Thêm sản phẩm',
     productEdit: 'Chỉnh sửa sản phẩm',
+    categoryTrash: 'Thùng rác thể loại',
+    productTrash: 'Thùng rác sản phẩm',
   },
   navbar: {
     logOut: 'Đăng xuất',

@@ -23,7 +23,18 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $params = $request->all();
-        $products=$this->productEloquentRepository->getAllPaginate($params);
+        $products = $this->productEloquentRepository->getAllPaginate($params);
+        return ProductResource::collection($products);
+    }
+    /**
+     * Display a listing of the only trash resource.
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function getListOnlyTrash(Request $request)
+    {
+        $params = $request->all();
+        $products = $this->productEloquentRepository->getAllTrash($params);
         return ProductResource::collection($products);
     }
 
@@ -35,14 +46,15 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-        $product=$this->productEloquentRepository->storeProduct($request);
-        return new ProductResource($product);        
+        $data = $request->all();
+        $product = $this->productEloquentRepository->create($data);
+        return new ProductResource($product);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Laravue\Models\Product  $product
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -55,12 +67,13 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\ProductRequest  $request
-     * @param  \App\Laravue\Models\Product  $product
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function update(ProductRequest $request, $id)
     {
-        $product=$this->productEloquentRepository->updateProduct($request,$id);
+        $data = $request->all();
+        $product = $this->productEloquentRepository->update($data, $id);
         if (!$product) {
             return response()->json(['error' => 'Category not found'], 404);
         }
@@ -70,14 +83,27 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Laravue\Models\Product  $product
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $result=$this->productEloquentRepository->deleteProduct($id);
-        if(!$result)
+        $result = $this->productEloquentRepository->delete($id);
+        if (!$result)
             return response()->json(['error' => 'Product not found'], 404);
         return response()->json(null, 204);
+    }
+    /**
+     * Restore the specified resource from storage.
+     *
+     * @param   $id
+     * @return \Illuminate\Http\Response
+     */
+    public function restore($id)
+    {
+        $product = $this->productEloquentRepository->restore($id);
+        if (!$product)
+            return response()->json(['error' => 'Product not found'], 404);
+        return new ProductResource($product);
     }
 }

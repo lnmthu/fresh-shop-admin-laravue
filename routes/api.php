@@ -68,10 +68,13 @@ Route::namespace('Api')->group(function () {
         Route::apiResource('categories', 'CategoryController')->middleware('permission:manage category');
         Route::get('categories', 'CategoryController@index')->middleware('permission:view category|manage category');
         Route::get('categories-with-trash', 'CategoryController@getListWithTrash')->middleware('permission:view category|manage category');
-
+        Route::get('categories-only-trash-paginate', 'CategoryController@getListOnlyTrash')->middleware('permission:view category|manage category');
+        Route::put('categories/restore/{id}', 'CategoryController@restore')->middleware('permission:manage category');
         // Product routes
         Route::apiResource('products', 'ProductController')->middleware('permission:manage product');
         Route::get('products', 'ProductController@index')->name('products.index')->middleware('permission:view product|manage products');
+        Route::get('products-only-trash-paginate', 'ProductController@getListOnlyTrash')->middleware('permission:view product|manage product');
+        Route::put('products/restore/{id}', 'ProductController@restore')->middleware('permission:manage product');
     });
 });
 
