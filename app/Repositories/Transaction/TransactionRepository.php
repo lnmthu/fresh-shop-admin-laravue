@@ -18,7 +18,6 @@ class TransactionRepository extends BaseRepository implements TransactionReposit
 
     public function create(array $attributes)
     {
-        $attributes['payment_code'] = '#' . Str::random(5) . sha1(time());
         $attributes['order_id'] = $attributes['id'];
         $transaction = $this->model->create($attributes);
         return $transaction;

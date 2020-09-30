@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 $factory->define(Transaction::class, function (Faker $faker) use ($factory) {
     $order = factory(Order::class)->create();
     return [
+        'unique_id' => mt_rand(10000000, 99999999),
         'code' => $order->code,
         'order_id' => $order->id,
         'total_price' => $order->total_price,

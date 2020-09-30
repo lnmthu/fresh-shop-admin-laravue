@@ -34,12 +34,12 @@ const productRoutes = {
       meta: { title: 'productEdit', noCache: true, permissions: ['manage product'] },
       hidden: true,
     },
-    {
-      path: 'trash',
-      component: () => import('@/views/products/Trash'),
-      name: 'ProductTrash',
-      meta: { title: 'productTrash', icon: 'el-icon-delete', permissions: ['view product', 'manage product'] },
-    },
+    // {
+    //   path: 'trash',
+    //   component: () => import('@/views/products/Trash'),
+    //   name: 'ProductTrash',
+    //   meta: { title: 'productTrash', icon: 'el-icon-delete', permissions: ['view product', 'manage product'] },
+    // },
 
   ],
 };

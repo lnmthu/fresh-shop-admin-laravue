@@ -18,7 +18,7 @@
           v-if="order.status == 0"
           v-permission="['manage order']"
           type="primary"
-          @click="processOrder(order.id, order.order_code, 3)"
+          @click="processOrder(order.unique_id, order.order_code, 3)"
         >
           Confirm
         </el-button>
@@ -26,7 +26,7 @@
           v-if="order.status == 3"
           v-permission="['manage order']"
           type="success"
-          @click="processOrder(order.id, order.order_code, 1)"
+          @click="processOrder(order.unique_id, order.order_code, 1)"
         >
           Complete
         </el-button>
@@ -34,7 +34,7 @@
           v-if="order.status != 2 && order.status != 1"
           v-permission="['manage order']"
           type="danger"
-          @click="processOrder(order.id, order.order_code, 2)"
+          @click="processOrder(order.unique_id, order.order_code, 2)"
         >
           Cancel
         </el-button>
@@ -42,7 +42,7 @@
           v-if="order.status == 2 || order.status == 1"
           v-permission="['manage order']"
           type="warning"
-          @click="processOrder(order.id, order.order_code, 0)"
+          @click="processOrder(order.unique_id, order.order_code, 0)"
         >
           Restore Order
         </el-button>
@@ -179,7 +179,7 @@
             </el-row>
             <router-link
               v-if="order.transaction.payment_status == 0"
-              :to="'/orders/charge/' + order.id"
+              :to="'/orders/charge/' + order.unique_id"
               class="link-type"
             >
               <span>Pay this order</span>
@@ -234,11 +234,9 @@
 import MDinput from '@/components/MDinput';
 import Sticky from '@/components/Sticky';
 import OrderResource from '@/api/order';
-import Resource from '@/api/resource';
 import permission from '@/directive/permission'; // Import permission directive
 
 const ordersResource = new OrderResource();
-const transactionResource = new Resource('transactions');
 
 export default {
   name: 'ArticleDetail',
@@ -306,19 +304,6 @@ export default {
           ordersResource
             .processOrder(id, this.data)
             .then(response => {
-              if (status !== 3) {
-                transactionResource.update(id, this.data).then(response => {
-                  this.$message({
-                    type: 'success',
-                    message: 'Order process changed',
-                  });
-                });
-              } else {
-                this.$message({
-                  type: 'success',
-                  message: 'Order process changed',
-                });
-              }
               this.getOrder();
             })
             .catch(error => {

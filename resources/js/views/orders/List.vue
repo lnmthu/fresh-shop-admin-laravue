@@ -48,7 +48,7 @@
 
       <el-table-column min-width="300px" label="Order Code">
         <template slot-scope="{ row }">
-          <router-link :to="'show/' + row.id" class="link-type">
+          <router-link :to="'show/' + row.unique_id" class="link-type">
             <span>{{ row.order_code }}</span>
           </router-link>
         </template>
@@ -106,7 +106,7 @@
             type="success"
             size="small"
             icon="el-icon-check"
-            @click="processOrder(scope.row.id, scope.row.order_code, 1)"
+            @click="processOrder(scope.row.unique_id, scope.row.order_code, 1)"
           >
             Complete
           </el-button>
@@ -116,7 +116,7 @@
             type="primary"
             size="small"
             icon="el-icon-check"
-            @click="processOrder(scope.row.id, scope.row.order_code, 3)"
+            @click="processOrder(scope.row.unique_id, scope.row.order_code, 3)"
           >
             Confirm
           </el-button>
@@ -126,7 +126,7 @@
             type="danger"
             size="small"
             icon="el-icon-edit"
-            @click="processOrder(scope.row.id, scope.row.order_code, 2)"
+            @click="processOrder(scope.row.unique_id, scope.row.order_code, 2)"
           >
             Cancel
           </el-button>
@@ -136,7 +136,7 @@
             type="warning"
             size="small"
             icon="el-icon-edit"
-            @click="processOrder(scope.row.id, scope.row.order_code, 0)"
+            @click="processOrder(scope.row.unique_id, scope.row.order_code, 0)"
           >
             Restore Order
           </el-button>
@@ -157,11 +157,9 @@
 <script>
 import Pagination from '@/components/Pagination'; // Secondary package based on el-pagination
 import OrderResource from '@/api/order';
-import Resource from '@/api/resource';
 import permission from '@/directive/permission'; // Import permission directive
 
 const ordersResource = new OrderResource();
-const transactionResource = new Resource('transactions');
 
 export default {
   name: 'OrderList',
@@ -238,19 +236,6 @@ export default {
           ordersResource
             .processOrder(id, this.data)
             .then(response => {
-              if (status !== 3) {
-                transactionResource.update(id, this.data).then(response => {
-                  this.$message({
-                    type: 'success',
-                    message: 'Order process changed',
-                  });
-                });
-              } else {
-                this.$message({
-                  type: 'success',
-                  message: 'Order process changed',
-                });
-              }
               this.getList();
             })
             .catch(error => {
