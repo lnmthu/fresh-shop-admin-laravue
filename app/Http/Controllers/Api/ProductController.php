@@ -61,6 +61,8 @@ class ProductController extends Controller
     public function show($unique_id)
     {
         $product = $this->productEloquentRepository->findById($unique_id);
+        if(!$product)
+            return response()->json(['error' => 'Category not found'], 404);
         return new ProductResource($product);
     }
 

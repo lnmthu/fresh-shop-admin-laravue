@@ -69,6 +69,8 @@ class CategoryController extends Controller
     public function show($unique_id)
     {
         $category = $this->categoryEloquentRepository->findById($unique_id);
+        if(!$category)
+            return response()->json(['error' => 'Category not found'], 404);
         return new CategoryResource($category);
     }
 

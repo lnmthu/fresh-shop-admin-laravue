@@ -31,23 +31,25 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
     public function update(array $data, $id)
     {
         $product = $this->findById($id);
-        $image = $data['image_uri'];
-        $oldImage = $product->getFirstMedia('images');
-        if ($oldImage && $oldImage->getUrl('thumb') === $image){
+        if ($product) {
+            $image = $data['image_uri'];
+            $oldImage = $product->getFirstMedia('images');
+            if ($oldImage && $oldImage->getUrl('thumb') === $image) {
+                $product->update($data);
+                return $product;
+            }
+            if ($oldImage) {
+                unlink(public_path($oldImage->getUrl('thumb')));
+                $product->clearMediaCollection('images');
+            }
+            if ($image) {
+                $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                \Image::make($image)->save(public_path('images/') . $name);
+                $product->addMedia(public_path('images/') . $name)->toMediaCollection('images');
+            }
             $product->update($data);
             return $product;
         }
-        if ($oldImage) {
-            unlink(public_path($oldImage->getUrl('thumb')));
-            $product->clearMediaCollection('images');
-        }
-        if ($image) {
-            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            \Image::make($image)->save(public_path('images/') . $name);
-            $product->addMedia(public_path('images/') . $name)->toMediaCollection('images');
-        }
-        $product->update($data);
-        return $product;
     }
     public function delete($id)
     {

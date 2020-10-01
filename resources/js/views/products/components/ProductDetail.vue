@@ -204,8 +204,8 @@ export default {
               message: 'Product info has been updated successfully',
               duration: 5 * 1000,
             });
-            this.getProductList();
             this.loading = false;
+            this.$router.push({ name: 'ProductList' });
           })
           .catch((error) => {
             console.log(error);
@@ -235,8 +235,8 @@ export default {
               sort: 1, // Priority
               image_uri: '',
             };
-            this.getProductList();
             this.loading = false;
+            this.$router.push({ name: 'ProductList' });
           })
           .catch((error) => {
             console.log(error);

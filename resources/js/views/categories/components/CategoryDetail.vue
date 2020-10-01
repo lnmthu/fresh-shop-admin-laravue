@@ -135,8 +135,8 @@ export default {
               message: 'Category info has been updated successfully',
               duration: 5 * 1000,
             });
-            this.getList();
             this.loading = false;
+            this.$router.push({ name: 'CategoryList' });
           })
           .catch((error) => {
             console.log(error);
@@ -162,8 +162,8 @@ export default {
               image_uri: '',
               unique_id: undefined,
             };
-            this.getList();
             this.loading = false;
+            this.$router.push({ name: 'CategoryList' });
           })
           .catch((error) => {
             console.log(error);
