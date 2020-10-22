@@ -26,7 +26,7 @@ class AddUniqueIdToProductsTable extends Migration
     public function down()
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->dropColumn('products');
+            $table->dropColumn('unique_id');
         });
     }
 }

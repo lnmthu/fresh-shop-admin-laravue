@@ -135,4 +135,10 @@ class BlogCategoryController extends Controller
 
         return new BlogCategoryResource($blogCategory);
     }
+    public function getAllBlogCategory()
+    {
+        $blogCategories = $this->blogCategoryRepository->getAll();
+
+        return BlogCategoryResource::collection($blogCategories);
+    }
 }

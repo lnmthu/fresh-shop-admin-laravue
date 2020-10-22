@@ -2,19 +2,19 @@
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" class="form-container">
       <sticky :class-name="'sub-navbar primary'">
-        <el-select v-model="postForm.category_id" placeholder="Select Category">
+        <el-select v-model="postForm.category_unique_id" placeholder="Select Category">
           <el-option
             v-for="item in categoryList"
-            :key="item.id"
+            :key="item.unique_id"
             :label="item.name"
-            :value="item.id"
+            :value="item.unique_id"
           />
         </el-select>
         <SortDropdown v-model="postForm.sort" />
         <StatusDropdown v-model="postForm.status" />
         <el-button
           v-loading="loading"
-          style="margin-left: 10px;"
+          style="margin-left: 10px"
           type="success"
           @click="submitForm"
         >Submit</el-button>
@@ -24,7 +24,11 @@
       <div class="createPost-main-container">
         <el-row>
           <el-col :span="24">
-            <el-form-item style="margin: 20px 0px;" label-width="80px" label="Name:">
+            <el-form-item
+              style="margin: 20px 0px"
+              label-width="80px"
+              label="Name:"
+            >
               <el-input
                 v-model="postForm.name"
                 :rows="1"
@@ -38,7 +42,11 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="80px" label="Sku:" class="postInfo-container-item">
+                  <el-form-item
+                    label-width="80px"
+                    label="Sku:"
+                    class="postInfo-container-item"
+                  >
                     <el-input
                       v-model="postForm.sku"
                       :rows="1"
@@ -51,7 +59,11 @@
                 </el-col>
 
                 <el-col :span="10">
-                  <el-form-item label-width="120px" label="Price:" class="postInfo-container-item">
+                  <el-form-item
+                    label-width="120px"
+                    label="Price:"
+                    class="postInfo-container-item"
+                  >
                     <el-input
                       v-model="postForm.price"
                       :rows="1"
@@ -83,11 +95,11 @@
             </div>
           </el-col>
         </el-row>
-        <el-form-item prop="content" style="margin-bottom: 30px;">
+        <el-form-item prop="content" style="margin-bottom: 30px">
           <Tinymce ref="editor" v-model="postForm.description" :height="400" />
         </el-form-item>
 
-        <el-form-item prop="image_uri" style="margin-bottom: 30px;">
+        <el-form-item prop="image_uri" style="margin-bottom: 30px">
           <Upload v-model="postForm.image_uri" />
         </el-form-item>
       </div>
@@ -108,7 +120,7 @@ const productResource = new ProductResource();
 const defaultForm = {
   id: undefined,
   unique_id: undefined,
-  category_id: null,
+  category_unique_id: undefined,
   name: '',
   sku: '',
   price: null,
@@ -205,7 +217,9 @@ export default {
               duration: 5 * 1000,
             });
             this.loading = false;
-            this.$router.push({ name: 'ProductList' });
+            this.$router.push({
+              name: 'ProductList',
+            });
           })
           .catch((error) => {
             console.log(error);
@@ -225,7 +239,7 @@ export default {
             this.postForm = {
               id: undefined,
               unique_id: undefined,
-              category_id: null,
+              category_unique_id: undefined,
               name: '',
               sku: '',
               description: '',
@@ -236,7 +250,9 @@ export default {
               image_uri: '',
             };
             this.loading = false;
-            this.$router.push({ name: 'ProductList' });
+            this.$router.push({
+              name: 'ProductList',
+            });
           })
           .catch((error) => {
             console.log(error);

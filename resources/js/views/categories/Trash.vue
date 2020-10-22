@@ -114,6 +114,11 @@ export default {
       },
     };
   },
+  watch: {
+    $route(to, from){
+      this.getListPaginated();
+    },
+  },
   created() {
     this.getListPaginated();
     this.getListNotPaginated();

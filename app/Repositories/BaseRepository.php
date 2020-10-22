@@ -104,4 +104,5 @@ class BaseRepository implements RepositoryInterface
         } while ($this->model->where('unique_id', $unique_id)->exists());
         return $unique_id;
     }
+
 }

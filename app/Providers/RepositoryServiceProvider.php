@@ -16,7 +16,8 @@ use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Repositories\Category\CategoryEloquentRepository;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Repositories\Product\ProductEloquentRepository;
-
+use App\Repositories\Contact\ContactInterface;
+use App\Repositories\Contact\ContactRepository;
 class RepositoryServiceProvider extends ServiceProvider
 {
     /**
@@ -32,6 +33,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ProductRepositoryInterface::class,ProductEloquentRepository::class);
         $this->app->singleton(OrderRepositoryInterface::class, OrderRepository::class);
         $this->app->singleton(TransactionRepositoryInterface::class, TransactionRepository::class);
+        $this->app->bind(ContactInterface::class,ContactRepository::class);
+
     }
 
     /**

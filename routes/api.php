@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use \App\Laravue\Faker;
 use \App\Laravue\JsonResponse;
 use \App\Laravue\Acl;
+use Stripe\ApiResource;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,15 +67,19 @@ Route::namespace('Api')->group(function () {
 
         // Category routes
         Route::apiResource('categories', 'CategoryController')->middleware('permission:manage category');
-        Route::get('categories', 'CategoryController@index')->middleware('permission:view category|manage category');
         Route::get('categories-with-trash', 'CategoryController@getListWithTrash')->middleware('permission:view category|manage category');
         Route::get('categories-only-trash-paginate', 'CategoryController@getListOnlyTrash')->middleware('permission:view category|manage category');
         Route::put('categories/restore/{unique_id}', 'CategoryController@restore')->middleware('permission:manage category');
         // Product routes
         Route::apiResource('products', 'ProductController')->middleware('permission:manage product');
-        Route::get('products', 'ProductController@index')->name('products.index')->middleware('permission:view product|manage products');
         Route::get('products-only-trash-paginate', 'ProductController@getListOnlyTrash')->middleware('permission:view product|manage product');
         Route::put('products/restore/{unique_id}', 'ProductController@restore')->middleware('permission:manage product');
+        // contact routes
+        Route::apiResource('contact', 'ContactController')->middleware('permission:manage contact');
+        Route::get('contact', 'ContactController@index')->middleware('permission:view contact');
+        Route::get('contact-only-trash-paginate', 'ContactController@getListOnlyTrash')->middleware('permission:manage contact');
+        Route::put('contact/restore/{unique_id}', 'ContactController@restore')->middleware('permission:manage product');
+
     });
 });
 
@@ -181,4 +186,30 @@ Route::get('articles/{id}/pageviews', function ($id) {
     }
 
     return response()->json(new JsonResponse(['pvData' => $data]));
+});
+Route::namespace('Api')->group(function () {
+    // get all product
+    Route::get('all-products', 'ProductController@getAllProduct');
+    // get list product paginate
+    Route::get('products', 'ProductController@index');   
+    // get detail product  
+    Route::get('products/{product}', 'ProductController@show');  
+    //get product belong to category paginate
+    Route::get('products-with-category/{category_unique_id}', 'ProductController@getProductWithCategory');
+    //get all category
+    Route::get('all-categories', 'CategoryController@getAllCategory');
+
+    // get all blog-category
+    Route::get('all-blog-categories', 'BlogCategoryController@getAllBlogCategory');
+    // get list blog-items paginate
+    Route::get('blog-items', 'BlogItemController@index');
+    // get all blog-items
+    Route::get('all-blog-items', 'BlogItemController@getAllBlogItem');
+    // get detail blog-items
+    Route::get('blog-items/{blog_item}', 'BlogItemController@show');
+    // get blog-item belongs to blog-category paginate
+    Route::get('paginate-blog-category/{blog_category_id}', 'BlogItemController@getPaginateBlogCategory');
+
+    //Api create contact
+    Route::post("contact","ContactController@store");
 });

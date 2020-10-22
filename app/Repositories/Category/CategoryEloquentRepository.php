@@ -35,12 +35,12 @@ class CategoryEloquentRepository extends BaseRepository implements CategoryRepos
         if ($category) {
             $image = $data['image_uri'];
             $oldImage = $category->getFirstMedia('images');
-            if ($oldImage && $oldImage->getUrl('thumb') === $image) {
+            if ($oldImage && $oldImage->getFullUrl('thumb') === $image) {
                 $category->update($data);
                 return $category;
             }
             if ($oldImage) {
-                unlink(public_path($oldImage->getUrl('thumb')));
+                unlink(public_path($oldImage->getFullUrl('thumb')));
                 $category->clearMediaCollection('images');
             }
             if ($image) {

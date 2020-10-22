@@ -82,6 +82,8 @@ export default {
     productEdit: 'Edit Product',
     categoryTrash: 'Trash Category',
     productTrash: 'Trash Product',
+    contactList: 'List Contact',
+    contactTrash: 'Trash Contact',
   },
   navbar: {
     logOut: 'Log Out',

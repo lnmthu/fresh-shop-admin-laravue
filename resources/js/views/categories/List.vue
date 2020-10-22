@@ -1,6 +1,12 @@
 <template>
   <div class="app-container">
-    <el-table v-loading="loading" :data="listPaginated" border fit highlight-current-row>
+    <el-table
+      v-loading="loading"
+      :data="listPaginated"
+      border
+      fit
+      highlight-current-row
+    >
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -25,7 +31,7 @@
 
       <el-table-column align="center" label="Description">
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <span v-html="scope.row.description" />
           <h3 class="medium">
             <el-image
               v-if="scope.row.image_uri"
@@ -114,6 +120,11 @@ export default {
         limit: 10,
       },
     };
+  },
+  watch: {
+    $route(to, from){
+      this.getListPaginated();
+    },
   },
   created() {
     this.getListPaginated();

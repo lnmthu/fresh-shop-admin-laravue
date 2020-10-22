@@ -5,5 +5,4 @@ use Illuminate\Http\Request;
 
 interface CategoryRepositoryInterface
 {
-    
 }

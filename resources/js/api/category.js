@@ -26,6 +26,12 @@ class CategoryResource extends Resource {
       data: resource,
     });
   }
+  getWithTrashed(unique_id) {
+    return request({
+      url: '/' + this.uri + '-with-trash/' + unique_id,
+      method: 'get',
+    });
+  }
 }
 
 export { CategoryResource as default };

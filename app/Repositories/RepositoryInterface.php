@@ -26,4 +26,6 @@ interface RepositoryInterface
 
     public function generateUniqueId();
 
+
+
 }

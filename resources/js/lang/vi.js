@@ -84,6 +84,10 @@ export default {
     productEdit: 'Chỉnh sửa sản phẩm',
     categoryTrash: 'Thùng rác thể loại',
     productTrash: 'Thùng rác sản phẩm',
+    contactList: 'Danh sách liên hệ',
+    Contact: 'Liên hệ',
+    contactTrash: 'Thùng rác liên hệ',
+
   },
   navbar: {
     logOut: 'Đăng xuất',

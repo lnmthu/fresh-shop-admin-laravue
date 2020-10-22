@@ -31,6 +31,7 @@ import excelRoutes from './modules/excel';
 import blogsRoutes from './modules/blogs';
 // import permissionRoutes from './modules/permission';
 import ordersRoutes from './modules/order';
+import contactRoute from './modules/contact';
 
 /**
  * Sub-menu only appear when children.length>=1
@@ -156,6 +157,7 @@ export const asyncRoutes = [
   ordersRoutes,
   blogsRoutes,
   adminRoutes,
+  contactRoute,
   {
     path: '/theme',
     component: Layout,

@@ -132,6 +132,11 @@ export default {
       },
     };
   },
+  watch: {
+    $route(to, from){
+      this.getProductList();
+    },
+  },
   created() {
     this.getProductList();
     this.getCategoryList();

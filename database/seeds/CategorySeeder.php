@@ -12,83 +12,53 @@ class CategorySeeder extends Seeder
     public function run()
     {
         DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
+            'name' => "Trái cây",
+            'description' => "Các loại trái cây",
             'status' => 1,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 3,
+            'sku' => 'trctrc',
+            'unique_id' => 123,
+            'id' => 1,
+            "created_at" => date("Y-m-d h:i:sa"),
 
         ]);
         DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
-            'status' => 2,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 5,
+            'name' => "Nước uống",
+            'description' => "Các loại nước uống",
+            'status' => 1,
+            'sku' => 'nnn',
+            'unique_id' => 456,
+            'id' => 2,
+            "created_at" => date("Y-m-d h:i:sa"),
 
         ]);
         DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
+            'name' => "Thịt",
+            'description' => "Các loại thịt",
             'status' => 1,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 4,
+            'sku' => 'ttt',
+            'unique_id' => 789,
+            'id' => 3,
+            "created_at" => date("Y-m-d h:i:sa"),
 
         ]);
         DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
+            'name' => "Rau",
+            'description' => "Các loại rau",
             'status' => 1,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 3,
+            'sku' => 'rrr',
+            'unique_id' => 91011,
+            'id' => 4,
+            "created_at" => date("Y-m-d h:i:sa"),
 
         ]);
         DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
+            'name' => "Thức ăn nhanh",
+            'description' => "Các loại thức ăn nhanh",
             'status' => 1,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 2,
-
-        ]);
-        DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
-            'status' => 1,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 1,
-
-        ]);
-        DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
-            'status' => 1,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 5,
-
-        ]);
-        DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
-            'status' => 1,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 4,
-
-        ]);
-        DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
-            'status' => 1,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 3,
-
-        ]);
-        DB::table('categories')->insert([
-            'name' => Str::random(10),
-            'description' => Str::random(100),
-            'status' => 1,
-            'unique_id' => rand(1000000,5000000),
-            'parent_id' => 2,
+            'sku' => 'ccc',
+            'unique_id' => 101112,
+            'id' => 5,
+            "created_at" => date("Y-m-d h:i:sa"),
 
         ]);
     }

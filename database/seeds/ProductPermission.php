@@ -17,5 +17,8 @@ class ProductPermission extends Seeder
         // Assign new permissions to admin group
         $adminRole = App\Laravue\Models\Role::findByName(App\Laravue\Acl::ROLE_ADMIN);
         $adminRole->givePermissionTo(['view product', 'manage product','view menu product']);
+        $visitorRole = App\Laravue\Models\Role::findByName(App\Laravue\Acl::ROLE_VISITOR);
+        $visitorRole->givePermissionTo('view product');
+
     }
 }
