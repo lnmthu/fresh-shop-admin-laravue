@@ -9,7 +9,7 @@ interface RepositoryInterface
     public function getAllWithTrash();
 
     public function getAllDeleted();
-    
+
     public function getAllPaginate(array $params);
 
     public function findById(int $id);
@@ -25,7 +25,4 @@ interface RepositoryInterface
     public function restore($id);
 
     public function generateUniqueId();
-
-
-
 }

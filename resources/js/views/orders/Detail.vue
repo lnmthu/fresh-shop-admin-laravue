@@ -1,5 +1,5 @@
 <template>
-  <OrderDetail v-if="!loading" :order="order" :methods="getOrder" />
+  <OrderDetail v-if="!loading" :order="order" />
 </template>
 
 <script>

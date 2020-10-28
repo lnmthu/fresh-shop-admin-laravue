@@ -30,14 +30,13 @@ const orderResource = new OrderResource();
 export default {
   data() {
     return {
-      spk:
-        'pk_test_51HU4o2HNCxgLnTLGUTQMrhYaWprTarTwOPsEJ8fHJNRi2cWCWa1lhU9ApVaTCLsS9xNgQdKh8aKEdfMJfW0FwDbP00OfuUUe0v',
-      stripe: undefined,
-      card: undefined,
+      spk: process.env.MIX_STRIPE_KEY,
+      stripe: '',
+      card: '',
       msg: 'Pay amount: ',
       payAmount: 1000,
       lockSubmit: false,
-      dt: undefined,
+      dt: {},
       order: {},
     };
   },
@@ -83,7 +82,7 @@ export default {
     processTransaction(transactionToken) {
       var self = this;
       self.dt = {
-        id: self.order.id,
+        id: self.order.transaction.unique_id,
         amount: parseInt(self.order.total_price), // stripe uses an int [with shifted decimal place] so we must convert our payment amount
         currency: 'USD',
         description: 'Payment for order: ' + self.order.order_code,
@@ -96,11 +95,15 @@ export default {
             type: 'success',
             message: 'Order is paid',
           });
-          this.$router.replace('/orders/show/' + self.dt.id);
+          this.$router.replace('/orders/show/' + self.order.unique_id);
           self.lockSubmit = false;
         })
         .catch(error => {
-          console.log(error);
+          this.$message({
+            type: 'error',
+            message: error.response.data.message,
+          });
+          self.lockSubmit = false;
         });
     },
   },

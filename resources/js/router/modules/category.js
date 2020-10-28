@@ -34,12 +34,12 @@ const categoryRoutes = {
       meta: { title: 'categoryEdit', noCache: true, permissions: ['manage category'] },
       hidden: true,
     },
-    {
-      path: 'trash',
-      component: () => import('@/views/categories/Trash'),
-      name: 'CategoryTrash',
-      meta: { title: 'categoryTrash', icon: 'el-icon-delete', permissions: ['view category', 'manage category'] },
-    },
+    // {
+    //   path: 'trash',
+    //   component: () => import('@/views/categories/Trash'),
+    //   name: 'CategoryTrash',
+    //   meta: { title: 'categoryTrash', icon: 'el-icon-delete', permissions: ['view category', 'manage category'] },
+    // },
 
   ],
 };

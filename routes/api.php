@@ -20,7 +20,6 @@ use Stripe\ApiResource;
 */
 
 Route::namespace('Api')->group(function () {
-
     Route::post('auth/login', 'AuthController@login');
     Route::post('transactions/charge-card', 'TransactionController@chargeCard');
 

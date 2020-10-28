@@ -22,8 +22,8 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
         $image = $data['image_uri'];
         if ($image) {
             $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            \Image::make($image)->save(public_path('images/') . $name);
-            $product->addMedia(public_path('images/') . $name)->toMediaCollection('images');
+            \Image::make($image)->save('public/images/'. $name);
+            $product->addMedia('public/images/' . $name)->toMediaCollection('images');
         }
         return $product;
     }
