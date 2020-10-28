@@ -18,7 +18,7 @@ class CategorySeeder extends Seeder
             'sku' => 'trctrc',
             'unique_id' => 123,
             'id' => 1,
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         DB::table('categories')->insert([
@@ -28,7 +28,7 @@ class CategorySeeder extends Seeder
             'sku' => 'nnn',
             'unique_id' => 456,
             'id' => 2,
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         DB::table('categories')->insert([
@@ -38,7 +38,7 @@ class CategorySeeder extends Seeder
             'sku' => 'ttt',
             'unique_id' => 789,
             'id' => 3,
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         DB::table('categories')->insert([
@@ -48,7 +48,7 @@ class CategorySeeder extends Seeder
             'sku' => 'rrr',
             'unique_id' => 91011,
             'id' => 4,
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         DB::table('categories')->insert([
@@ -58,7 +58,7 @@ class CategorySeeder extends Seeder
             'sku' => 'ccc',
             'unique_id' => 101112,
             'id' => 5,
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
     }

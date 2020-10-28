@@ -20,7 +20,7 @@ class ProductSeeder extends Seeder
             'category_unique_id' => 789,
             'status' => 1,
             'unique_id' => rand(1000000,5000000),
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         DB::table('products')->insert([
@@ -32,7 +32,7 @@ class ProductSeeder extends Seeder
             'category_unique_id' => 91011,
             'unique_id' => rand(1000000,5000000),
             'status' => 1,
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         DB::table('products')->insert([
@@ -44,7 +44,7 @@ class ProductSeeder extends Seeder
             'category_unique_id' => 123,
             'status' => 1,
             'unique_id' => rand(1000000,5000000),
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         DB::table('products')->insert([
@@ -56,7 +56,7 @@ class ProductSeeder extends Seeder
             'category_unique_id' => 456,
             'status' => 1,
             'unique_id' => rand(1000000,5000000),
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
 
         ]);
@@ -69,7 +69,7 @@ class ProductSeeder extends Seeder
             'category_unique_id' => 101112,
             'status' => 1,
             'unique_id' => rand(1000000,5000000),
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
 
         ]);
@@ -82,7 +82,7 @@ class ProductSeeder extends Seeder
             'category_unique_id' => 123,
             'status' => 1,
             'unique_id' => rand(1000000,5000000),
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         DB::table('products')->insert([
@@ -94,7 +94,7 @@ class ProductSeeder extends Seeder
             'category_unique_id' => 789,
             'status' => 1,
             'unique_id' => rand(1000000,5000000),
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         DB::table('products')->insert([
@@ -106,7 +106,7 @@ class ProductSeeder extends Seeder
             'category_unique_id' => 91011,
             'status' => 1,
             'unique_id' => rand(1000000,5000000),
-            "created_at" => date("Y-m-d h:i:sa"),
+            "created_at" => date("Y-m-d h:i:s"),
 
         ]);
         
