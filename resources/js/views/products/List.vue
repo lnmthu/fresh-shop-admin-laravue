@@ -1,21 +1,32 @@
 <template>
   <div class="app-container">
     <!-- list -->
-    <el-table :data="productList" border fit highlight-current-row>
+    <el-table
+      v-loading="loading"
+      :data="productList"
+      border
+      fit
+      highlight-current-row
+    >
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="Unique_ID" width="90">
+        <template slot-scope="scope">
+          <span>{{ scope.row.unique_id }}</span>
+        </template>
+      </el-table-column>
 
-      <el-table-column align="center" label="Name" width="150">
+      <el-table-column align="center" label="Name" width="100">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Category" width="150">
+      <el-table-column align="center" label="Category" width="90">
         <template slot-scope="scope">
-          <span>{{ getCategory(scope.row.category_id) }}</span>
+          <span>{{ getCategory(scope.row.category_unique_id) }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="SKU" width="80">
@@ -33,9 +44,9 @@
           <span>{{ scope.row.qty }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Description">
+      <el-table-column align="center" label="Description" width="170">
         <template slot-scope="scope">
-          <span>{{ scope.row.description }}</span>
+          <span v-html="scope.row.description" />
           <h3 class="medium">
             <el-image
               v-if="scope.row.image_uri"
@@ -45,14 +56,16 @@
           </h3>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Sort" width="110">
-        <template slot-scope="{row}">
+      <el-table-column align="center" label="Sort" width="100">
+        <template slot-scope="{ row }">
           <el-tag :type="row.sort | Filter">{{ getSort(row.sort) }}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column class-name="status-col" label="Status" width="110">
-        <template slot-scope="{row}">
-          <el-tag :type="row.status | Filter">{{ getStatus(row.status) }}</el-tag>
+      <el-table-column class-name="status-col" label="Status" width="100">
+        <template slot-scope="{ row }">
+          <el-tag :type="row.status | Filter">{{
+            getStatus(row.status)
+          }}</el-tag>
         </template>
       </el-table-column>
       <!--Edit and delete -->
@@ -63,7 +76,7 @@
         width="200"
       >
         <template slot-scope="scope">
-          <router-link :to="'/products/edit/'+scope.row.id">
+          <router-link :to="'/products/edit/' + scope.row.unique_id">
             <el-button
               v-permission="['manage product']"
               type="primary"
@@ -76,14 +89,14 @@
             type="danger"
             size="small"
             icon="el-icon-delete"
-            @click="handleDelete(scope.row.id, scope.row.name);"
+            @click="handleDelete(scope.row.unique_id, scope.row.name)"
           >Delete</el-button>
         </template>
       </el-table-column>
       <!--End Edit and delete -->
     </el-table>
     <pagination
-      v-show="total>0"
+      v-show="total > 0"
       :total="total"
       :page.sync="listQuery.page"
       :limit.sync="listQuery.limit"
@@ -116,8 +129,8 @@ export default {
   }, // use permission directive
   data() {
     return {
-      productList: [],
       categoryList: [],
+      productList: [],
       loading: true,
       total: 0,
       listQuery: {
@@ -126,21 +139,27 @@ export default {
       },
     };
   },
+  watch: {
+    $route(to, from){
+      this.getProductList();
+    },
+  },
   created() {
     this.getProductList();
     this.getCategoryList();
   },
   methods: {
     checkPermission,
-    getCategory($categoryId) {
+    getCategory($categoryUniqueId) {
       let result = '';
       this.categoryList.forEach((element) => {
-        if (element.id === $categoryId) {
+        if (element.unique_id === $categoryUniqueId) {
           result = element.name;
         }
       });
       return result;
     },
+
     getSort($sort) {
       let result = '';
       if ($sort === 1) {
@@ -172,7 +191,7 @@ export default {
       this.categoryList = data;
     },
     // delete
-    handleDelete(id, name) {
+    handleDelete(unique_id, name) {
       this.$confirm(
         'This will momentarily delete product ' + name + '. Continue?',
         'Warning',
@@ -184,7 +203,7 @@ export default {
       )
         .then(() => {
           productResource
-            .destroy(id)
+            .destroy(unique_id)
             .then((response) => {
               this.$message({
                 type: 'success',

@@ -16,9 +16,9 @@ class BlogItemResource extends JsonResource
     {
         if ($this->getFirstMedia('blog') != null) {
             if( $this->getFirstMedia('blog')->hasGeneratedConversion('blog')){
-                $image = $this->getFirstMedia('blog')->getUrl('blog');
+                $image = $this->getFirstMedia('blog')->getFullUrl('blog');
             }else{
-                $image = $this->getFirstMedia('blog')->getUrl();
+                $image = $this->getFirstMedia('blog')->getFullUrl();
             }
         } else {
             $image = '';
@@ -36,6 +36,7 @@ class BlogItemResource extends JsonResource
             'body' => $this->body,
             'sort' => $this->sort,
             'status' => $this->status,
+            'created_at' => $this->created_at,
         ];
     }
 }

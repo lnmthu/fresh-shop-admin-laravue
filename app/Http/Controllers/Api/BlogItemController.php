@@ -70,7 +70,7 @@ class BlogItemController extends Controller
      */
     public function show($id)
     {
-        $blogItem = $this->blogItemRepository->findById($id);
+        $blogItem =BlogItem::findOrFail($id);
 
         return new BlogItemResource($blogItem);
     }
@@ -143,5 +143,17 @@ class BlogItemController extends Controller
         $blogItem = $this->blogItemRepository->update(['status' => 1], $id);
 
         return $this->responseHelper->successResponse(true, 'Blog Item has been activated!', $blogItem);
+    }
+    public function getAllBlogItem(){
+        $blogItems = $this->blogItemRepository->getAll();
+
+        return BlogItemResource::collection($blogItems);
+    }
+    public function getPaginateBlogCategory($blog_category_id, Request $request){
+        $params = $request->all();
+        $blogItems = $this->blogItemRepository->BlogCategoryPaginate($blog_category_id,$params);
+        if (!$blogItems)
+            return response()->json(['error' => 'blogItems not found'], 404);
+        return BlogItemResource::collection($blogItems);
     }
 }

@@ -14,7 +14,7 @@
         type="submit"
         value="Pay"
         @click.prevent="purchase"
-      />
+      >
     </form>
   </div>
 </template>

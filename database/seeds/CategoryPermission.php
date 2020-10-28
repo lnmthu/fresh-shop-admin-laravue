@@ -18,5 +18,7 @@ class CategoryPermission extends Seeder
         // Assign new permissions to admin group
         $adminRole = App\Laravue\Models\Role::findByName(App\Laravue\Acl::ROLE_ADMIN);
         $adminRole->givePermissionTo(['view category', 'manage category', "view menu category"]);
+        $visitorRole = App\Laravue\Models\Role::findByName(App\Laravue\Acl::ROLE_VISITOR);
+        $visitorRole->givePermissionTo('view category');
     }
 }

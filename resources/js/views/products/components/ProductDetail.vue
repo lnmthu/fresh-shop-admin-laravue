@@ -2,19 +2,19 @@
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" class="form-container">
       <sticky :class-name="'sub-navbar primary'">
-        <el-select v-model="postForm.category_id" placeholder="Select Category">
+        <el-select v-model="postForm.category_unique_id" placeholder="Select Category">
           <el-option
             v-for="item in categoryList"
-            :key="item.id"
+            :key="item.unique_id"
             :label="item.name"
-            :value="item.id"
+            :value="item.unique_id"
           />
         </el-select>
         <SortDropdown v-model="postForm.sort" />
         <StatusDropdown v-model="postForm.status" />
         <el-button
           v-loading="loading"
-          style="margin-left: 10px;"
+          style="margin-left: 10px"
           type="success"
           @click="submitForm"
         >Submit</el-button>
@@ -24,7 +24,11 @@
       <div class="createPost-main-container">
         <el-row>
           <el-col :span="24">
-            <el-form-item style="margin: 20px 0px;" label-width="80px" label="Name:">
+            <el-form-item
+              style="margin: 20px 0px"
+              label-width="80px"
+              label="Name:"
+            >
               <el-input
                 v-model="postForm.name"
                 :rows="1"
@@ -38,7 +42,11 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="80px" label="Sku:" class="postInfo-container-item">
+                  <el-form-item
+                    label-width="80px"
+                    label="Sku:"
+                    class="postInfo-container-item"
+                  >
                     <el-input
                       v-model="postForm.sku"
                       :rows="1"
@@ -51,7 +59,11 @@
                 </el-col>
 
                 <el-col :span="10">
-                  <el-form-item label-width="120px" label="Price:" class="postInfo-container-item">
+                  <el-form-item
+                    label-width="120px"
+                    label="Price:"
+                    class="postInfo-container-item"
+                  >
                     <el-input
                       v-model="postForm.price"
                       :rows="1"
@@ -83,11 +95,11 @@
             </div>
           </el-col>
         </el-row>
-        <el-form-item prop="content" style="margin-bottom: 30px;">
+        <el-form-item prop="content" style="margin-bottom: 30px">
           <Tinymce ref="editor" v-model="postForm.description" :height="400" />
         </el-form-item>
 
-        <el-form-item prop="image_uri" style="margin-bottom: 30px;">
+        <el-form-item prop="image_uri" style="margin-bottom: 30px">
           <Upload v-model="postForm.image_uri" />
         </el-form-item>
       </div>
@@ -107,7 +119,8 @@ const productResource = new ProductResource();
 
 const defaultForm = {
   id: undefined,
-  category_id: null,
+  unique_id: undefined,
+  category_unique_id: undefined,
   name: '',
   sku: '',
   price: null,
@@ -150,8 +163,8 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id;
-      this.fetchData(id);
+      const unique_id = this.$route.params && this.$route.params.id;
+      this.fetchData(unique_id);
     } else {
       this.postForm = Object.assign({}, defaultForm);
     }
@@ -164,9 +177,9 @@ export default {
   },
   methods: {
     // edit form
-    fetchData(id) {
+    fetchData(unique_id) {
       productResource
-        .get(id)
+        .get(unique_id)
         .then((response) => {
           this.postForm = response.data;
           // Set tagsview title
@@ -179,7 +192,7 @@ export default {
     setTagsViewTitle() {
       const title = 'productEdit';
       const route = Object.assign({}, this.tempRoute, {
-        title: `${title}-${this.postForm.id}`,
+        title: `${title}-${this.postForm.unique_id}`,
       });
       this.$store.dispatch('updateVisitedView', route);
     },
@@ -194,17 +207,19 @@ export default {
     },
     // create and edit submit
     submitForm() {
-      if (this.postForm.id !== undefined) {
+      if (this.postForm.unique_id !== undefined) {
         productResource
-          .update(this.postForm.id, this.postForm)
+          .update(this.postForm.unique_id, this.postForm)
           .then((response) => {
             this.$message({
               type: 'success',
               message: 'Product info has been updated successfully',
               duration: 5 * 1000,
             });
-            this.getProductList();
             this.loading = false;
+            this.$router.push({
+              name: 'ProductList',
+            });
           })
           .catch((error) => {
             console.log(error);
@@ -223,7 +238,8 @@ export default {
             });
             this.postForm = {
               id: undefined,
-              category_id: null,
+              unique_id: undefined,
+              category_unique_id: undefined,
               name: '',
               sku: '',
               description: '',
@@ -233,8 +249,10 @@ export default {
               sort: 1, // Priority
               image_uri: '',
             };
-            this.getProductList();
             this.loading = false;
+            this.$router.push({
+              name: 'ProductList',
+            });
           })
           .catch((error) => {
             console.log(error);

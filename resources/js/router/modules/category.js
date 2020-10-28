@@ -9,7 +9,7 @@ const categoryRoutes = {
   alwaysShow: true,
   meta: {
     title: 'Categories',
-    icon: 'admin',
+    icon: 'star',
     permissions: ['view menu category'],
   },
   children: [

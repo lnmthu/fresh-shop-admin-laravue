@@ -13,9 +13,9 @@ class Category extends Model implements HasMedia
 {
     use SoftDeletes, HasMediaTrait;
     protected $table="categories";
-    protected $fillable=["id","name","parent_id","description","sort","status"];
+    protected $fillable=["id","unique_id","name",'sku',"parent_id","description","sort","status"];
     public function product(){
-        return $this->hasMany('App/Product','category_id','id');
+        return $this->hasMany('App\Laravue\Models\Product','category_unique_id','unique_id');
     }
     public function registerMediaCollections()
     {
@@ -24,8 +24,8 @@ class Category extends Model implements HasMedia
         ->registerMediaConversions(function (Media $media) {
                 $this
                     ->addMediaConversion('thumb')
-                    ->width(250)
-                    ->height(250);
+                    ->width(270)
+                    ->height(270);
             });
     }
 

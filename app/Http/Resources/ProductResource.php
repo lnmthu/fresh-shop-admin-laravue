@@ -16,10 +16,11 @@ class ProductResource extends JsonResource
     {
         $img=null;
         if($this->getFirstMedia('images')){
-            $img=$this->getFirstMedia('images')->getUrl('thumb');
+            $img=$this->getFirstMedia('images')->getFullUrl('thumb');
         }
         return [
             'id' => $this->id,
+            'unique_id' => $this->unique_id,
             'name' => $this->name,
             'sku' => $this->sku,
             'description' => $this->description,
@@ -27,10 +28,10 @@ class ProductResource extends JsonResource
             'status' => $this->status,
             'price' => $this->price,
             'qty' => $this->qty,
-            'category_id' => $this->category_id,
+            'category_unique_id' => $this->category_unique_id,
             'image_uri' => $img,
             'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'category_detail'=> new CategoryResource($this->category),
         ];
     }
 }

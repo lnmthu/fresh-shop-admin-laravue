@@ -15,95 +15,66 @@ class ProductController extends Controller
     {
         $this->productEloquentRepository = $productEloquentRepository;
     }
-    /**
-     * Display a listing of the resource.
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $params = $request->all();
         $products = $this->productEloquentRepository->getAllPaginate($params);
         return ProductResource::collection($products);
     }
-    /**
-     * Display a listing of the only trash resource.
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function getListOnlyTrash(Request $request)
     {
         $params = $request->all();
         $products = $this->productEloquentRepository->getAllTrash($params);
         return ProductResource::collection($products);
     }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\ProductRequest  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(ProductRequest $request)
     {
         $data = $request->all();
+        $data['unique_id'] = $this->productEloquentRepository->generateUniqueId();
         $product = $this->productEloquentRepository->create($data);
         return new ProductResource($product);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
+    public function show($unique_id)
     {
-        $product = $this->productEloquentRepository->findById($id);
+        $product = $this->productEloquentRepository->findById($unique_id);
+        if(!$product)
+            return response()->json(['error' => 'Category not found'], 404);
         return new ProductResource($product);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\ProductRequest  $request
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(ProductRequest $request, $id)
+    public function update(ProductRequest $request, $unique_id)
     {
         $data = $request->all();
-        $product = $this->productEloquentRepository->update($data, $id);
+        $product = $this->productEloquentRepository->update($data, $unique_id);
         if (!$product) {
             return response()->json(['error' => 'Category not found'], 404);
         }
         return new ProductResource($product);
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy($unique_id)
     {
-        $result = $this->productEloquentRepository->delete($id);
+        $result = $this->productEloquentRepository->delete($unique_id);
         if (!$result)
             return response()->json(['error' => 'Product not found'], 404);
         return response()->json(null, 204);
     }
-    /**
-     * Restore the specified resource from storage.
-     *
-     * @param   $id
-     * @return \Illuminate\Http\Response
-     */
-    public function restore($id)
+    public function restore($unique_id)
     {
-        $product = $this->productEloquentRepository->restore($id);
+        $product = $this->productEloquentRepository->restore($unique_id);
         if (!$product)
             return response()->json(['error' => 'Product not found'], 404);
         return new ProductResource($product);
+    }
+    public function getAllProduct(){
+        $products = $this->productEloquentRepository->getAll();
+        if (!$products)
+            return response()->json(['error' => 'Product not found'], 404);
+        return ProductResource::collection($products);
+    }
+    public function getProductWithCategory($category_unique_id,Request $request){
+        $params = $request->all();
+        $products = $this->productEloquentRepository->getProductWithCategoryUnique($category_unique_id,$params);
+        if (!$products)
+            return response()->json(['error' => 'Product not found'], 404);
+        return ProductResource::collection($products);
     }
 }

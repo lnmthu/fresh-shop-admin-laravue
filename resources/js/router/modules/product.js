@@ -9,7 +9,7 @@ const productRoutes = {
   alwaysShow: true,
   meta: {
     title: 'Products',
-    icon: 'admin',
+    icon: 'size',
     permissions: ['view menu product'],
   },
   children: [

@@ -36,7 +36,7 @@ class BaseRepository implements RepositoryInterface
         return $this->model->paginate($limit);
     }
 
-    public function findById(int $id)
+    public function findById($id)
     {
         return $this->model->where('unique_id', $id)->firstOrFail();
     }

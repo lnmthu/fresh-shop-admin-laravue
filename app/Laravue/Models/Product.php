@@ -13,10 +13,10 @@ class Product extends Model implements HasMedia
 {
     use SoftDeletes, HasMediaTrait;
     protected $table = "products";
-    protected $fillable = ["id", "name", "sku", "description", "price", "qty", "category_id", "sort", "status"];
+    protected $fillable = ["id","unique_id", "name", "sku", "description", "price", "qty", "category_unique_id", "sort", "status"];
     public function category()
     {
-        return $this->belongsTo('App/Category', 'category_id', 'id');
+        return $this->belongsTo('App\Laravue\Models\Category', 'category_unique_id', 'unique_id');
     }
 
     public function orders()
@@ -32,8 +32,8 @@ class Product extends Model implements HasMedia
             ->registerMediaConversions(function (Media $media) {
                 $this
                     ->addMediaConversion('thumb')
-                    ->width(150)
-                    ->height(150);
+                    ->width(270)
+                    ->height(270);
             });
     }
 }

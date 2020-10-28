@@ -60,5 +60,8 @@ class DatabaseSeeder extends Seeder
         $this->call(OrderPermission::class);
         $this->call(CategoryPermission::class);
         $this->call(ProductPermission::class);
+        $this->call(ContactPermission::class);
+        $this->call(ContactSeeder::class);
+        
     }
 }

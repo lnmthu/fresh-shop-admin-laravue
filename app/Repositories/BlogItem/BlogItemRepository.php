@@ -49,7 +49,7 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
 
     public function update(array $data, $id)
     {
-        $blogItem = $this->findById($id);
+        $blogItem = $this->model->findOrFail($id);
         $newImage = $data['image'];
 
         if ($blogItem) {
@@ -81,5 +81,10 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
         }
 
         return false;
+    }
+    public function BlogCategoryPaginate($blog_category_id, array $params)
+    {
+        $limit = Arr::get($params, 'limit', static::ITEM_PER_PAGE);
+        return $this->model->where('blog_category_id',$blog_category_id)->paginate($limit);
     }
 }
