@@ -60,7 +60,6 @@
                     />
                   </el-form-item>
                 </el-col>
-
               </el-row>
             </div>
           </el-col>
@@ -181,6 +180,7 @@ export default {
         categoryResource
           .store(this.postForm)
           .then((response) => {
+            console.log(response);
             this.$message({
               message:
                 'New category ' +

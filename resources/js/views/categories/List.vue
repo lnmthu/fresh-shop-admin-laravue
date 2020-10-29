@@ -75,7 +75,7 @@
             size="small"
             icon="el-icon-delete"
             @click="handleDelete(scope.row.unique_id, scope.row.name)"
-          >Delete</el-button>
+          >Trash</el-button>
         </template>
       </el-table-column>
       <!--End Edit and delete -->
@@ -175,7 +175,7 @@ export default {
     // delete
     handleDelete(unique_id, name) {
       this.$confirm(
-        'This will momentarily delete category ' + name + '. Continue?',
+        'This will momentarily trash category ' + name + '. Continue?',
         'Warning',
         {
           confirmButtonText: 'OK',
@@ -189,7 +189,7 @@ export default {
             .then((response) => {
               this.$message({
                 type: 'success',
-                message: 'Delete completed',
+                message: 'Trash completed',
               });
               this.getListPaginated();
             })
@@ -200,7 +200,7 @@ export default {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: 'Delete canceled',
+            message: 'Trash canceled',
           });
         });
     },

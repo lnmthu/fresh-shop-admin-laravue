@@ -1,7 +1,13 @@
 <template>
   <div class="app-container">
     <!-- list -->
-    <el-table v-loading="loading" :data="productList" border fit highlight-current-row>
+    <el-table
+      v-loading="loading"
+      :data="productList"
+      border
+      fit
+      highlight-current-row
+    >
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -133,7 +139,7 @@ export default {
     };
   },
   watch: {
-    $route(to, from){
+    $route(to, from) {
       this.getProductList();
     },
   },

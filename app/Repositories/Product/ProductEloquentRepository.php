@@ -6,6 +6,9 @@ use App\Repositories\BaseRepository;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Laravue\Models\Product;
 use Illuminate\Support\Arr;
+use PhpParser\Node\Stmt\TryCatch;
+use Exception;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileUnacceptableForCollection;
 
 class ProductEloquentRepository extends BaseRepository implements ProductRepositoryInterface
 {
@@ -21,9 +24,13 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
         $product = $this->model->create($data);
         $image = $data['image_uri'];
         if ($image) {
-            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            \Image::make($image)->save('public/images/'. $name);
-            $product->addMedia('public/images/' . $name)->toMediaCollection('images');
+            try {
+                $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                \Image::make($image)->save(public_path('images/') . $name);
+                $product->addMedia(public_path('images/') . $name)->toMediaCollection('images');
+            } catch (Exception $e) {
+                throw new FileUnacceptableForCollection($e->getMessage());
+            }
         }
         return $product;
     }
@@ -39,13 +46,18 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
                 return $product;
             }
             if ($oldImage) {
-                unlink(public_path($oldImage->getFullUrl('thumb')));
+                if (file_exists(public_path($oldImage->getUrl())))
+                    unlink(public_path($oldImage->getUrl()));
                 $product->clearMediaCollection('images');
             }
             if ($image) {
-                $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-                \Image::make($image)->save(public_path('images/') . $name);
-                $product->addMedia(public_path('images/') . $name)->toMediaCollection('images');
+                try {
+                    $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                    \Image::make($image)->save(public_path('images/') . $name);
+                    $product->addMedia(public_path('images/') . $name)->toMediaCollection('images');
+                } catch (Exception $e) {
+                    throw new FileUnacceptableForCollection($e->getMessage());
+                }
             }
             $product->update($data);
             return $product;
@@ -55,6 +67,8 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
     {
         $product = $this->model->withTrashed()->where('unique_id', $id)->firstOrFail();;
         if ($product->trashed()) {
+            if ($product->orders()->count() > 0)
+                return false;
             $oldImage = $product->getFirstMediaUrl('images');
             if ($oldImage) {
                 $product->clearMediaCollection('images');
@@ -70,6 +84,6 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
     public function getProductWithCategoryUnique($category_unique_id, array $params)
     {
         $limit = Arr::get($params, 'limit', static::ITEM_PER_PAGE);
-        return $this->model->where('category_unique_id',$category_unique_id)->paginate($limit);
+        return $this->model->where('category_unique_id', $category_unique_id)->paginate($limit);
     }
 }
