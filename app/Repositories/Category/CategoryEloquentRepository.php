@@ -5,7 +5,8 @@ namespace App\Repositories\Category;
 use App\Repositories\BaseRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Laravue\Models\Category;
-
+use Exception;
+use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileUnacceptableForCollection;
 
 class CategoryEloquentRepository extends BaseRepository implements CategoryRepositoryInterface
 {
@@ -22,9 +23,13 @@ class CategoryEloquentRepository extends BaseRepository implements CategoryRepos
         $category = $this->model->create($data);
         $image = $data['image_uri'];
         if ($image) {
-            $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            \Image::make($image)->save(public_path('images/') . $name);
-            $category->addMedia(public_path('images/') . $name)->toMediaCollection('images');
+            try {
+                $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                \Image::make($image)->save(public_path('images/') . $name);
+                $category->addMedia(public_path('images/') . $name)->toMediaCollection('images');
+            } catch (Exception $e) {
+                throw new FileUnacceptableForCollection($e->getMessage());
+            }
         }
         return $category;
     }
@@ -40,13 +45,18 @@ class CategoryEloquentRepository extends BaseRepository implements CategoryRepos
                 return $category;
             }
             if ($oldImage) {
-                unlink(public_path($oldImage->getFullUrl('thumb')));
+                if (file_exists(public_path($oldImage->getUrl())))
+                    unlink(public_path($oldImage->getUrl()));
                 $category->clearMediaCollection('images');
             }
             if ($image) {
-                $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-                \Image::make($image)->save(public_path('images/') . $name);
-                $category->addMedia(public_path('images/') . $name)->toMediaCollection('images');
+                try {
+                    $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                    \Image::make($image)->save(public_path('images/') . $name);
+                    $category->addMedia(public_path('images/') . $name)->toMediaCollection('images');
+                } catch (Exception $e) {
+                    throw new FileUnacceptableForCollection($e->getMessage());
+                }
             }
             $category->update($data);
             return $category;

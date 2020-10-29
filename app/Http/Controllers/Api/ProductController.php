@@ -54,7 +54,7 @@ class ProductController extends Controller
     {
         $result = $this->productEloquentRepository->delete($unique_id);
         if (!$result)
-            return response()->json(['error' => 'Product not found'], 404);
+            return response()->json(['error' =>'Product existed on Order or Category table'], 404);
         return response()->json(null, 204);
     }
     public function restore($unique_id)
