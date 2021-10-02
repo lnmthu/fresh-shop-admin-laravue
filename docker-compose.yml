@@ -1,32 +1,39 @@
-version: "3"
-
+version: "3.7"
 services:
-  laravel:
+  app:
     build:
-      context: .
-    working_dir: /var/www
+      args:
+        user: sammy
+        uid: 1000
+      context: ./
+      dockerfile: .docker/Dockerfile
+    container_name: goshopp_app
+    image: thuicetea/goshopp_app:v1
+    restart: always
+    ports: 
+      - 80:80
+    working_dir: /var/www/html
     volumes:
-      - ./:/var/www
-      - ./docker/docker.env:/var/www/.env
-    ports:
-      - "8000:8000"
-
-    depends_on:
-      - mysql
-      - redis
-
-  redis:
-    image: redis:alpine
-
-  mysql:
-    image: mysql:5.7
-    ports:
-      - "3306:3306"
-    volumes:
-      - ./docker/mysql:/var/lib/mysql
+      - ./:/var/www/html
     environment:
-      MYSQL_DATABASE: laravue
-      MYSQL_USER: laravue
-      MYSQL_PASSWORD: laravue
-      MYSQL_ROOT_PASSWORD: root
-
+      - TZ=Asia/Ho_Chi_Minh
+    networks:
+      - goshopp
+  db:
+    image: mysql:5.7
+    container_name: goshopp_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    networks:
+      - goshopp
+networks:
+  goshopp:
+    driver: bridge 
