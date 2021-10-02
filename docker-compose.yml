@@ -6,17 +6,24 @@ services:
         user: sammy
         uid: 1000
       context: ./
-      dockerfile: .docker/Dockerfile
+      dockerfile: Dockerfile
+    image: thuicetea/goshopp:v1
     container_name: goshopp_app
-    image: thuicetea/goshopp_app:v1
     restart: always
-    ports: 
-      - 80:80
-    working_dir: /var/www/html
+    working_dir: /var/www/
     volumes:
-      - ./:/var/www/html
-    environment:
-      - TZ=Asia/Ho_Chi_Minh
+      - ./:/var/www
+    networks:
+      - goshopp
+  nginx:
+    image: nginx:alpine
+    container_name: goshopp_nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
     networks:
       - goshopp
   db:
@@ -36,4 +43,4 @@ services:
       - goshopp
 networks:
   goshopp:
-    driver: bridge 
+    driver: bridge
