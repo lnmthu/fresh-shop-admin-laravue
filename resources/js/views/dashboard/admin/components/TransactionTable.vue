@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/order';
+import { list } from '@/api/order';
 
 export default {
   filters: {
@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async fetchData() {
-      const { data } = await fetchList();
+      const { data } = await list();
       this.list = data.items.slice(0, 8);
       this.loading = false;
     },
