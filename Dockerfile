@@ -14,7 +14,11 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip\
     nano\
-    python2
+    python2\
+    --no-cache openssl \
+    --no-cache bash \
+    --no-cache certbot \
+    && adduser -D -H -u 1000 -s /bin/bash www-data
 
 # Install node verion 14.x
 RUN curl -sL https://deb.nodesource.com/setup_14.x -o nodesource_setup.sh
@@ -29,14 +33,6 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Certbot for SSL 
-RUN apk update \
-    && apk upgrade \
-    && apk add --no-cache openssl \
-    && apk add --no-cache bash \
-    && apk add --no-cache certbot \
-    && adduser -D -H -u 1000 -s /bin/bash www-data
 
 COPY . /var/www
 
