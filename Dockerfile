@@ -15,9 +15,9 @@ RUN apt-get update && apt-get install -y \
     unzip\
     nano\
     python2\
-    --no-cache openssl \
-    --no-cache bash \
-    --no-cache certbot \
+    openssl \
+    bash \
+    certbot \
     && adduser -D -H -u 1000 -s /bin/bash www-data
 
 # Install node verion 14.x
