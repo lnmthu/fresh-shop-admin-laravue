@@ -30,6 +30,14 @@ RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
+# Certbot for SSL 
+RUN apk update \
+    && apk upgrade \
+    && apk add --no-cache openssl \
+    && apk add --no-cache bash \
+    && apk add --no-cache certbot \
+    && adduser -D -H -u 1000 -s /bin/bash www-data
+
 COPY . /var/www
 
 # Create system user to run Composer and Artisan Commands
