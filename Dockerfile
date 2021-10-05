@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     zip \
     unzip\
+    nano\
     python2
 
 # Install node verion 14.x
