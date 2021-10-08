@@ -78,7 +78,7 @@ class BlogItemSeeder extends Seeder
             [
                 'title' => "Vì sao bưởi thường được ăn vào dịp Trung thu?",
                 'description' => "Bưởi có hình cầu tượng trưng cho trăng tròn và có phát âm giống với từ 'chúc phúc' trong tiếng Trung Quốc. Nhắc đến dịp lễ Halloween nổi tiếng của phương Tây, ta nghĩ ngay đến những quả bí ngô và những món ăn được làm từ loại quả này. Còn ở một số nước ...",
-                'blog_category_id'=>"1",
+                'blog_category_id'=>"2",
                 'user_id'=>"1",
                 'body'=>"
 
@@ -96,9 +96,23 @@ class BlogItemSeeder extends Seeder
             [
                 'title' => "Tác dụng của chanh dây sấy dẻo đến sức khỏe mà bạn nên biết",
                 'description' => "Tác dụng của chanh dây sấy dẻo là gì? hay chanh dây sấy dẻo đem đến cho người sử dụng nhiều lợi ích cho sức khỏe",
-                'blog_category_id'=>"1",
+                'blog_category_id'=>"2",
                 'user_id'=>"1",
-                'body'=>"",
+                'body'=>"Nguyên liệu:
+
+                1 gói cà phê hòa tan
+
+                200ml nước sôi
+
+                8g bột gelatin
+
+                150ml sữa tươi
+
+                50g kem tươi (whipping cream)
+
+                Một ít siro caramel
+
+                Một ít chocolate",
                 'sort'=>"1",
                 'status'=>"1"
 
@@ -106,7 +120,7 @@ class BlogItemSeeder extends Seeder
             [
                 'title' => "Trái cây sấy lạnh là gì? Ưu và nhược điểm của phương pháp sấy lạnh",
                 'description' => "Trái cấy sấy lạnh là gì? Chúng có gì đặc biệt mà lại thu hút khách hàng đến thế",
-                'blog_category_id'=>"1",
+                'blog_category_id'=>"2",
                 'user_id'=>"1",
                 'body'=>"1.Trái cây sấy lạnh là gì?
 
@@ -121,7 +135,7 @@ class BlogItemSeeder extends Seeder
             [
                 'title' => "Hướng dẫn cách làm chè xoài trân châu lá dứa tuyệt ngon",
                 'description' => "Trân châu lá dứa (bước này lâu nhất các chị có thể làm nhiều 1 lần rồi cất tủ đá, ăn tới đâu luộc tới đó để trân châu không bị bở mất độ dai) : lá dứa cắt ngắn cho vào máy xay sinh tố xay nhuyễn, lọc lấy nước cốt qua rây.",
-                'blog_category_id'=>"1",
+                'blog_category_id'=>"3",
                 'user_id'=>"1",
                 'body'=>"Nguyên liệu làm chè xoài trân châu lá dứa:
 
@@ -149,7 +163,7 @@ class BlogItemSeeder extends Seeder
             [
                 'title' => "Công thức mới làm thạch lá dứa vừa nhanh vừa ngon tới không ngờ",
                 'description' => "Thạch lá dứa thanh thanh cực kì hợp cho ngày hè nắng lửa. Nguyên liệu: 3 thìa cafe bột rau câu con cá dẻo 6 thìa súp đường 8 lá dứa 200ml nước cốt dừa 500ml nước lọc 1 chút muối Cách làm:",
-                'blog_category_id'=>"1",
+                'blog_category_id'=>"3",
                 'user_id'=>"1",
                 'body'=>"Nguyên liệu:
 
@@ -171,7 +185,7 @@ class BlogItemSeeder extends Seeder
             [
                 'title' => "Món thạch mang vị béo ngậy của kem sữa thơm lừng mùi cà phê",
                 'description' => "Hãy nhanh chóng tham khảo cách làm thạch cà phê sữa mát lạnh để chiêu đãi cả nhà ngay nhé! Nguyên liệu: 1 gói cà phê hòa tan 200ml nước sôi 8g bột gelatin 150ml sữa tươi 50g kem tươi (whipping cream) Một ít siro caramel Một ít chocolate ",
-                'blog_category_id'=>"1",
+                'blog_category_id'=>"3",
                 'user_id'=>"1",
                 'body'=>"Nguyên liệu:
 

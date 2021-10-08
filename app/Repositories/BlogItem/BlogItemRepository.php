@@ -13,7 +13,7 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
 {
     protected $model;
 
-    const ITEM_PER_PAGE = 15;
+    const ITEM_PER_PAGE = 2;
 
     public function __construct(BlogItem $model)
     {
