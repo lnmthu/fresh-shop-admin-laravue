@@ -59,13 +59,12 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
             if ($oldImage && $oldImage->getUrl('blog') == $newImage) {
                 return $blogItem;
             } else if ($oldImage) {
-                $name = time() . '.' . explode('/', explode(':', substr($newImage, 0, strpos($newImage, ';')))[1])[1];
-                Image::make($data['image'])->resize(150, 120)->save($path . $name);
-                // unlink(public_path($oldImage->getUrl('blog')));
+                // $name = time() . '.' . explode('/', explode(':', substr($newImage, 0, strpos($newImage, ';')))[1])[1];
+                // Image::make($data['image'])->resize(150, 120)->save($path . $name);
+                // // unlink(public_path($oldImage->getUrl('blog')));
                 $blogItem->clearMediaCollection('blog');
-                $blogItem
-                    ->addMedia($path . $name)
-                    ->toMediaCollection('blog');
+                //     ->addMedia($path . $name)
+                //     ->toMediaCollection('blog');
             } else if ($newImage) {
                 $name = time() . '.' . explode('/', explode(':', substr($newImage, 0, strpos($newImage, ';')))[1])[1];
                 Image::make($data['image'])->resize(150, 120)->save($path . $name);
