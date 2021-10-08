@@ -61,7 +61,7 @@ class BlogItemRepository extends BaseRepository implements BlogItemRepositoryInt
             } else if ($oldImage) {
                 $name = time() . '.' . explode('/', explode(':', substr($newImage, 0, strpos($newImage, ';')))[1])[1];
                 Image::make($data['image'])->resize(150, 120)->save($path . $name);
-                unlink(public_path($oldImage->getUrl('blog')));
+                // unlink(public_path($oldImage->getUrl('blog')));
                 $blogItem->clearMediaCollection('blog');
                 $blogItem
                     ->addMedia($path . $name)
