@@ -25,7 +25,7 @@ class ProductRequest extends FormRequest
     {
         return [
             'name' => 'required|max:100',
-            'sku' => 'required|max:50|unique:products',
+            'sku' => 'required|max:50',
             'sort' => 'required',
             'status' => 'required',
             'description' => 'required|min:5|max:25000',
@@ -41,7 +41,6 @@ class ProductRequest extends FormRequest
             'name.max' => 'Please Enter Name With Maximum of 100 Characters',
             'sku.required' => 'Please Enter Sku',
             'sku.max' => 'Please Enter Sku With Maximum of 50 Characters',
-            'sku.unique' => 'Sku have already',
             'sort.required' => 'Please Select Sort',
             'status.required' => 'Please Select Status',
             'description.required' => 'Please Enter Description',
