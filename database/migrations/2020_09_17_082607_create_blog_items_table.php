@@ -16,7 +16,7 @@ class CreateBlogItemsTable extends Migration
         Schema::create('blog_items', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('description');
+            $table->longText('description');
             $table->longText('body');
             $table->integer('sort')->default(0);
             $table->foreignId('user_id')->constrained();

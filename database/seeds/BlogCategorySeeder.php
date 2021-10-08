@@ -12,10 +12,10 @@ class BlogCategorySeeder extends Seeder
      */
     public function run()
     {
-        DB::table('blog_categories')->insert(
+        DB::table('blog_categories')->insert([
             ['title' => "Thức ăn",'description' => "Các loại thức ăn",'sort'=>0],
             ['title' => "Trái cây",'description' => "Các loại trái cây",'sort'=>0],
             ['title' => "Nước uống",'description' => "Các loại nước uống",'sort'=>0]
-        );
+        ]);
     }
 }

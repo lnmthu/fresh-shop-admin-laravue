@@ -12,12 +12,11 @@ class BlogItemSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('blog_items')->insert(
+        DB::table('blog_items')->insert([
             [
                 'title' => "Hướng dẫn làm món bánh quy bơ ngọt ngào bằng bơ làm bánh",
                 'description' => "Vậy thì giờ đây, bạn sẽ không còn phải lo lắng nữa với công thức làm món bánh quy bơ thơm ngon từ Pháp nhé. Và tôi muốn chia sẻ công thức làm bánh quy sô cô la tuyệt vời này của Alison Roman, món đã được yêu thích nhanh chóng trong gia đình tôi.",
                 'blog_category_id'=>"1",
-                'category'=>"1",
                 'user_id'=>"1",
                 'body'=>"Tuần trước chúng tôi đã nghỉ làm, nhưng đã có rất nhiều bạn bè bay từ nước ngoài đến, các chi tiết về đám cưới vào phút chót và chuẩn bị bánh - bởi vì vâng, tôi đang làm bánh của riêng mình!
                 Tôi đã có một vài lần thực sự muốn có một ít bánh quy, vì vậy tôi đã đánh một mẻ lớn bánh mì ngắn này và cắt lát và nướng theo yêu cầu, điều này khiến cuộc sống trở nên thật dễ dàng.
@@ -30,7 +29,6 @@ class BlogItemSeeder extends Seeder
                 'title' => "Bò Cuộn Phô Mai Mozzarella Đã Cơn Thèm",
                 'description' => "Được biết đến như là một nguồn nguyên liệu đến từ quốc gia trứ danh với các món ăn ẩm thực nghệ thuật sang trọng của nước Ý, Phô Mai Mozzarella được lựa giới chuyên gia cũng như các đầu bếp hàng đầu thế",
                 'blog_category_id'=>"1",
-                'category'=>"1",
                 'user_id'=>"1",
                 'body'=>"Sau khi đã chuẩn bị đầy đủ nguyên liệu, bạn tiến hành lần lượt theo các bước sau:
 
@@ -53,7 +51,6 @@ class BlogItemSeeder extends Seeder
                 'title' => " Thịt bò xào thế nào cho ngon mà không mất chất",
                 'description' => "Thịt bò xào thế nào cho ngon mà không mất chất hiện đang được rất nhiều người làm nội trợ tìm kiếm để cải thiện bữa ăn gia đình đảm bảo dinh dưỡng. Trong bài viết này, Good Market sẽ hướng dẫn những cách",
                 'blog_category_id'=>"1",
-                'category'=>"1",
                 'user_id'=>"1",
                 'body'=>"Thông thường, người tiêu dùng khi đi chợ mua thịt bò ở Việt Nam vẫn còn nhiều người mua ở ngoài chợ truyền thống. Thế nhưng, với sự phát triển cũng như thời gian vừa qua rất nhiều trường hợp ngộ độc thực phẩm thịt bò vì sử dụng không rõ nguồn gốc đã khiến cho không ít người ái ngại. Đặc biệt, với những người nội trợ mong muốn mang lại sức khỏe đảm bảo cho gia đình.
 
@@ -68,7 +65,6 @@ class BlogItemSeeder extends Seeder
                 'title' => "Cách làm món bò bít tết ngay tại nhà hảo hạng",
                 'description' => "Hướng dẫn làm món bò bít tết ngon ngay tại nhà với những nguyên liệu được cung cấp tại hệ thống siêu thị Good Market hoàn toàn sạch và được nhập khẩu, đảm bảo chất lượng.",
                 'blog_category_id'=>"1",
-                'category'=>"1",
                 'user_id'=>"1",
                 'body'=>"Rửa sạch thịt bò với nước và cho vào ngăn đá khoảng 15 - 20 phút để tạo khuôn hình phẳng làm cho miếng thịt nhìn bằng và dễ cắt hơn. Không nên để quá cứng vì sẽ làm cho việc cắt thái trở nên khó khăn hơn. Thông thường mình thường làm là, rửa sạch và cho vào tủ, đi nhặt rau và sơ chế các gia vị xong quay lại lấy thịt từ tủ ra là vừa.
 
@@ -83,7 +79,6 @@ class BlogItemSeeder extends Seeder
                 'title' => "Vì sao bưởi thường được ăn vào dịp Trung thu?",
                 'description' => "Bưởi có hình cầu tượng trưng cho trăng tròn và có phát âm giống với từ 'chúc phúc' trong tiếng Trung Quốc. Nhắc đến dịp lễ Halloween nổi tiếng của phương Tây, ta nghĩ ngay đến những quả bí ngô và những món ăn được làm từ loại quả này. Còn ở một số nước ...",
                 'blog_category_id'=>"1",
-                'category'=>"2",
                 'user_id'=>"1",
                 'body'=>"
 
@@ -102,7 +97,6 @@ class BlogItemSeeder extends Seeder
                 'title' => "Tác dụng của chanh dây sấy dẻo đến sức khỏe mà bạn nên biết",
                 'description' => "Tác dụng của chanh dây sấy dẻo là gì? hay chanh dây sấy dẻo đem đến cho người sử dụng nhiều lợi ích cho sức khỏe",
                 'blog_category_id'=>"1",
-                'category'=>"2",
                 'user_id'=>"1",
                 'body'=>"",
                 'sort'=>"1",
@@ -113,7 +107,6 @@ class BlogItemSeeder extends Seeder
                 'title' => "Trái cây sấy lạnh là gì? Ưu và nhược điểm của phương pháp sấy lạnh",
                 'description' => "Trái cấy sấy lạnh là gì? Chúng có gì đặc biệt mà lại thu hút khách hàng đến thế",
                 'blog_category_id'=>"1",
-                'category'=>"2",
                 'user_id'=>"1",
                 'body'=>"1.Trái cây sấy lạnh là gì?
 
@@ -129,7 +122,6 @@ class BlogItemSeeder extends Seeder
                 'title' => "Hướng dẫn cách làm chè xoài trân châu lá dứa tuyệt ngon",
                 'description' => "Trân châu lá dứa (bước này lâu nhất các chị có thể làm nhiều 1 lần rồi cất tủ đá, ăn tới đâu luộc tới đó để trân châu không bị bở mất độ dai) : lá dứa cắt ngắn cho vào máy xay sinh tố xay nhuyễn, lọc lấy nước cốt qua rây.",
                 'blog_category_id'=>"1",
-                'category'=>"3",
                 'user_id'=>"1",
                 'body'=>"Nguyên liệu làm chè xoài trân châu lá dứa:
 
@@ -158,7 +150,6 @@ class BlogItemSeeder extends Seeder
                 'title' => "Công thức mới làm thạch lá dứa vừa nhanh vừa ngon tới không ngờ",
                 'description' => "Thạch lá dứa thanh thanh cực kì hợp cho ngày hè nắng lửa. Nguyên liệu: 3 thìa cafe bột rau câu con cá dẻo 6 thìa súp đường 8 lá dứa 200ml nước cốt dừa 500ml nước lọc 1 chút muối Cách làm:",
                 'blog_category_id'=>"1",
-                'category'=>"3",
                 'user_id'=>"1",
                 'body'=>"Nguyên liệu:
 
@@ -181,7 +172,6 @@ class BlogItemSeeder extends Seeder
                 'title' => "Món thạch mang vị béo ngậy của kem sữa thơm lừng mùi cà phê",
                 'description' => "Hãy nhanh chóng tham khảo cách làm thạch cà phê sữa mát lạnh để chiêu đãi cả nhà ngay nhé! Nguyên liệu: 1 gói cà phê hòa tan 200ml nước sôi 8g bột gelatin 150ml sữa tươi 50g kem tươi (whipping cream) Một ít siro caramel Một ít chocolate ",
                 'blog_category_id'=>"1",
-                'category'=>"3",
                 'user_id'=>"1",
                 'body'=>"Nguyên liệu:
 
@@ -202,6 +192,7 @@ class BlogItemSeeder extends Seeder
                 'status'=>"1"
 
             ]
-        );
+
+        ]);
     }
 }
