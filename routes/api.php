@@ -190,9 +190,9 @@ Route::namespace('Api')->group(function () {
     // get all product
     Route::get('all-products', 'ProductController@getAllProduct');
     // get list product paginate
-    Route::get('products', 'ProductController@index');   
-    // get detail product  
-    Route::get('products/{product}', 'ProductController@show');  
+    Route::get('products', 'ProductController@index');
+    // get detail product
+    Route::get('products/{product}', 'ProductController@show');
     //get product belong to category paginate
     Route::get('products-with-category/{category_unique_id}', 'ProductController@getProductWithCategory');
     //get all category

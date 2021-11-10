@@ -5,6 +5,7 @@ namespace App\Repositories\Product;
 use App\Repositories\BaseRepository;
 use App\Repositories\Product\ProductRepositoryInterface;
 use App\Laravue\Models\Product;
+use App\Laravue\Models\Category;
 use Illuminate\Support\Arr;
 use PhpParser\Node\Stmt\TryCatch;
 use Exception;
@@ -19,6 +20,16 @@ class ProductEloquentRepository extends BaseRepository implements ProductReposit
         $this->model = $model;
         parent::__construct($model);
     }
+    // public function getAllPaginate(array $params)
+    // {
+    //     $array = [];
+    //     $category = Category::find(10);
+    //     $product = $this->model->category()>associate($category);;
+    //     // foreach($product as $item){
+    //     //     $array[]= $item->category->name;
+    //     // }
+    //      dd($product);
+    // }
     public function create(array $data)
     {
         $product = $this->model->create($data);

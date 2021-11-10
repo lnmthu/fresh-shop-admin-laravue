@@ -9,12 +9,10 @@ use Illuminate\Support\Str;
 
 class OrderRepository extends BaseRepository implements OrderRepositoryInterface
 {
-    protected $model;
 
     public function __construct(Order $model)
     {
         $this->model = $model;
-        parent::__construct($model);
     }
 
     public function create(array $attributes)

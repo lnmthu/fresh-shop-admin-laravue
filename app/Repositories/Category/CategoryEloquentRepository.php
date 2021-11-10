@@ -5,8 +5,10 @@ namespace App\Repositories\Category;
 use App\Repositories\BaseRepository;
 use App\Repositories\Category\CategoryRepositoryInterface;
 use App\Laravue\Models\Category;
+use App\Laravue\Models\Product;
 use Exception;
 use Spatie\MediaLibrary\Exceptions\FileCannotBeAdded\FileUnacceptableForCollection;
+use Illuminate\Support\Facades\DB;
 
 class CategoryEloquentRepository extends BaseRepository implements CategoryRepositoryInterface
 {
@@ -18,8 +20,20 @@ class CategoryEloquentRepository extends BaseRepository implements CategoryRepos
         parent::__construct($model);
     }
 
+    // public function getAllPaginate(array $params)
+    // {
+    //     DB::enableQueryLog(); // Enable query log
+    //     dd($this->model->paginate(
+    //         $perPage = 15, $columns = ['*'], $pageName = 'categories'
+    //     )->toArray());
+    //     dd(DB::getQueryLog()); // Show results of log
+
+    // }
+
     public function create(array $data)
     {
+
+
         $category = $this->model->create($data);
         $image = $data['image_uri'];
         if ($image) {
@@ -52,6 +66,7 @@ class CategoryEloquentRepository extends BaseRepository implements CategoryRepos
             if ($image) {
                 try {
                     $name = time() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+                    dd($name);
                     \Image::make($image)->save(public_path('images/') . $name);
                     $category->addMedia(public_path('images/') . $name)->toMediaCollection('images');
                 } catch (Exception $e) {
