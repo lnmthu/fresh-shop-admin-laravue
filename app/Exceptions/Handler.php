@@ -51,8 +51,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
+        return parent::render($request, $exception);
         if($exception instanceof FileUnacceptableForCollection)
             return response()->json(['error' => 'Only JPEG, JPG, PNG file type is accepted'], 404);
-        return parent::render($request, $exception);
     }
 }
